@@ -4,12 +4,15 @@
 shell-back: ## -Enter_inside_of_back_shell
 	docker exec -it economyControl bash
 
+shell-db: ## -Enter_inside_of_database_shell
+	docker exec -it economycontrol_db_1 bash
+
 create-migration:
 	@php artisan make:migration $(name)
 	@echo "Migration $(name) has been created successfully"
 
-create-migrate:
-	@php artisan make:migrate
+migrate:
+	@php artisan migrate
 	@echo "Migrate has been executed successfully"
 
 cache-clear:

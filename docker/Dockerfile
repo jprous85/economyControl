@@ -10,7 +10,9 @@ RUN yes | pecl install xdebug \
     && echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.start_with_request = yes"  >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_enna = 1"  >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.client_port = 9003"  >> /usr/local/etc/php/conf.d/xdebug.ini
+    && echo "xdebug.client_port = 9003"  >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.client_discovery_header = yes" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.idekey = PHPSTORM" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN apt-get install -y curl
 RUN apt-get install -y git
