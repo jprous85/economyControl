@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Src\Auth\Infrastructure\Controllers\AuthPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([], __DIR__ . '/Auth/Auth.php');
+
+
+Route::middleware(['auth:api', 'role'])->group(function () {
+
+    Route::middleware(['scope:admin'])->prefix('/users')
+        ->group(__DIR__ . '/User/User.php');
+
+    Route::middleware(['scope:admin'])->prefix('/roles')
+        ->group(__DIR__.'/Role/Role.php');
+    // --insert_new_instance_route
+
 });

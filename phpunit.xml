@@ -5,12 +5,13 @@
          colors="true"
 >
     <testsuites>
-        <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
+        <testsuite name="User">
+            <directory>./tests/User</directory>
         </testsuite>
-        <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
-        </testsuite>
+        <testsuite name="Role">
+			<directory>./tests/Role</directory>
+		</testsuite>
+		<!-- insert_new_test_instance -->
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
