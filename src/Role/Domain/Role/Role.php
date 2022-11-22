@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Src\Role\Domain\Role;
 
 
+use Carbon\Carbon;
 use Src\Role\Domain\Role\ValueObjects\RoleIdVO;
 use Src\Role\Domain\Role\ValueObjects\RoleNameVO;
 use Src\Role\Domain\Role\ValueObjects\RoleActiveVO;
@@ -25,41 +26,29 @@ final class Role
     {}
 
     public static function create(
-		RoleIdVO $id,
-		RoleNameVO $name,
-		RoleActiveVO $active,
-		RoleCreatedAtVO $created_at,
-		RoleUpdatedAtVO $updated_at,
+		RoleNameVO $name
 
     ): Role
     {
-        $role =  new self(
-				$id,
+        return new self(
+				new RoleIdVO(null),
 				$name,
-				$active,
-				$created_at,
-				$updated_at,
+				new RoleActiveVO(1),
+				new RoleCreatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s')),
+				new RoleUpdatedAtVO(null),
 
         );
-
-
-        return $role;
     }
 
     public function update(
-		RoleIdVO $id,
 		RoleNameVO $name,
 		RoleActiveVO $active,
-		RoleCreatedAtVO $created_at,
-		RoleUpdatedAtVO $updated_at,
 
     ): void
     {
-		$this->id = $id;
 		$this->name = $name;
 		$this->active = $active;
-		$this->created_at = $created_at;
-		$this->updated_at = $updated_at;
+		$this->updated_at = new RoleUpdatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s'));
 
     }
 

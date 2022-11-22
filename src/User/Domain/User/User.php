@@ -123,6 +123,7 @@ final class User
         $this->remember_token    = $remember_token;
         $this->active            = $active;
         $this->verified          = $verified;
+        $this->updated_at        = new UserUpdatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s'));
     }
 
     public function getPrimitives(): array

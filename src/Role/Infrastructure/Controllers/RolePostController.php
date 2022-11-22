@@ -15,23 +15,17 @@ final class RolePostController extends ReturnsMiddleware
     public function __construct(private CreateRole $create)
     {}
 
-    //TODO:: get laravel request
     public function create(Request $request): JsonResponse
     {
         $request = $this->mapper($request);
-        $role_id = ($this->create)($request);
-        return $this->successResponse('', $role_id);
+        ($this->create)($request);
+        return $this->successResponse('');
     }
 
     private function mapper(Request $request): CreateRoleRequest
     {
         return new CreateRoleRequest(
-			$request->get('id'),
-			$request->get('name'),
-			$request->get('active'),
-			$request->get('created_at'),
-			$request->get('updated_at'),
-
+			$request->get('name')
         );
     }
 }

@@ -18,6 +18,6 @@ final class RoleActiveVOMother
     public static function random(): RoleActiveVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create((int)($faker->boolean));
     }
 }

@@ -8,8 +8,6 @@ use Src\Role\Application\Request\CreateRoleRequest;
 use Src\Role\Domain\Role\Role;
 use Src\Role\Domain\Role\Repositories\RoleRepository;
 
-use Src\Shared\Domain\Bus\Event\EventBus;
-
 use Src\Role\Domain\Role\ValueObjects\RoleIdVO;
 use Src\Role\Domain\Role\ValueObjects\RoleNameVO;
 use Src\Role\Domain\Role\ValueObjects\RoleActiveVO;
@@ -20,7 +18,7 @@ use Src\Role\Domain\Role\ValueObjects\RoleUpdatedAtVO;
 final class CreateRole
 {
 
-    public function __construct(private RoleRepository $repository, private EventBus $eventBus)
+    public function __construct(private RoleRepository $repository)
     {
     }
 
@@ -28,7 +26,6 @@ final class CreateRole
     {
         $role = self::mapper($request);
         $role_id = $this->repository->save($role);
-        $this->eventBus->publish(...$role->pullDomainEvents());
         return $role_id->value();
     }
 
@@ -36,12 +33,7 @@ final class CreateRole
     {
         // TODO:: check with VO and return it
         return Role::create(
-			new RoleIdVO($request->getId()),
-			new RoleNameVO($request->getName()),
-			new RoleActiveVO($request->getActive()),
-			new RoleCreatedAtVO($request->getCreatedAt()),
-			new RoleUpdatedAtVO($request->getUpdatedAt()),
-
+			new RoleNameVO($request->getName())
         );
     }
 }

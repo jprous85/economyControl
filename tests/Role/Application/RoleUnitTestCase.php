@@ -4,6 +4,8 @@ namespace Tests\Role\Application;
 
 use Src\Role\Application\Request\ShowRoleRequest;
 use Src\Role\Application\Request\UpdateRoleRequest;
+use Src\Role\Application\Response\RoleResponse;
+use Src\Role\Application\Response\RoleResponses;
 use Src\Role\Application\UseCases\CreateRole;
 use Src\Role\Application\UseCases\ShowRole;
 use Src\Role\Application\UseCases\ShowAllRole;
@@ -19,49 +21,58 @@ use Tests\Role\Domain\Role\ValueObjects\RoleIdVOMother;
 
 use Mockery;
 use Mockery\MockInterface;
-use Src\Shared\Domain\Bus\Event\EventBus;
 use Tests\Role\Domain\Role\RoleMother;
 use Tests\TestCase;
 
 abstract class RoleUnitTestCase extends TestCase
 {
     private MockInterface $mock;
-    private MockInterface $eventBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->mock   = $this->repository();
-        $this->eventBus = $this->eventBus();
+        $this->mock = $this->repository();
     }
 
     protected function shouldCreate(CreateRoleRequest $request)
     {
         $role_id = RoleIdVOMother::random();
-        $this->mock->shouldReceive('saveTemporaryTask')->andReturn($role_id);
-        $this->eventBus->shouldReceive('publish');
+        $this->mock->shouldReceive('save')->andReturn($role_id);
 
-        $creator = new CreateRole($this->mock, $this->eventBus);
+        $creator = new CreateRole($this->mock);
         $creator->__invoke($request);
     }
 
     protected function shouldFind(ShowRoleRequest $request)
     {
-        $role = RoleMother::random();
+        $role         = RoleMother::random();
+        $roleResponse = RoleResponse::SelfRoleResponse($role);
 
         $this->mock->shouldReceive('show')->andReturn($role);
 
         $finder = new ShowRole($this->mock);
-        $finder->__invoke($request);
+        $result = $finder->__invoke($request);
+
+        $this->assertEquals($result, $roleResponse);
     }
 
     protected function shouldFindAll()
     {
-        $this->mock->shouldReceive('showAll')->andReturns(array());
+        $role1 = RoleMother::random();
+        $role2 = RoleMother::random();
+
+        $roleResponse1 = RoleResponse::SelfRoleResponse($role1);
+        $roleResponse2 = RoleResponse::SelfRoleResponse($role2);
+
+        $roleResponses = new RoleResponses($roleResponse1, $roleResponse2);
+
+        $this->mock->shouldReceive('showAll')->andReturns([$role1, $role2]);
 
         $finder = new ShowAllRole($this->mock);
-        $finder->__invoke();
+        $result = $finder->__invoke();
+
+        $this->assertEquals($result, $roleResponses);
     }
 
     protected function shouldUpdate(int $id, UpdateRoleRequest $request)
@@ -70,9 +81,8 @@ abstract class RoleUnitTestCase extends TestCase
         $this->mock->shouldReceive('show')->andReturn($role_mother);
 
         $this->mock->shouldReceive('update');
-        $this->eventBus->shouldReceive('publish');
 
-        $update = new UpdateRole($this->mock, $this->eventBus);
+        $update = new UpdateRole($this->mock);
         $update->__invoke($id, $request);
     }
 
@@ -87,13 +97,8 @@ abstract class RoleUnitTestCase extends TestCase
         $delete->__invoke($id);
     }
 
-    private function repository(): MockInterface | RoleRepository
+    private function repository(): MockInterface|RoleRepository
     {
         return Mockery::mock(RoleRepository::class);
-    }
-
-    private function eventBus(): MockInterface | EventBus
-    {
-        return Mockery::mock(EventBus::class);
     }
 }

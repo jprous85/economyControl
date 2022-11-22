@@ -13,5 +13,6 @@ class DeleteRoleUnitTest extends RoleUnitTestCase
     public function should_delete_Role(): void
     {
         $this->shouldDelete(DeleteRoleRequestMother::random());
+        self::assertTrue(true);
     }
 }

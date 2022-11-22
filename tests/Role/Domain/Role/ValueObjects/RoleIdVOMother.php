@@ -18,6 +18,6 @@ final class RoleIdVOMother
     public static function random(): RoleIdVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create($faker->randomDigitNotZero());
     }
 }

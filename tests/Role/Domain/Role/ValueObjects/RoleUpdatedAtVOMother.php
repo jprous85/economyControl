@@ -18,6 +18,6 @@ final class RoleUpdatedAtVOMother
     public static function random(): RoleUpdatedAtVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create($faker->date);
     }
 }
