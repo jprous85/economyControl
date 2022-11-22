@@ -18,6 +18,6 @@ final class UserLastLoginVOMother
     public static function random(): UserLastLoginVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create($faker->date);
     }
 }

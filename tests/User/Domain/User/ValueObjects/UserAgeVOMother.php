@@ -18,6 +18,6 @@ final class UserAgeVOMother
     public static function random(): UserAgeVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create($faker->numberBetween(18, 99));
     }
 }

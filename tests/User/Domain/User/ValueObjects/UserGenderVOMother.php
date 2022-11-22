@@ -18,6 +18,6 @@ final class UserGenderVOMother
     public static function random(): UserGenderVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create(($faker->boolean) ? 'M' : 'W');
     }
 }

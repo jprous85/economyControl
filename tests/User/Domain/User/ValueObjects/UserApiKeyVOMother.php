@@ -18,6 +18,6 @@ final class UserApiKeyVOMother
     public static function random(): UserApiKeyVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create('apikey');
     }
 }

@@ -18,6 +18,6 @@ final class UserEmailVerifiedAtVOMother
     public static function random(): UserEmailVerifiedAtVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create($faker->date);
     }
 }

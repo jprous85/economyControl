@@ -8,7 +8,6 @@ use Src\User\Domain\User\Exceptions\UserNotFoundException;
 use Src\User\Domain\User\User;
 use Src\User\Domain\User\Repositories\UserRepository;
 
-use Src\User\Domain\User\UserNotExist;
 use Src\User\Domain\User\ValueObjects\UserIdVO;
 use Src\User\Infrastructure\Adapter\UserAdapter;
 

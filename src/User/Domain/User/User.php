@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Src\User\Domain\User;
 
 use Carbon\Carbon;
-use Src\Role\Domain\Role\Role;
 
+use Src\Shared\Domain\ValueObjects\CreatedAtVO;
 use Src\User\Domain\User\ValueObjects\UserIdVO;
+use Src\User\Domain\User\ValueObjects\UserRoleIdVO;
 use Src\User\Domain\User\ValueObjects\UserUuidVO;
 use Src\User\Domain\User\ValueObjects\UserNameVO;
 use Src\User\Domain\User\ValueObjects\UserFirstSurnameVO;
@@ -32,7 +33,7 @@ final class User
     public function __construct(
         private UserIdVO               $id,
         private UserUuidVO             $uuid,
-        private Role                   $role,
+        private UserRoleIdVO           $role_id,
         private UserNameVO             $name,
         private ?UserFirstSurnameVO    $first_surname,
         private ?UserSecondSurnameVO   $second_surname,
@@ -55,32 +56,22 @@ final class User
     }
 
     public static function create(
-        UserIdVO              $id,
-        UserUuidVO            $uuid,
-        Role                  $role,
-        UserNameVO            $name,
-        UserFirstSurnameVO    $first_surname,
-        UserSecondSurnameVO   $second_surname,
-        UserEmailVO           $email,
-        UserAgeVO             $age,
-        UserGenderVO          $gender,
-        UserPasswordVO        $password,
-        UserLangVO            $lang,
-        UserApiKeyVO          $api_key,
-        UserEmailVerifiedAtVO $email_verified_at,
-        UserRememberTokenVO   $remember_token,
-        UserLastLoginVO       $last_login,
-        UserActiveVO          $active,
-        UserVerifiedVO        $verified,
-        UserCreatedAtVO       $created_at,
-        UserUpdatedAtVO       $updated_at,
-
+        UserUuidVO          $uuid,
+        UserRoleIdVO        $role_id,
+        UserNameVO          $name,
+        UserFirstSurnameVO  $first_surname,
+        UserSecondSurnameVO $second_surname,
+        UserEmailVO         $email,
+        UserAgeVO           $age,
+        UserGenderVO        $gender,
+        UserPasswordVO      $password,
+        UserLangVO          $lang,
     ): User
     {
-        $user = new self(
-            $id,
+        return new self(
+            new UserIdVO(null),
             $uuid,
-            $role,
+            $role_id,
             $name,
             $first_surname,
             $second_surname,
@@ -89,24 +80,19 @@ final class User
             $gender,
             $password,
             $lang,
-            $api_key,
-            $email_verified_at,
-            $remember_token,
-            $last_login,
-            $active,
-            $verified,
-            $created_at,
-            $updated_at,
-
+            new UserApiKeyVO(substr(str_shuffle("0123456789abcdefghijklmnopqrstvwxyz"), 0, 11)),
+            null,
+            null,
+            null,
+            new UserActiveVO(1),
+            new UserVerifiedVO(0),
+            new UserCreatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s')),
+            null,
         );
-
-        return $user;
     }
 
     public function update(
-        UserIdVO              $id,
-        UserUuidVO            $uuid,
-        Role                  $role,
+        UserRoleIdVO          $role_id,
         UserNameVO            $name,
         UserFirstSurnameVO    $first_surname,
         UserSecondSurnameVO   $second_surname,
@@ -118,17 +104,12 @@ final class User
         UserApiKeyVO          $api_key,
         UserEmailVerifiedAtVO $email_verified_at,
         UserRememberTokenVO   $remember_token,
-        UserLastLoginVO       $last_login,
         UserActiveVO          $active,
         UserVerifiedVO        $verified,
-        UserCreatedAtVO       $created_at,
-        UserUpdatedAtVO       $updated_at,
 
     ): void
     {
-        $this->id                = $id;
-        $this->uuid              = $uuid;
-        $this->role              = $role;
+        $this->role_id           = $role_id;
         $this->name              = $name;
         $this->first_surname     = $first_surname;
         $this->second_surname    = $second_surname;
@@ -140,11 +121,8 @@ final class User
         $this->api_key           = $api_key;
         $this->email_verified_at = $email_verified_at;
         $this->remember_token    = $remember_token;
-        $this->last_login        = $last_login;
         $this->active            = $active;
         $this->verified          = $verified;
-        $this->created_at        = $created_at;
-        $this->updated_at        = $updated_at;
     }
 
     public function getPrimitives(): array
@@ -152,6 +130,7 @@ final class User
         return [
             'id'                => $this->getId()->value(),
             'uuid'              => $this->getUuid()->value(),
+            'role_id'           => $this->getRoleId()->value(),
             'name'              => $this->getName()->value(),
             'first_surname'     => $this->getFirstSurname()->value(),
             'second_surname'    => $this->getSecondSurname()->value(),
@@ -175,7 +154,7 @@ final class User
     /**
      * Getters
      */
-    public function getId(): UserIdVO
+    public function getId(): ?UserIdVO
     {
         return $this->id;
     }
@@ -185,9 +164,9 @@ final class User
         return $this->uuid;
     }
 
-    public function getRole(): Role
+    public function getRoleId(): UserRoleIdVO
     {
-        return $this->role;
+        return $this->role_id;
     }
 
     public function getName(): UserNameVO
@@ -271,10 +250,9 @@ final class User
     }
 
 
-
     public function updateLastLogin()
     {
-        $currentDate = Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s');
+        $currentDate      = Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s');
         $this->last_login = new UserLastLoginVO($currentDate);
     }
 

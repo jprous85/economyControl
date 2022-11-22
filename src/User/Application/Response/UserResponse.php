@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace Src\User\Application\Response;
 
-
-use Src\Role\Domain\Role\Role;
-use Src\Role\Domain\Role\ValueObjects\RoleActiveVO;
-use Src\Role\Domain\Role\ValueObjects\RoleCreatedAtVO;
-use Src\Role\Domain\Role\ValueObjects\RoleIdVO;
-use Src\Role\Domain\Role\ValueObjects\RoleNameVO;
-use Src\Role\Domain\Role\ValueObjects\RoleUpdatedAtVO;
 use Src\User\Domain\User\User;
-
 use Src\User\Domain\User\ValueObjects\UserIdVO;
+use Src\User\Domain\User\ValueObjects\UserRoleIdVO;
 use Src\User\Domain\User\ValueObjects\UserUuidVO;
 use Src\User\Domain\User\ValueObjects\UserNameVO;
 use Src\User\Domain\User\ValueObjects\UserFirstSurnameVO;
@@ -36,129 +29,147 @@ use Src\User\Domain\User\ValueObjects\UserUpdatedAtVO;
 final class UserResponse
 {
     public function __construct(
-		private int     $id,
-		private string  $uuid,
-		private array    $role,
-		private string  $name,
-		private ?string $first_surname,
-		private ?string $second_surname,
-		private string  $email,
-		private ?int    $age,
-		private ?string $gender,
-		private string  $password,
-		private string  $lang,
-		private string  $api_key,
-		private ?string $email_verified_at,
-		private ?string $remember_token,
-		private ?string $last_login,
-		private int $active,
-		private int $verified,
-		private ?string $created_at,
-		private ?string $updated_at
+        private ?int     $id,
+        private string  $uuid,
+        private int     $role,
+        private string  $name,
+        private ?string $first_surname,
+        private ?string $second_surname,
+        private string  $email,
+        private ?int    $age,
+        private ?string $gender,
+        private string  $password,
+        private string  $lang,
+        private string  $api_key,
+        private ?string $email_verified_at,
+        private ?string $remember_token,
+        private ?string $last_login,
+        private int     $active,
+        private int     $verified,
+        private ?string $created_at,
+        private ?string $updated_at
     )
     {
     }
 
-	public function getId(): int {
-		return $this->id;
-	}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-	public function getUuid(): string {
-		return $this->uuid;
-	}
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
 
-	public function getRole(): array {
-		return $this->role;
-	}
+    public function getRole(): int
+    {
+        return $this->role;
+    }
 
-	public function getName(): string {
-		return $this->name;
-	}
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
-	public function getFirstSurname(): ?string {
-		return $this->first_surname;
-	}
+    public function getFirstSurname(): ?string
+    {
+        return $this->first_surname;
+    }
 
-	public function getSecondSurname(): ?string {
-		return $this->second_surname;
-	}
+    public function getSecondSurname(): ?string
+    {
+        return $this->second_surname;
+    }
 
-	public function getEmail(): string {
-		return $this->email;
-	}
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 
-	public function getAge(): ?int {
-		return $this->age;
-	}
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
 
-	public function getGender(): ?string {
-		return $this->gender;
-	}
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
 
-	public function getPassword(): string {
-		return $this->password;
-	}
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
 
-	public function getLang(): string {
-		return $this->lang;
-	}
+    public function getLang(): string
+    {
+        return $this->lang;
+    }
 
-	public function getApiKey(): string {
-		return $this->api_key;
-	}
+    public function getApiKey(): string
+    {
+        return $this->api_key;
+    }
 
-	public function getEmailVerifiedAt(): ?string {
-		return $this->email_verified_at;
-	}
+    public function getEmailVerifiedAt(): ?string
+    {
+        return $this->email_verified_at;
+    }
 
-	public function getRememberToken(): ?string {
-		return $this->remember_token;
-	}
+    public function getRememberToken(): ?string
+    {
+        return $this->remember_token;
+    }
 
-	public function getLastLogin(): ?string {
-		return $this->last_login;
-	}
+    public function getLastLogin(): ?string
+    {
+        return $this->last_login;
+    }
 
-	public function getActive(): int {
-		return $this->active;
-	}
+    public function getActive(): int
+    {
+        return $this->active;
+    }
 
-	public function getVerified(): int {
-		return $this->verified;
-	}
+    public function getVerified(): int
+    {
+        return $this->verified;
+    }
 
-	public function getCreatedAt(): ?string {
-		return $this->created_at;
-	}
+    public function getCreatedAt(): ?string
+    {
+        return $this->created_at;
+    }
 
-	public function getUpdatedAt(): ?string {
-		return $this->updated_at;
-	}
-
+    public function getUpdatedAt(): ?string
+    {
+        return $this->updated_at;
+    }
 
 
     public function toArray(): array
     {
         return [
-            "id" => $this->id,
-            "uuid" => $this->uuid,
-            "role" => $this->role,
-            "name" => $this->name,
-            "first_surname" => $this->first_surname,
-            "second_surname" => $this->second_surname,
-            "email" => $this->email,
-            "age" => $this->age,
-            "gender" => $this->gender,
-            "password" => $this->password,
-            "lang" => $this->lang,
-            "api_key" => $this->api_key,
+            "id"                => $this->id,
+            "uuid"              => $this->uuid,
+            "role"              => $this->role,
+            "name"              => $this->name,
+            "first_surname"     => $this->first_surname,
+            "second_surname"    => $this->second_surname,
+            "email"             => $this->email,
+            "age"               => $this->age,
+            "gender"            => $this->gender,
+            "password"          => $this->password,
+            "lang"              => $this->lang,
+            "api_key"           => $this->api_key,
             "email_verified_at" => $this->email_verified_at,
-            "remember_token" => $this->remember_token,
-            "last_login" => $this->last_login,
-            "active" => $this->active,
-            "verified" => $this->verified,
-            "created_at" => $this->created_at,
-            "updated_at" => $this->updated_at,
+            "remember_token"    => $this->remember_token,
+            "last_login"        => $this->last_login,
+            "active"            => $this->active,
+            "verified"          => $this->verified,
+            "created_at"        => $this->created_at,
+            "updated_at"        => $this->updated_at,
 
         ];
     }
@@ -166,30 +177,25 @@ final class UserResponse
     public static function responseToEntity(self $response): User
     {
         return new User(
-			new UserIdVO($response->getId()),
-			new UserUuidVO($response->getUuid()),
-			new Role(new RoleIdVO($response->getRole()->getId()),
-                     new RoleNameVO($response->getRole()->getName()),
-                     new RoleActiveVO(1),
-                     new RoleCreatedAtVO(''),
-                     new RoleUpdatedAtVO(''),
-            ),
-			new UserNameVO($response->getName()),
-			new UserFirstSurnameVO($response->getFirstSurname()),
-			new UserSecondSurnameVO($response->getSecondSurname()),
-			new UserEmailVO($response->getEmail()),
-			new UserAgeVO($response->getAge()),
-			new UserGenderVO($response->getGender()),
-			new UserPasswordVO($response->getPassword()),
-			new UserLangVO($response->getLang()),
-			new UserApiKeyVO($response->getApiKey()),
-			new UserEmailVerifiedAtVO($response->getEmailVerifiedAt()),
-			new UserRememberTokenVO($response->getRememberToken()),
-			new UserLastLoginVO($response->getLastLogin()),
-			new UserActiveVO($response->getActive()),
-			new UserVerifiedVO($response->getVerified()),
-			new UserCreatedAtVO($response->getCreatedAt()),
-			new UserUpdatedAtVO($response->getUpdatedAt()),
+            new UserIdVO($response->getId()),
+            new UserUuidVO($response->getUuid()),
+            new UserRoleIdVO($response->getRole()),
+            new UserNameVO($response->getName()),
+            new UserFirstSurnameVO($response->getFirstSurname()),
+            new UserSecondSurnameVO($response->getSecondSurname()),
+            new UserEmailVO($response->getEmail()),
+            new UserAgeVO($response->getAge()),
+            new UserGenderVO($response->getGender()),
+            new UserPasswordVO($response->getPassword()),
+            new UserLangVO($response->getLang()),
+            new UserApiKeyVO($response->getApiKey()),
+            new UserEmailVerifiedAtVO($response->getEmailVerifiedAt()),
+            new UserRememberTokenVO($response->getRememberToken()),
+            new UserLastLoginVO($response->getLastLogin()),
+            new UserActiveVO($response->getActive()),
+            new UserVerifiedVO($response->getVerified()),
+            new UserCreatedAtVO($response->getCreatedAt()),
+            new UserUpdatedAtVO($response->getUpdatedAt()),
 
         );
     }
@@ -197,26 +203,25 @@ final class UserResponse
     public static function SelfUserResponse($user): self
     {
         return new self(
-			$user->getId()->value(),
-			$user->getUuid()->value(),
-            $user->getRole()->getPrimitives(),
-			$user->getName()->value(),
-			$user->getFirstSurname()->value(),
-			$user->getSecondSurname()->value(),
-			$user->getEmail()->value(),
-			$user->getAge()->value(),
-			$user->getGender()->value(),
-			$user->getPassword()->value(),
-			$user->getLang()->value(),
-			$user->getApiKey()->value(),
-			$user->getEmailVerifiedAt()->value(),
-			$user->getRememberToken()->value(),
-			$user->getLastLogin()->value(),
-			$user->getActive()->value(),
-			$user->getVerified()->value(),
-			$user->getCreatedAt()->value(),
-			$user->getUpdatedAt()->value(),
-
+            $user->getId()->value(),
+            $user->getUuid()->value(),
+            $user->getRoleId()->value(),
+            $user->getName()->value(),
+            $user->getFirstSurname()->value(),
+            $user->getSecondSurname()->value(),
+            $user->getEmail()->value(),
+            $user->getAge()->value(),
+            $user->getGender()->value(),
+            $user->getPassword()->value(),
+            $user->getLang()->value(),
+            $user->getApiKey()->value(),
+            $user->getEmailVerifiedAt()->value(),
+            $user->getRememberToken()->value(),
+            $user->getLastLogin()->value(),
+            $user->getActive()->value(),
+            $user->getVerified()->value(),
+            $user->getCreatedAt()->value(),
+            $user->getUpdatedAt()->value(),
         );
     }
 

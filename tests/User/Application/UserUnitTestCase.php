@@ -4,6 +4,8 @@ namespace Tests\User\Application;
 
 use Src\User\Application\Request\ShowUserRequest;
 use Src\User\Application\Request\UpdateUserRequest;
+use Src\User\Application\Response\UserResponse;
+use Src\User\Application\Response\UserResponses;
 use Src\User\Application\UseCases\CreateUser;
 use Src\User\Application\UseCases\ShowUser;
 use Src\User\Application\UseCases\ShowAllUser;
@@ -14,54 +16,83 @@ use Src\User\Domain\User\Repositories\UserRepository;
 use Src\User\Application\Request\CreateUserRequest;
 use Src\User\Application\Request\DeleteUserRequest;
 
+use Src\User\Domain\User\User;
+use Src\User\Domain\User\ValueObjects\UserActiveVO;
+use Src\User\Domain\User\ValueObjects\UserAgeVO;
+use Src\User\Domain\User\ValueObjects\UserApiKeyVO;
+use Src\User\Domain\User\ValueObjects\UserCreatedAtVO;
+use Src\User\Domain\User\ValueObjects\UserEmailVerifiedAtVO;
+use Src\User\Domain\User\ValueObjects\UserEmailVO;
+use Src\User\Domain\User\ValueObjects\UserFirstSurnameVO;
+use Src\User\Domain\User\ValueObjects\UserGenderVO;
+use Src\User\Domain\User\ValueObjects\UserIdVO;
+use Src\User\Domain\User\ValueObjects\UserLangVO;
+use Src\User\Domain\User\ValueObjects\UserLastLoginVO;
+use Src\User\Domain\User\ValueObjects\UserNameVO;
+use Src\User\Domain\User\ValueObjects\UserPasswordVO;
+use Src\User\Domain\User\ValueObjects\UserRememberTokenVO;
+use Src\User\Domain\User\ValueObjects\UserRoleIdVO;
+use Src\User\Domain\User\ValueObjects\UserSecondSurnameVO;
+use Src\User\Domain\User\ValueObjects\UserUpdatedAtVO;
+use Src\User\Domain\User\ValueObjects\UserUuidVO;
+use Src\User\Domain\User\ValueObjects\UserVerifiedVO;
 use Tests\User\Domain\User\ValueObjects\UserIdVOMother;
 
 
 use Mockery;
 use Mockery\MockInterface;
-use Src\Shared\Domain\Bus\Event\EventBus;
 use Tests\User\Domain\User\UserMother;
 use Tests\TestCase;
 
 abstract class UserUnitTestCase extends TestCase
 {
     private MockInterface $mock;
-    private MockInterface $eventBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->mock   = $this->repository();
-        $this->eventBus = $this->eventBus();
+        $this->mock = $this->repository();
     }
 
     protected function shouldCreate(CreateUserRequest $request)
     {
         $user_id = UserIdVOMother::random();
-        $this->mock->shouldReceive('saveTemporaryTask')->andReturn($user_id);
-        $this->eventBus->shouldReceive('publish');
+        $this->mock->shouldReceive('save')->andReturn($user_id);
 
-        $creator = new CreateUser($this->mock, $this->eventBus);
+        $creator = new CreateUser($this->mock);
         $creator->__invoke($request);
     }
 
     protected function shouldFind(ShowUserRequest $request)
     {
         $user = UserMother::random();
+        $userResponse = UserResponse::SelfUserResponse($user);
 
         $this->mock->shouldReceive('show')->andReturn($user);
 
         $finder = new ShowUser($this->mock);
-        $finder->__invoke($request);
+        $result = $finder->__invoke($request);
+
+        $this->assertEquals($result, $userResponse);
     }
 
     protected function shouldFindAll()
     {
-        $this->mock->shouldReceive('showAll')->andReturns(array());
+        $user1 = UserMother::random();
+        $user2 = UserMother::random();
+
+        $userResponse1 = UserResponse::SelfUserResponse($user1);
+        $userResponse2 = UserResponse::SelfUserResponse($user2);
+
+        $userResponses = new UserResponses($userResponse1, $userResponse2);
+
+        $this->mock->shouldReceive('showAll')->andReturns([$user1, $user2]);
 
         $finder = new ShowAllUser($this->mock);
-        $finder->__invoke();
+        $result = $finder->__invoke();
+
+        $this->assertEquals($result, $userResponses);
     }
 
     protected function shouldUpdate(int $id, UpdateUserRequest $request)
@@ -70,9 +101,8 @@ abstract class UserUnitTestCase extends TestCase
         $this->mock->shouldReceive('show')->andReturn($user_mother);
 
         $this->mock->shouldReceive('update');
-        $this->eventBus->shouldReceive('publish');
 
-        $update = new UpdateUser($this->mock, $this->eventBus);
+        $update = new UpdateUser($this->mock);
         $update->__invoke($id, $request);
     }
 
@@ -87,13 +117,8 @@ abstract class UserUnitTestCase extends TestCase
         $delete->__invoke($id);
     }
 
-    private function repository(): MockInterface | UserRepository
+    private function repository(): MockInterface|UserRepository
     {
         return Mockery::mock(UserRepository::class);
-    }
-
-    private function eventBus(): MockInterface | EventBus
-    {
-        return Mockery::mock(EventBus::class);
     }
 }

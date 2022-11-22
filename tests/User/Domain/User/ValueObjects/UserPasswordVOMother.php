@@ -18,6 +18,6 @@ final class UserPasswordVOMother
     public static function random(): UserPasswordVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create($faker->password);
     }
 }

@@ -18,6 +18,6 @@ final class UserRememberTokenVOMother
     public static function random(): UserRememberTokenVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create('remembertoken');
     }
 }

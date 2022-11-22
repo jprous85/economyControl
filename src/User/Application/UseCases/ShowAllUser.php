@@ -7,6 +7,7 @@ namespace Src\User\Application\UseCases;
 use Src\User\Application\Response\UserResponse;
 use Src\User\Application\Response\UserResponses;
 use Src\User\Domain\User\Repositories\UserRepository;
+use Src\User\Domain\User\User;
 
 final class ShowAllUser
 {
@@ -21,6 +22,10 @@ final class ShowAllUser
     private function map($users): array
     {
         $user_array = [];
+
+        /**
+         * @var User $user
+         */
         foreach ($users as $user) {
             $user_array[] = UserResponse::SelfUserResponse($user);
         }

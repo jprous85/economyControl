@@ -18,6 +18,6 @@ final class UserCreatedAtVOMother
     public static function random(): UserCreatedAtVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create($faker->date);
     }
 }

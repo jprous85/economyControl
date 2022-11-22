@@ -4,9 +4,6 @@ declare(strict_types = 1);
 
 namespace Src\Role\Domain\Role;
 
-use Src\Role\Domain\Role\Event\RoleCreateDomainEvent;
-use Src\Role\Domain\Role\Event\RoleUpdateDomainEvent;
-use Src\Shared\Domain\Aggregate\AggregateRoot;
 
 use Src\Role\Domain\Role\ValueObjects\RoleIdVO;
 use Src\Role\Domain\Role\ValueObjects\RoleNameVO;

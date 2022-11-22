@@ -26,7 +26,6 @@ final class UserPostController extends ReturnsMiddleware
     private function mapper(Request $request): CreateUserRequest
     {
         return new CreateUserRequest(
-			$request->get('id'),
 			$request->get('uuid'),
 			$request->get('role_id'),
 			$request->get('name'),
@@ -37,14 +36,6 @@ final class UserPostController extends ReturnsMiddleware
 			$request->get('gender'),
 			$request->get('password'),
 			$request->get('lang'),
-			$request->get('api_key'),
-			$request->get('email_verified_at'),
-			$request->get('remember_token'),
-			$request->get('last_login'),
-			$request->get('active'),
-			$request->get('verified'),
-			$request->get('created_at'),
-			$request->get('updated_at'),
 
         );
     }

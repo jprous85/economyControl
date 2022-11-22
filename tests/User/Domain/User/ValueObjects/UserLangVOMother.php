@@ -18,6 +18,6 @@ final class UserLangVOMother
     public static function random(): UserLangVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create('es');
     }
 }

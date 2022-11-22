@@ -13,5 +13,6 @@ class DeleteUserUnitTest extends UserUnitTestCase
     public function should_delete_User(): void
     {
         $this->shouldDelete(DeleteUserRequestMother::random());
+        self::assertTrue(true);
     }
 }

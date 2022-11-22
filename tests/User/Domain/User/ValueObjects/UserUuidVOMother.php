@@ -18,6 +18,6 @@ final class UserUuidVOMother
     public static function random(): UserUuidVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create($faker->uuid);
     }
 }

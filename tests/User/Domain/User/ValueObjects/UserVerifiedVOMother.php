@@ -18,6 +18,6 @@ final class UserVerifiedVOMother
     public static function random(): UserVerifiedVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create((int) $faker->boolean);
     }
 }

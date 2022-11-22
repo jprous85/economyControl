@@ -17,7 +17,6 @@ final class UserRoleIdVOMother
 
     public static function random(): UserRoleIdVO
     {
-        $faker = Factory::create();
-        return self::create();
+        return self::create(1);
     }
 }

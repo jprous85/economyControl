@@ -2,8 +2,6 @@
 
 namespace Src\User\Infrastructure\Adapter;
 
-use Src\Role\Domain\Role\Role;
-use Src\Role\Infrastructure\Adapter\RoleAdapter;
 use Src\User\Domain\User\Repositories\UserAdapterRepository;
 use Src\User\Domain\User\User;
 use Src\User\Domain\User\ValueObjects\UserActiveVO;
@@ -30,88 +28,105 @@ use Src\User\Infrastructure\Persistence\ORM\UserORMModel;
 class UserAdapter implements UserAdapterRepository
 {
     public function __construct(
-		private UserORMModel $user
+        private UserORMModel $user
     )
     {
     }
 
-	private function getId(): int {
-		return $this->user['id'];
-	}
-
-	private function getUuid(): string {
-		return $this->user['uuid'];
-	}
-
-	private function getRole(): ?Role
+    private function getId(): int
     {
-        $role = $this->user->role()->get()[0];
-        return (new RoleAdapter($role))->roleModelAdapter();
-	}
+        return $this->user['id'];
+    }
 
-	private function getName(): string {
-		return $this->user['name'];
-	}
+    private function getUuid(): string
+    {
+        return $this->user['uuid'];
+    }
 
-	private function getFirstSurname(): ?string {
-		return $this->user['first_surname'];
-	}
+    private function getRole(): int
+    {
+        return $this->user['role_id'];
+    }
 
-	private function getSecondSurname(): ?string {
-		return $this->user['second_surname'];
-	}
+    private function getName(): string
+    {
+        return $this->user['name'];
+    }
 
-	private function getEmail(): string {
-		return $this->user['email'];
-	}
+    private function getFirstSurname(): ?string
+    {
+        return $this->user['first_surname'];
+    }
 
-	private function getAge(): ?int {
-		return $this->user['age'];
-	}
+    private function getSecondSurname(): ?string
+    {
+        return $this->user['second_surname'];
+    }
 
-	private function getGender(): ?string {
-		return $this->user['gender'];
-	}
+    private function getEmail(): string
+    {
+        return $this->user['email'];
+    }
 
-	private function getPassword(): string {
-		return $this->user['password'];
-	}
+    private function getAge(): ?int
+    {
+        return $this->user['age'];
+    }
 
-	private function getLang(): string {
-		return $this->user['lang'];
-	}
+    private function getGender(): ?string
+    {
+        return $this->user['gender'];
+    }
 
-	private function getApiKey(): string {
-		return $this->user['api_key'];
-	}
+    private function getPassword(): string
+    {
+        return $this->user['password'];
+    }
 
-	private function getEmailVerifiedAt(): ?string {
-		return $this->user['email_verified_at'];
-	}
+    private function getLang(): string
+    {
+        return $this->user['lang'];
+    }
 
-	private function getRememberToken(): ?string {
-		return $this->user['remember_token'];
-	}
+    private function getApiKey(): string
+    {
+        return $this->user['api_key'];
+    }
 
-	private function getLastLogin(): ?string {
-		return $this->user['last_login'];
-	}
+    private function getEmailVerifiedAt(): ?string
+    {
+        return $this->user['email_verified_at'];
+    }
 
-	private function getActive(): int {
-		return $this->user['active'];
-	}
+    private function getRememberToken(): ?string
+    {
+        return $this->user['remember_token'];
+    }
 
-	private function getVerified(): int {
-		return $this->user['verified'];
-	}
+    private function getLastLogin(): ?string
+    {
+        return $this->user['last_login'];
+    }
 
-	private function getCreatedAt(): ?string {
-		return $this->user['created_at'];
-	}
+    private function getActive(): int
+    {
+        return $this->user['active'];
+    }
 
-	private function getUpdatedAt(): ?string {
-		return $this->user['updated_at'];
-	}
+    private function getVerified(): int
+    {
+        return $this->user['verified'];
+    }
+
+    private function getCreatedAt(): ?string
+    {
+        return $this->user['created_at'];
+    }
+
+    private function getUpdatedAt(): ?string
+    {
+        return $this->user['updated_at'];
+    }
 
     public function userModelAdapter(): ?User
     {
@@ -122,7 +137,7 @@ class UserAdapter implements UserAdapterRepository
         return new User(
             new UserIdVO($this->getId()),
             new UserUuidVO($this->getUuid()),
-            $this->getRole(),
+            new UserRoleIdVO($this->getRole()),
             new UserNameVO($this->getName()),
             new UserFirstSurnameVO($this->getFirstSurname()),
             new UserSecondSurnameVO($this->getSecondSurname()),
