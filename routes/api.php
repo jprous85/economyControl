@@ -25,6 +25,8 @@ Route::middleware(['auth:api', 'role'])->group(function () {
 
     Route::middleware(['scope:admin'])->prefix('/roles')
         ->group(__DIR__.'/Role/Role.php');
-    // --insert_new_instance_route
+    	Route::prefix('/accounts')->middleware(['scope:'])->group(__DIR__.'/Account/Account.php');
+	Route::prefix('/economyes')->middleware(['scope:'])->group(__DIR__.'/Economy/Economy.php');
+// --insert_new_instance_route
 
 });

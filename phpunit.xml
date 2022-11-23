@@ -11,6 +11,12 @@
         <testsuite name="Role">
 			<directory>./tests/Role</directory>
 		</testsuite>
+		<testsuite name="Account">
+			<directory>./tests/Account</directory>
+		</testsuite>
+		<testsuite name="Economy">
+			<directory>./tests/Economy</directory>
+		</testsuite>
 		<!-- insert_new_test_instance -->
     </testsuites>
     <coverage processUncoveredFiles="true">
