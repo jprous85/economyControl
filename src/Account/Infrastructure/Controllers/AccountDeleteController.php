@@ -19,6 +19,6 @@ final class AccountDeleteController extends ReturnsMiddleware
     {
         $request = new DeleteAccountRequest($id);
         ($this->delete)($request);
-        return $this->successResponse('', $id);
+        return $this->successResponse('');
     }
 }

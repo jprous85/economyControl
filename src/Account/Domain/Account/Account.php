@@ -4,9 +4,7 @@ declare(strict_types = 1);
 
 namespace Src\Account\Domain\Account;
 
-use Src\Account\Domain\Account\Event\AccountCreateDomainEvent;
-use Src\Account\Domain\Account\Event\AccountUpdateDomainEvent;
-use Src\Shared\Domain\Aggregate\AggregateRoot;
+use Carbon\Carbon;
 
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
@@ -16,7 +14,7 @@ use Src\Account\Domain\Account\ValueObjects\AccountCreatedAtVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUpdatedAtVO;
 
 
-final class Account extends AggregateRoot
+final class Account
 {
     public function __construct(
 		private AccountIdVO $id,
@@ -30,60 +28,30 @@ final class Account extends AggregateRoot
     {}
 
     public static function create(
-		AccountIdVO $id,
 		AccountNameVO $name,
-		AccountUsersVO $users,
-		AccountActiveVO $active,
-		AccountCreatedAtVO $created_at,
-		AccountUpdatedAtVO $updated_at,
-
+		AccountUsersVO $users
     ): Account
     {
-        $account =  new self(
-				$id,
+        return new self(
+				new AccountIdVO(null),
 				$name,
 				$users,
-				$active,
-				$created_at,
-				$updated_at,
-
+				new AccountActiveVO(1),
+				new AccountCreatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s')),
+                new AccountUpdatedAtVO(null)
         );
-
-        $account->addEvent(
-            new AccountCreateDomainEvent(
-                null,
-                $account,
-                $account->getCreatedAt()->value()
-            )
-        );
-
-        return $account;
     }
 
     public function update(
-		AccountIdVO $id,
 		AccountNameVO $name,
 		AccountUsersVO $users,
-		AccountActiveVO $active,
-		AccountCreatedAtVO $created_at,
-		AccountUpdatedAtVO $updated_at,
-
+		AccountActiveVO $active
     ): void
     {
-		$this->id = $id;
 		$this->name = $name;
 		$this->users = $users;
 		$this->active = $active;
-		$this->created_at = $created_at;
-		$this->updated_at = $updated_at;
-
-        $this->addEvent(
-            new AccountUpdateDomainEvent(
-                $this->id->value(),
-                $this,
-                $this->updated_at->value()
-            )
-        );
+		$this->updated_at = new AccountUpdatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s'));
     }
 
     public function getPrimitives(): array

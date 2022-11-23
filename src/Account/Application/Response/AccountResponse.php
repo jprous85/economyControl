@@ -20,7 +20,7 @@ final class AccountResponse
     public function __construct(
 		private int $id,
 		private string $name,
-		private json $users,
+		private array $users,
 		private int $active,
 		private ?string $created_at,
 		private ?string $updated_at
@@ -36,7 +36,7 @@ final class AccountResponse
 		return $this->name;
 	}
 
-	public function getUsers(): json {
+	public function getUsers(): array {
 		return $this->users;
 	}
 

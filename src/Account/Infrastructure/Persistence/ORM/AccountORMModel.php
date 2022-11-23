@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Src\Account\Infrastructure\Persistence\ORM;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Src\Economy\Domain\Economy\Economy;
 
 /**
  * @method find($value)
@@ -12,9 +14,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 final class AccountORMModel extends Model
 {
-    // TODO:: check the correct table name !!
     protected $table = "accounts";
 
     protected $guarded = [];
+
+
+    public function economies(): HasMany
+    {
+        return $this->hasMany(Economy::class);
+    }
 
 }
