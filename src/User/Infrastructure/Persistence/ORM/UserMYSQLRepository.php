@@ -51,10 +51,6 @@ final class UserMYSQLRepository implements UserRepository
         }
 
         $eloquent_users = $this->model;
-
-        /**
-         * @var User $user
-         */
         foreach ($users as $user) {
             $eloquent_users = $eloquent_users->orWhere('id', $user);
         }
