@@ -13,5 +13,6 @@ class DeleteAccountUnitTest extends AccountUnitTestCase
     public function should_delete_Account(): void
     {
         $this->shouldDelete(DeleteAccountRequestMother::random());
+        self::assertTrue(true);
     }
 }

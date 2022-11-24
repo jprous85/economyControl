@@ -5,21 +5,13 @@ namespace Src\Economy\Application\Request;
 class CreateEconomyRequest
 {
     public function __construct(
-		private int $id,
 		private string $start_month,
 		private string $end_month,
 		private int $account_id,
-		private json $economic_management,
-		private int $active,
-		private ?string $created_at,
-		private ?string $updated_at
+		private string $economic_management,
     )
     {
     }
-
-	public function getId(): int {
-		return $this->id;
-	}
 
 	public function getStartMonth(): string {
 		return $this->start_month;
@@ -33,21 +25,8 @@ class CreateEconomyRequest
 		return $this->account_id;
 	}
 
-	public function getEconomicManagement(): json {
+	public function getEconomicManagement(): string {
 		return $this->economic_management;
 	}
-
-	public function getActive(): int {
-		return $this->active;
-	}
-
-	public function getCreatedAt(): ?string {
-		return $this->created_at;
-	}
-
-	public function getUpdatedAt(): ?string {
-		return $this->updated_at;
-	}
-
 
 }

@@ -18,6 +18,6 @@ final class EconomyStartMonthVOMother
     public static function random(): EconomyStartMonthVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create($faker->date);
     }
 }

@@ -24,7 +24,7 @@ final class EconomyResponse
 		private string $start_month,
 		private string $end_month,
 		private int $account_id,
-		private json $economic_management,
+		private string $economic_management,
 		private int $active,
 		private ?string $created_at,
 		private ?string $updated_at
@@ -48,7 +48,7 @@ final class EconomyResponse
 		return $this->account_id;
 	}
 
-	public function getEconomicManagement(): json {
+	public function getEconomicManagement(): string {
 		return $this->economic_management;
 	}
 
@@ -107,7 +107,6 @@ final class EconomyResponse
 			$economy->getActive()->value(),
 			$economy->getCreatedAt()->value(),
 			$economy->getUpdatedAt()->value(),
-
         );
     }
 

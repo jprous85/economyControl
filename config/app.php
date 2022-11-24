@@ -204,6 +204,7 @@ return [
         App\Providers\RoleServiceProvider::class,
 		App\Providers\AccountServiceProvider::class,
 		App\Providers\EconomyServiceProvider::class,
+		App\Providers\EconomyServiceProvider::class,
 		// --insert_new_instance_service_provider
     ],
 

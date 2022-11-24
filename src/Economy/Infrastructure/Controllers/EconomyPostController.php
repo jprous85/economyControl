@@ -8,6 +8,7 @@ use Src\Economy\Application\Request\CreateEconomyRequest;
 use Src\Economy\Application\UseCases\CreateEconomy;
 use Src\Shared\Infrastructure\Controllers\ReturnsMiddleware;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 final class EconomyPostController extends ReturnsMiddleware
 {
@@ -15,25 +16,20 @@ final class EconomyPostController extends ReturnsMiddleware
     {}
 
     //TODO:: get laravel request
-    public function create(EconomyRequest $request): JsonResponse
+    public function create(Request $request): JsonResponse
     {
         $request = $this->mapper($request);
         $economy_id = ($this->create)($request);
-        return $this->successResponse('', $economy_id);
+        return $this->successResponse('');
     }
 
-    private function mapper(EconomyRequest $request): CreateEconomyRequest
+    private function mapper(Request $request): CreateEconomyRequest
     {
         return new CreateEconomyRequest(
-			$request->get('id'),
 			$request->get('start_month'),
 			$request->get('end_month'),
 			$request->get('account_id'),
-			$request->get('economic_management'),
-			$request->get('active'),
-			$request->get('created_at'),
-			$request->get('updated_at'),
-
+			$request->get('economic_management')
         );
     }
 }

@@ -18,6 +18,6 @@ final class EconomyUpdatedAtVOMother
     public static function random(): EconomyUpdatedAtVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create($faker->date);
     }
 }

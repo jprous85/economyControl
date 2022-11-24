@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Src\Economy\Domain\Economy\ValueObjects;
 
-use Src\Shared\Domain\ValueObjects\IntegerVO;
 
-final class EconomyIdVO extends IntegerVO
+use Src\Shared\Domain\ValueObjects\IntegerOrNullVO;
+
+final class EconomyIdVO extends IntegerOrNullVO
 {
 
 }

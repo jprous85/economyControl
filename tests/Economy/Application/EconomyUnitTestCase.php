@@ -4,6 +4,8 @@ namespace Tests\Economy\Application;
 
 use Src\Economy\Application\Request\ShowEconomyRequest;
 use Src\Economy\Application\Request\UpdateEconomyRequest;
+use Src\Economy\Application\Response\EconomyResponse;
+use Src\Economy\Application\Response\EconomyResponses;
 use Src\Economy\Application\UseCases\CreateEconomy;
 use Src\Economy\Application\UseCases\ShowEconomy;
 use Src\Economy\Application\UseCases\ShowAllEconomy;
@@ -19,30 +21,26 @@ use Tests\Economy\Domain\Economy\ValueObjects\EconomyIdVOMother;
 
 use Mockery;
 use Mockery\MockInterface;
-use Src\Shared\Domain\Bus\Event\EventBus;
 use Tests\Economy\Domain\Economy\EconomyMother;
 use Tests\TestCase;
 
 abstract class EconomyUnitTestCase extends TestCase
 {
     private MockInterface $mock;
-    private MockInterface $eventBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->mock   = $this->repository();
-        $this->eventBus = $this->eventBus();
     }
 
     protected function shouldCreate(CreateEconomyRequest $request)
     {
         $economy_id = EconomyIdVOMother::random();
-        $this->mock->shouldReceive('saveTemporaryTask')->andReturn($economy_id);
-        $this->eventBus->shouldReceive('publish');
+        $this->mock->shouldReceive('save')->andReturn($economy_id);
 
-        $creator = new CreateEconomy($this->mock, $this->eventBus);
+        $creator = new CreateEconomy($this->mock);
         $creator->__invoke($request);
     }
 
@@ -50,18 +48,32 @@ abstract class EconomyUnitTestCase extends TestCase
     {
         $economy = EconomyMother::random();
 
+        $economyResponse = EconomyResponse::SelfEconomyResponse($economy);
+
         $this->mock->shouldReceive('show')->andReturn($economy);
 
         $finder = new ShowEconomy($this->mock);
-        $finder->__invoke($request);
+        $result = $finder->__invoke($request);
+
+        $this->assertEquals($result, $economyResponse);
     }
 
     protected function shouldFindAll()
     {
-        $this->mock->shouldReceive('showAll')->andReturns(array());
+        $economy1 = EconomyMother::random();
+        $economy2 = EconomyMother::random();
+
+        $economyResponse1 = EconomyResponse::SelfEconomyResponse($economy1);
+        $economyResponse2 = EconomyResponse::SelfEconomyResponse($economy2);
+
+        $economyResponse = new EconomyResponses($economyResponse1, $economyResponse2);
+
+        $this->mock->shouldReceive('showAll')->andReturns([$economy1, $economy2]);
 
         $finder = new ShowAllEconomy($this->mock);
-        $finder->__invoke();
+        $result = $finder->__invoke();
+
+        $this->assertEquals($result, $economyResponse);
     }
 
     protected function shouldUpdate(int $id, UpdateEconomyRequest $request)
@@ -70,9 +82,8 @@ abstract class EconomyUnitTestCase extends TestCase
         $this->mock->shouldReceive('show')->andReturn($economy_mother);
 
         $this->mock->shouldReceive('update');
-        $this->eventBus->shouldReceive('publish');
 
-        $update = new UpdateEconomy($this->mock, $this->eventBus);
+        $update = new UpdateEconomy($this->mock);
         $update->__invoke($id, $request);
     }
 
@@ -90,10 +101,5 @@ abstract class EconomyUnitTestCase extends TestCase
     private function repository(): MockInterface | EconomyRepository
     {
         return Mockery::mock(EconomyRepository::class);
-    }
-
-    private function eventBus(): MockInterface | EventBus
-    {
-        return Mockery::mock(EventBus::class);
     }
 }

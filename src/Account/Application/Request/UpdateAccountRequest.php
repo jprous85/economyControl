@@ -6,7 +6,7 @@ class UpdateAccountRequest
 {
     public function __construct(
 		private string $name,
-		private array $users,
+		private string $users,
 		private int $active
     )
     {
@@ -16,7 +16,7 @@ class UpdateAccountRequest
 		return $this->name;
 	}
 
-	public function getUsers(): array {
+	public function getUsers(): string {
 		return $this->users;
 	}
 

@@ -6,7 +6,7 @@ class CreateAccountRequest
 {
     public function __construct(
 		private string $name,
-		private array $users
+		private string $users
     )
     {
     }
@@ -15,7 +15,7 @@ class CreateAccountRequest
 		return $this->name;
 	}
 
-	public function getUsers(): array {
+	public function getUsers(): string {
 		return $this->users;
 	}
 

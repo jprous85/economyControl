@@ -19,30 +19,26 @@ use Tests\Account\Domain\Account\ValueObjects\AccountIdVOMother;
 
 use Mockery;
 use Mockery\MockInterface;
-use Src\Shared\Domain\Bus\Event\EventBus;
 use Tests\Account\Domain\Account\AccountMother;
 use Tests\TestCase;
 
 abstract class AccountUnitTestCase extends TestCase
 {
     private MockInterface $mock;
-    private MockInterface $eventBus;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->mock   = $this->repository();
-        $this->eventBus = $this->eventBus();
     }
 
     protected function shouldCreate(CreateAccountRequest $request)
     {
         $account_id = AccountIdVOMother::random();
-        $this->mock->shouldReceive('saveTemporaryTask')->andReturn($account_id);
-        $this->eventBus->shouldReceive('publish');
+        $this->mock->shouldReceive('save')->andReturn($account_id);
 
-        $creator = new CreateAccount($this->mock, $this->eventBus);
+        $creator = new CreateAccount($this->mock);
         $creator->__invoke($request);
     }
 
@@ -70,9 +66,8 @@ abstract class AccountUnitTestCase extends TestCase
         $this->mock->shouldReceive('show')->andReturn($account_mother);
 
         $this->mock->shouldReceive('update');
-        $this->eventBus->shouldReceive('publish');
 
-        $update = new UpdateAccount($this->mock, $this->eventBus);
+        $update = new UpdateAccount($this->mock);
         $update->__invoke($id, $request);
     }
 
@@ -92,8 +87,4 @@ abstract class AccountUnitTestCase extends TestCase
         return Mockery::mock(AccountRepository::class);
     }
 
-    private function eventBus(): MockInterface | EventBus
-    {
-        return Mockery::mock(EventBus::class);
-    }
 }

@@ -14,43 +14,29 @@ use Tests\Account\Domain\Account\ValueObjects\AccountUpdatedAtVOMother;
 final class UpdateAccountRequestMother
 {
     public static function create(
-		int $id,
 		string $name,
-		json $users,
-		int $active,
-		?string $created_at,
-		?string $updated_at,
+		string $users,
+		int $active
 
     ): UpdateAccountRequest
     {
         return new UpdateAccountRequest(
-				$id,
 				$name,
 				$users,
-				$active,
-				$created_at,
-				$updated_at,
-
+				$active
         );
     }
 
     public static function random(): UpdateAccountRequest
     {
-		$id = AccountIdVOMother::random()->value();
 		$name = AccountNameVOMother::random()->value();
 		$users = AccountUsersVOMother::random()->value();
 		$active = AccountActiveVOMother::random()->value();
-		$created_at = AccountCreatedAtVOMother::random()->value();
-		$updated_at = AccountUpdatedAtVOMother::random()->value();
 
         return self::create(
-				$id,
 				$name,
 				$users,
-				$active,
-				$created_at,
-				$updated_at,
-
+				$active
         );
     }
 

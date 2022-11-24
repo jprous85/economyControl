@@ -13,5 +13,6 @@ class DeleteEconomyUnitTest extends EconomyUnitTestCase
     public function should_delete_Economy(): void
     {
         $this->shouldDelete(DeleteEconomyRequestMother::random());
+        self::assertTrue(true);
     }
 }

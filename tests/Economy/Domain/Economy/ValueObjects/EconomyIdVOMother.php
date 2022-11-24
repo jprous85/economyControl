@@ -18,6 +18,6 @@ final class EconomyIdVOMother
     public static function random(): EconomyIdVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create($faker->randomDigitNotZero());
     }
 }

@@ -18,6 +18,6 @@ final class EconomyActiveVOMother
     public static function random(): EconomyActiveVO
     {
         $faker = Factory::create();
-        return self::create();
+        return self::create((int)$faker->boolean);
     }
 }
