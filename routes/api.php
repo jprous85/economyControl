@@ -24,9 +24,14 @@ Route::middleware(['auth:api', 'role'])->group(function () {
         ->group(__DIR__ . '/User/User.php');
 
     Route::middleware(['scope:admin'])->prefix('/roles')
-        ->group(__DIR__.'/Role/Role.php');
-    	Route::prefix('/accounts')->middleware(['scope:'])->group(__DIR__.'/Account/Account.php');
-	Route::prefix('/economies')->middleware(['scope:'])->group(__DIR__.'/Economy/Economy.php');
-// --insert_new_instance_route
+        ->group(__DIR__ . '/Role/Role.php');
+
+    Route::middleware(['scope:admin'])->prefix('/accounts')
+        ->group(__DIR__ . '/Account/Account.php');
+
+    Route::middleware(['scope:admin'])->prefix('/economies')
+        ->group(__DIR__ . '/Economy/Economy.php');
+
+    // --insert_new_instance_route
 
 });

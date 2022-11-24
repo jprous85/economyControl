@@ -16,4 +16,6 @@ interface UserRepository
     public function update(User $user): void;
 
     public function delete(UserIdVO $id): void;
+
+    public function getSelectedUsers(array $users): array;
 }
