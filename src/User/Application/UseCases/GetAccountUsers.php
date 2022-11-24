@@ -11,14 +11,14 @@ use Src\User\Application\Response\UserResponses;
 use Src\User\Domain\User\Repositories\UserRepository;
 use Src\User\Domain\User\User;
 
-final class GetSelectedUsers
+final class GetAccountUsers
 {
     public function __construct(private UserRepository $repository)
     {}
 
     public function __invoke(array $users): UserResponses
     {
-        return new UserResponses(...$this->map($this->repository->getSelectedUsers($users)));
+        return new UserResponses(...$this->map($this->repository->getAccountUsers($users)));
     }
 
     private function map($users): array

@@ -17,5 +17,5 @@ interface UserRepository
 
     public function delete(UserIdVO $id): void;
 
-    public function getSelectedUsers(array $users): array;
+    public function getAccountUsers(array $users): array;
 }

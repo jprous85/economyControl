@@ -7,7 +7,7 @@ use Src\User\Application\Request\UpdateUserRequest;
 use Src\User\Application\Response\UserResponse;
 use Src\User\Application\Response\UserResponses;
 use Src\User\Application\UseCases\CreateUser;
-use Src\User\Application\UseCases\GetSelectedUsers;
+use Src\User\Application\UseCases\GetAccountUsers;
 use Src\User\Application\UseCases\ShowUser;
 use Src\User\Application\UseCases\ShowAllUser;
 use Src\User\Application\UseCases\UpdateUser;
@@ -96,7 +96,7 @@ abstract class UserUnitTestCase extends TestCase
         $this->assertEquals($result, $userResponses);
     }
 
-    protected function shouldGetSelectedUsers(array $users)
+    protected function shouldGetAccountUsers(array $users)
     {
         $user1 = UserMother::random();
         $user2 = UserMother::random();
@@ -108,8 +108,8 @@ abstract class UserUnitTestCase extends TestCase
 
         $userResponses = new UserResponses($userResponse1, $userResponse2, $userResponse3);
 
-        $this->mock->shouldReceive('getSelectedUsers')->andReturn([$user1, $user2, $user3]);
-        $finder = new GetSelectedUsers($this->mock);
+        $this->mock->shouldReceive('getAccountUsers')->andReturn([$user1, $user2, $user3]);
+        $finder = new GetAccountUsers($this->mock);
         $result = $finder->__invoke($users);
 
         $this->assertEquals($result, $userResponses);

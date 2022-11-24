@@ -6,6 +6,7 @@ use Src\User\Infrastructure\Controllers\UserPostController;
 use Src\User\Infrastructure\Controllers\UserPutController;
 
 Route::get('/read', [UserGetController::class, 'read']);
+Route::post('/accountUsers', [UserGetController::class, 'accountUsers']);
 Route::get('/{id}/show', [UserGetController::class, 'show']);
 Route::post('/create', [UserPostController::class, 'create']);
 Route::put('/{id}/update', [UserPutController::class, 'update']);

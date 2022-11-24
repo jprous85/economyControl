@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Src\User\Infrastructure\Persistence\ORM;
 
+use http\Exception\InvalidArgumentException;
+use Src\User\Domain\User\Exceptions\InvalidArgumentUserException;
 use Src\User\Domain\User\Exceptions\UserNotFoundException;
 use Src\User\Domain\User\User;
 use Src\User\Domain\User\Repositories\UserRepository;
@@ -34,13 +36,35 @@ final class UserMYSQLRepository implements UserRepository
     public function showAll(): array
     {
         $eloquent_users = $this->model->all();
-        $users               = [];
 
+        $users               = [];
         foreach ($eloquent_users as $eloquent_user) {
             $users[] = (new UserAdapter($eloquent_user))->userModelAdapter();
         }
         return $users;
+    }
 
+    public function getAccountUsers(array $users): array
+    {
+        if (count($users) === 0) {
+            throw new InvalidArgumentUserException();
+        }
+
+        $eloquent_users = $this->model;
+
+        /**
+         * @var User $user
+         */
+        foreach ($users as $user) {
+            $eloquent_users = $eloquent_users->orWhere('id', $user);
+        }
+        $eloquent_users = $eloquent_users->get();
+
+        $users               = [];
+        foreach ($eloquent_users as $eloquent_user) {
+            $users[] = (new UserAdapter($eloquent_user))->userModelAdapter();
+        }
+        return $users;
     }
 
     public function save(User $user): UserIdVO
@@ -61,5 +85,4 @@ final class UserMYSQLRepository implements UserRepository
         $user = $this->model->find($id->value());
         $user->delete();
     }
-
 }
