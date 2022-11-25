@@ -6,6 +6,7 @@ namespace Src\Account\Domain\Account;
 
 use Carbon\Carbon;
 
+use JsonException;
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
@@ -99,6 +100,21 @@ final class Account
     public function getUpdatedAt(): ?AccountUpdatedAtVO
     {
         return $this->updated_at;
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function deleteUser(int $userId): void
+    {
+        $arrayUsers = json_decode($this->getUsers()->value(), false, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+
+        if (($key = array_search($userId, $arrayUsers)) !== false) {
+            unset($arrayUsers[$key]);
+        }
+        $this->users = new AccountUsersVO(json_encode(array_values($arrayUsers)));
+        $this->updated_at = new AccountUpdatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s'));
+
     }
 
 

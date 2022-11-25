@@ -16,4 +16,5 @@ interface AccountRepository
     public function update(Account $account): void;
 
     public function delete(AccountIdVO $id): void;
+
 }

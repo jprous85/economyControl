@@ -24,4 +24,8 @@ final class AccountORMModel extends Model
         return $this->hasMany(Economy::class);
     }
 
+    protected $casts = [
+        'users' => 'array'
+    ];
+
 }

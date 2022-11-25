@@ -31,7 +31,7 @@ final class CreateAccount
     {
         return Account::create(
 			new AccountNameVO($request->getName()),
-			new AccountUsersVO(json_encode($request->getUsers()))
+			new AccountUsersVO($request->getUsers())
         );
     }
 }

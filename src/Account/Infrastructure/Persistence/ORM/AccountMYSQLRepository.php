@@ -13,6 +13,7 @@ use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
 use Src\Account\Domain\Account\ValueObjects\AccountActiveVO;
 use Src\Account\Domain\Account\ValueObjects\AccountCreatedAtVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUpdatedAtVO;
+use Src\Account\Infrastructure\Adapter\AccountAdapter;
 
 
 final class AccountMYSQLRepository implements AccountRepository
@@ -24,8 +25,8 @@ final class AccountMYSQLRepository implements AccountRepository
 
     public function show(AccountIdVO $id): ?Account
     {
-        $query = $this->model->find($id->value());
-        return self::fillDataMapper($query);
+        $eloquent_accounts = $this->model->find($id->value());
+        return (new AccountAdapter($eloquent_accounts))->accountModelAdapter();
     }
 
     public function showAll(): array
@@ -34,7 +35,7 @@ final class AccountMYSQLRepository implements AccountRepository
         $accounts               = [];
 
         foreach ($eloquent_accounts as $eloquent_account) {
-            $accounts[] = self::fillDataMapper($eloquent_account);
+            $accounts[] = (new AccountAdapter($eloquent_account))->accountModelAdapter();
         }
         return $accounts;
 
