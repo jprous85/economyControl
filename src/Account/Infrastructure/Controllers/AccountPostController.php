@@ -19,7 +19,7 @@ final class AccountPostController extends ReturnsMiddleware
     {
         $request = $this->mapper($request);
         ($this->create)($request);
-        return $this->successResponse('');
+        return $this->createdResponse('Account created');
     }
 
     private function mapper(Request $request): CreateAccountRequest

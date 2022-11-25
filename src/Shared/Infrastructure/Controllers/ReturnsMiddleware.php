@@ -20,4 +20,9 @@ class ReturnsMiddleware
     {
         return response()->json($response, Response::HTTP_OK);
     }
+
+    public function createdResponse(string $response): JsonResponse
+    {
+        return response()->json($response, Response::HTTP_CREATED);
+    }
 }
