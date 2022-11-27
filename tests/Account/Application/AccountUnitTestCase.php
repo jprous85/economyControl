@@ -2,11 +2,12 @@
 
 namespace Tests\Account\Application;
 
-use Src\Account\Application\Request\DeleteUserAccountRequest;
+use Src\Account\Application\Request\ModifyUserAccountRequest;
 use Src\Account\Application\Request\ShowAccountRequest;
 use Src\Account\Application\Request\UpdateAccountRequest;
 use Src\Account\Application\UseCases\CreateAccount;
 use Src\Account\Application\UseCases\DeleteUserAccount;
+use Src\Account\Application\UseCases\InsertUserAccount;
 use Src\Account\Application\UseCases\ShowAccount;
 use Src\Account\Application\UseCases\ShowAllAccount;
 use Src\Account\Application\UseCases\UpdateAccount;
@@ -73,7 +74,19 @@ abstract class AccountUnitTestCase extends TestCase
         $update->__invoke($id, $request);
     }
 
-    protected function deleteUserFromAnAccount(DeleteUserAccountRequest $request)
+    protected function insertUserFromAnAccount(ModifyUserAccountRequest $request)
+    {
+
+        $account = AccountMother::random();
+
+        $this->mock->shouldReceive('show')->andReturn($account);
+        $this->mock->shouldReceive('update');
+
+        $deleteUserFromAnAccount = new InsertUserAccount($this->mock);
+        $deleteUserFromAnAccount->__invoke($request);
+    }
+
+    protected function deleteUserFromAnAccount(ModifyUserAccountRequest $request)
     {
 
         $account = AccountMother::random();

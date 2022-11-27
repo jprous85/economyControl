@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Src\Account\Application\Request;
 
 
-final class DeleteUserAccountRequest
+final class ModifyUserAccountRequest
 {
     public function __construct(
         private int $accountId,

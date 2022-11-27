@@ -12,6 +12,7 @@ use Src\Account\Domain\Account\ValueObjects\AccountActiveVO;
 use Src\Account\Domain\Account\ValueObjects\AccountCreatedAtVO;
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
+use Src\Account\Domain\Account\ValueObjects\AccountOwnersAccountVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUpdatedAtVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
 use Src\Account\Infrastructure\Persistence\ORM\AccountORMModel;
@@ -33,6 +34,10 @@ final class AccountAdapter implements AccountAdapterRepository
 
     private function getUsers(): string {
         return $this->account['users'];
+    }
+
+    private function getOwnersAccount(): string {
+        return $this->account['owners_account'];
     }
 
     private function getActive(): int {
@@ -57,6 +62,7 @@ final class AccountAdapter implements AccountAdapterRepository
             new AccountIdVO($this->getId()),
             new AccountNameVO($this->getName()),
             new AccountUsersVO($this->getUsers()),
+            new AccountOwnersAccountVO($this->getOwnersAccount()),
             new AccountActiveVO($this->getActive()),
             new AccountCreatedAtVO($this->getCreatedAt()),
             new AccountUpdatedAtVO($this->getUpdatedAt() ?? ''),

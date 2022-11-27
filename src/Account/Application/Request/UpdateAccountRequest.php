@@ -7,6 +7,7 @@ class UpdateAccountRequest
     public function __construct(
 		private string $name,
 		private string $users,
+		private string $ownersAccount,
 		private int $active
     )
     {
@@ -18,6 +19,10 @@ class UpdateAccountRequest
 
 	public function getUsers(): string {
 		return $this->users;
+	}
+
+    public function getOwnersAccount(): string {
+		return $this->ownersAccount;
 	}
 
 	public function getActive(): int {

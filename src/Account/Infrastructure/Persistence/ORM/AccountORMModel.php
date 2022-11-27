@@ -25,7 +25,8 @@ final class AccountORMModel extends Model
     }
 
     protected $casts = [
-        'users' => 'array'
+        'users' => 'array',
+        'owners_account' => 'array'
     ];
 
 }

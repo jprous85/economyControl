@@ -11,7 +11,7 @@ interface AccountRepository
 
     public function showAll(): array;
 
-    public function save(Account $account): AccountIdVO;
+    public function save(Account $account): void;
 
     public function update(Account $account): void;
 

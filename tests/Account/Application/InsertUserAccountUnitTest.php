@@ -8,15 +8,15 @@ namespace Tests\Account\Application;
 
 use Tests\Account\Application\Request\ModifyUserAccountRequestMother;
 
-class DeleteUserAccountUnitTest extends AccountUnitTestCase
+class InsertUserAccountUnitTest extends AccountUnitTestCase
 {
 
     /**
      * @test
      */
-    public function should_delete_user_from_an_Account(): void
+    public function should_insert_user_from_an_Account(): void
     {
-        $this->deleteUserFromAnAccount(ModifyUserAccountRequestMother::random());
+        $this->insertUserFromAnAccount(ModifyUserAccountRequestMother::random());
         self::assertTrue(true);
     }
 }

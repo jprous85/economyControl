@@ -9,6 +9,7 @@ use Src\Account\Domain\Account\Account;
 
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
+use Src\Account\Domain\Account\ValueObjects\AccountOwnersAccountVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
 use Src\Account\Domain\Account\ValueObjects\AccountActiveVO;
 use Src\Account\Domain\Account\ValueObjects\AccountCreatedAtVO;
@@ -21,6 +22,7 @@ final class AccountResponse
 		private int $id,
 		private string $name,
 		private string $users,
+		private string $ownersAccount,
 		private int $active,
 		private ?string $created_at,
 		private ?string $updated_at
@@ -38,6 +40,10 @@ final class AccountResponse
 
 	public function getUsers(): string {
 		return $this->users;
+	}
+
+    public function getOwnersAccount(): string {
+		return $this->ownersAccount;
 	}
 
 	public function getActive(): int {
@@ -60,6 +66,7 @@ final class AccountResponse
 			"id" => $this->id,
 			"name" => $this->name,
 			"users" => $this->users,
+			"ownersAccount" => $this->ownersAccount,
 			"active" => $this->active,
 			"created_at" => $this->created_at,
 			"updated_at" => $this->updated_at,
@@ -73,6 +80,7 @@ final class AccountResponse
 			new AccountIdVO($response->getId()),
 			new AccountNameVO($response->getName()),
 			new AccountUsersVO($response->getUsers()),
+            new AccountOwnersAccountVO($response->getOwnersAccount()),
 			new AccountActiveVO($response->getActive()),
 			new AccountCreatedAtVO($response->getCreatedAt()),
 			new AccountUpdatedAtVO($response->getUpdatedAt()),
@@ -86,10 +94,10 @@ final class AccountResponse
 			$account->getId()->value(),
 			$account->getName()->value(),
 			$account->getUsers()->value(),
+            $account->getOwnersAccount()->value(),
 			$account->getActive()->value(),
 			$account->getCreatedAt()->value(),
-			$account->getUpdatedAt()->value(),
-
+			$account->getUpdatedAt()->value()
         );
     }
 

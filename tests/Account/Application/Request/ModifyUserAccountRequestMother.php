@@ -6,18 +6,18 @@ declare(strict_types=1);
 namespace Tests\Account\Application\Request;
 
 
-use Src\Account\Application\Request\DeleteUserAccountRequest;
+use Src\Account\Application\Request\ModifyUserAccountRequest;
 use Tests\Account\Domain\Account\ValueObjects\AccountIdVOMother;
 use Tests\User\Domain\User\ValueObjects\UserIdVOMother;
 
-final class DeleteUserAccountRequestMother
+final class ModifyUserAccountRequestMother
 {
-    public static function create(int $id, int $userId): DeleteUserAccountRequest
+    public static function create(int $id, int $userId): ModifyUserAccountRequest
     {
-        return new DeleteUserAccountRequest($id, $userId);
+        return new ModifyUserAccountRequest($id, $userId);
     }
 
-    public static function random(): DeleteUserAccountRequest
+    public static function random(): ModifyUserAccountRequest
     {
         $id = AccountIdVOMother::random()->value();
         $userId = UserIdVOMother::random()->value();

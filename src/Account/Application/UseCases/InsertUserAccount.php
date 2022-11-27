@@ -12,7 +12,7 @@ use Src\Account\Domain\Account\AccountNotExist;
 use Src\Account\Domain\Account\Repositories\AccountRepository;
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
 
-final class DeleteUserAccount
+final class InsertUserAccount
 {
     public function __construct(private AccountRepository $repository)
     {
@@ -32,7 +32,7 @@ final class DeleteUserAccount
             throw new AccountNotExist($id->value());
         }
 
-        $account->deleteUser($request->userId());
+        $account->insertUser($request->userId());
         $this->repository->update($account);
     }
 }

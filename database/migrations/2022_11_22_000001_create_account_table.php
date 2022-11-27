@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->json('users');
+            $table->json('owners_account');
             $table->boolean('active')->default(1);
             $table->timestamps();
         });

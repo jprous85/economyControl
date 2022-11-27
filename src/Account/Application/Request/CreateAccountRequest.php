@@ -6,7 +6,8 @@ class CreateAccountRequest
 {
     public function __construct(
 		private string $name,
-		private string $users
+		private string $users,
+		private string $ownersAccount
     )
     {
     }
@@ -18,5 +19,10 @@ class CreateAccountRequest
 	public function getUsers(): string {
 		return $this->users;
 	}
+
+    public function getOwnersAccount(): string
+    {
+        return $this->ownersAccount;
+    }
 
 }

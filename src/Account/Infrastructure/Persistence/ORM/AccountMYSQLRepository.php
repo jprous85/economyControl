@@ -8,11 +8,6 @@ use Src\Account\Domain\Account\Account;
 use Src\Account\Domain\Account\Repositories\AccountRepository;
 
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
-use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
-use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
-use Src\Account\Domain\Account\ValueObjects\AccountActiveVO;
-use Src\Account\Domain\Account\ValueObjects\AccountCreatedAtVO;
-use Src\Account\Domain\Account\ValueObjects\AccountUpdatedAtVO;
 use Src\Account\Infrastructure\Adapter\AccountAdapter;
 
 
@@ -41,35 +36,20 @@ final class AccountMYSQLRepository implements AccountRepository
 
     }
 
-    public function save(Account $account): AccountIdVO
+    public function save(Account $account): void
     {
-        $response    = $this->model->create($account->getPrimitives());
-        return new AccountIdVO($response->id);
+        $this->model->create($account->getPrimitives());
     }
 
     public function update(Account $account): void
     {
         $update_account = $this->model->find($account->getId()->value());
         $update_account->update($account->getPrimitives());
-
     }
 
     public function delete(AccountIdVO $id): void
     {
         $account = $this->model->find($id->value());
         $account->delete();
-    }
-
-    private static function fillDataMapper($account): ?Account
-    {
-        return $account ? new Account(
-			new AccountIdVO($account->id),
-			new AccountNameVO($account->name),
-			new AccountUsersVO($account->users),
-			new AccountActiveVO($account->active),
-			new AccountCreatedAtVO($account->created_at),
-			new AccountUpdatedAtVO($account->updated_at),
-
-        ) : null;
     }
 }

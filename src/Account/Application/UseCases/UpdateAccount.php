@@ -11,6 +11,7 @@ use Src\Account\Domain\Account\Repositories\AccountRepository;
 use Src\Account\Domain\Account\Account;
 
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
+use Src\Account\Domain\Account\ValueObjects\AccountOwnersAccountVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
 use Src\Account\Domain\Account\ValueObjects\AccountActiveVO;
 
@@ -37,11 +38,13 @@ final class UpdateAccount
     {
         $name   = $request->getName() ? new AccountNameVO($request->getName()) : $account->getName();
         $users  = $request->getUsers() ? new AccountUsersVO(json_encode($request->getUsers())) : $account->getUsers();
+        $ownersAccount  = $request->getOwnersAccount() ? new AccountOwnersAccountVO(json_encode($request->getOwnersAccount())) : $account->getOwnersAccount();
         $active = $request->getActive() ? new AccountActiveVO($request->getActive()) : $account->getActive();
 
         $account->update(
             $name,
             $users,
+            $ownersAccount,
             $active
         );
 
