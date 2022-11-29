@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Src\Account\Infrastructure\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Src\Account\Application\Request\CreateAccountRequest;
 use Src\Account\Application\UseCases\CreateAccount;
 use Src\Shared\Infrastructure\Controllers\ReturnsMiddleware;
@@ -26,8 +27,8 @@ final class AccountPostController extends ReturnsMiddleware
     {
         return new CreateAccountRequest(
 			$request->get('name'),
-			$request->get('users'),
-			$request->get('owners_account')
+            "[" . Auth::id() . "]",
+			"[" . Auth::id() . "]"
         );
     }
 }

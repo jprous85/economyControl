@@ -2,11 +2,15 @@
 
 namespace Tests\Account\Application;
 
+use JsonException;
+use Src\Account\Application\Request\ModifyOwnerAccountRequest;
 use Src\Account\Application\Request\ModifyUserAccountRequest;
 use Src\Account\Application\Request\ShowAccountRequest;
 use Src\Account\Application\Request\UpdateAccountRequest;
 use Src\Account\Application\UseCases\CreateAccount;
+use Src\Account\Application\UseCases\DeleteOwnerAccount;
 use Src\Account\Application\UseCases\DeleteUserAccount;
+use Src\Account\Application\UseCases\InsertOwnerAccount;
 use Src\Account\Application\UseCases\InsertUserAccount;
 use Src\Account\Application\UseCases\ShowAccount;
 use Src\Account\Application\UseCases\ShowAllAccount;
@@ -74,6 +78,9 @@ abstract class AccountUnitTestCase extends TestCase
         $update->__invoke($id, $request);
     }
 
+    /**
+     * @throws JsonException
+     */
     protected function insertUserFromAnAccount(ModifyUserAccountRequest $request)
     {
 
@@ -86,15 +93,45 @@ abstract class AccountUnitTestCase extends TestCase
         $deleteUserFromAnAccount->__invoke($request);
     }
 
+    /**
+     * @throws JsonException
+     */
     protected function deleteUserFromAnAccount(ModifyUserAccountRequest $request)
     {
-
         $account = AccountMother::random();
 
         $this->mock->shouldReceive('show')->andReturn($account);
         $this->mock->shouldReceive('update');
 
         $deleteUserFromAnAccount = new DeleteUserAccount($this->mock);
+        $deleteUserFromAnAccount->__invoke($request);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    protected function insertOwnerAccount(ModifyOwnerAccountRequest $request)
+    {
+        $account = AccountMother::random();
+
+        $this->mock->shouldReceive('show')->andReturn($account);
+        $this->mock->shouldReceive('update');
+
+        $deleteUserFromAnAccount = new InsertOwnerAccount($this->mock);
+        $deleteUserFromAnAccount->__invoke($request);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    protected function deleteOwnerAccount(ModifyOwnerAccountRequest $request)
+    {
+        $account = AccountMother::random();
+
+        $this->mock->shouldReceive('show')->andReturn($account);
+        $this->mock->shouldReceive('update');
+
+        $deleteUserFromAnAccount = new DeleteOwnerAccount($this->mock);
         $deleteUserFromAnAccount->__invoke($request);
     }
 

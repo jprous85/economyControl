@@ -145,8 +145,40 @@ final class Account
         }
     }
 
+    /**
+     * @throws JsonException
+     */
+    public function insertOwner(int $userId)
+    {
+        $arrayOwners = json_decode($this->getOwnersAccount()->value(), false, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+
+        if (!in_array($userId, $arrayOwners)) {
+            $arrayOwners[] = $userId;
+            sort($arrayOwners);
+            $this->accountOwnersAccount = new AccountOwnersAccountVO(json_encode(array_values($arrayOwners)));
+            $this->updatedAt();
+        }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function deleteOwner(int $userId): void
+    {
+        $arrayOwners = json_decode($this->getOwnersAccount()->value(), false, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+
+        if (count($arrayOwners) > 1) {
+            if (($key = array_search($userId, $arrayOwners)) !== false) {
+                unset($arrayOwners[$key]);
+            }
+            $this->accountOwnersAccount = new AccountOwnersAccountVO(json_encode(array_values($arrayOwners)));
+            $this->updatedAt();
+        }
+    }
+
     private function updatedAt()
     {
         $this->updated_at = new AccountUpdatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s'));
     }
+
 }
