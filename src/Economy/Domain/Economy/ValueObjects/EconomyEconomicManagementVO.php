@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Src\Economy\Domain\Economy\ValueObjects;
 
-use Src\Shared\Domain\ValueObjects\JsonVO;
+use Src\Shared\Domain\ValueObjects\TextVO;
 
-final class EconomyEconomicManagementVO extends JsonVO
+final class EconomyEconomicManagementVO extends TextVO
 {
 
 }

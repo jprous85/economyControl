@@ -13,6 +13,7 @@ use Src\Economy\Domain\Economy\ValueObjects\EconomyEconomicManagementVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyActiveVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyCreatedAtVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyUpdatedAtVO;
+use Src\Shared\Domain\CriptAndDecript\CryptoAndDecrypt;
 
 
 final class Economy
@@ -25,8 +26,7 @@ final class Economy
         private EconomyEconomicManagementVO $economic_management,
         private EconomyActiveVO             $active,
         private ?EconomyCreatedAtVO         $created_at,
-        private ?EconomyUpdatedAtVO         $updated_at,
-
+        private ?EconomyUpdatedAtVO         $updated_at
     )
     {
     }
@@ -57,8 +57,7 @@ final class Economy
         EconomyEndMonthVO           $end_month,
         EconomyAccountIdVO          $account_id,
         EconomyEconomicManagementVO $economic_management,
-        EconomyActiveVO             $active,
-
+        EconomyActiveVO             $active
     ): void
     {
         $this->start_month         = $start_month;
@@ -125,6 +124,22 @@ final class Economy
     public function getUpdatedAt(): ?EconomyUpdatedAtVO
     {
         return $this->updated_at;
+    }
+
+
+    public static function economyManagementStructure(): string
+    {
+        $structure = [
+            "incomes"  => [],
+            "expenses" => [],
+            "totals"   => [
+                "totalIncomes" => 0,
+                "totalPaid"    => 0,
+                "pendingToPay" => 0
+            ]
+        ];
+
+        return json_encode($structure);
     }
 
 }

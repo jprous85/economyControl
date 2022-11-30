@@ -12,6 +12,7 @@ use Src\Economy\Domain\Economy\ValueObjects\EconomyStartMonthVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEndMonthVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountIdVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEconomicManagementVO;
+use Src\Shared\Infrastructure\CryptoAndDecrypt\CryptoAndDecrypt;
 
 
 final class CreateEconomy
@@ -34,7 +35,7 @@ final class CreateEconomy
 			new EconomyStartMonthVO($request->getStartMonth()),
 			new EconomyEndMonthVO($request->getEndMonth()),
 			new EconomyAccountIdVO($request->getAccountId()),
-			new EconomyEconomicManagementVO($request->getEconomicManagement())
+			new EconomyEconomicManagementVO(CryptoAndDecrypt::encrypt(Economy::economyManagementStructure()))
         );
     }
 }

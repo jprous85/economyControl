@@ -8,13 +8,7 @@ use Src\Economy\Domain\Economy\Economy;
 use Src\Economy\Domain\Economy\Repositories\EconomyRepository;
 
 use Src\Economy\Domain\Economy\ValueObjects\EconomyIdVO;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyStartMonthVO;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyEndMonthVO;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountIdVO;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyEconomicManagementVO;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyActiveVO;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyCreatedAtVO;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyUpdatedAtVO;
+use Src\Economy\Infrastructure\Adapter\EconomyAdapter;
 
 
 final class EconomyMYSQLRepository implements EconomyRepository
@@ -26,25 +20,24 @@ final class EconomyMYSQLRepository implements EconomyRepository
 
     public function show(EconomyIdVO $id): ?Economy
     {
-        $query = $this->model->find($id->value());
-        return self::fillDataMapper($query);
+        $eloquent_economy = $this->model->find($id->value());
+        return (new EconomyAdapter($eloquent_economy))->economyModelAdapter();
     }
 
     public function showAll(): array
     {
-        $eloquent_economyes = $this->model->all();
-        $economyes               = [];
+        $eloquent_economies = $this->model->all();
+        $economies          = [];
 
-        foreach ($eloquent_economyes as $eloquent_economy) {
-            $economyes[] = self::fillDataMapper($eloquent_economy);
+        foreach ($eloquent_economies as $eloquent_economy) {
+            $economies[] = (new EconomyAdapter($eloquent_economy))->economyModelAdapter();
         }
-        return $economyes;
-
+        return $economies;
     }
 
     public function save(Economy $economy): EconomyIdVO
     {
-        $response    = $this->model->create($economy->getPrimitives());
+        $response = $this->model->create($economy->getPrimitives());
         return new EconomyIdVO($response->id);
     }
 
@@ -59,20 +52,5 @@ final class EconomyMYSQLRepository implements EconomyRepository
     {
         $economy = $this->model->find($id->value());
         $economy->delete();
-    }
-
-    private static function fillDataMapper($economy): ?Economy
-    {
-        return $economy ? new Economy(
-			new EconomyIdVO($economy->id),
-			new EconomyStartMonthVO($economy->start_month),
-			new EconomyEndMonthVO($economy->end_month),
-			new EconomyAccountIdVO($economy->account_id),
-			new EconomyEconomicManagementVO($economy->economic_management),
-			new EconomyActiveVO($economy->active),
-			new EconomyCreatedAtVO($economy->created_at),
-			new EconomyUpdatedAtVO($economy->updated_at),
-
-        ) : null;
     }
 }

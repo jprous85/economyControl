@@ -29,9 +29,9 @@ final class EconomyPutController extends ReturnsMiddleware
         return new UpdateEconomyRequest(
 			$request->get('start_month'),
 			$request->get('end_month'),
-			$request->get('account_id'),
+			intval($request->get('account_id')),
 			$request->get('economic_management'),
-			$request->get('active')
+			intval($request->get('active'))
         );
     }
 }

@@ -15,11 +15,10 @@ final class EconomyPostController extends ReturnsMiddleware
     public function __construct(private CreateEconomy $create)
     {}
 
-    //TODO:: get laravel request
     public function create(Request $request): JsonResponse
     {
         $request = $this->mapper($request);
-        $economy_id = ($this->create)($request);
+        ($this->create)($request);
         return $this->successResponse('');
     }
 
@@ -28,8 +27,8 @@ final class EconomyPostController extends ReturnsMiddleware
         return new CreateEconomyRequest(
 			$request->get('start_month'),
 			$request->get('end_month'),
-			$request->get('account_id'),
-			$request->get('economic_management')
+			intval($request->get('account_id')),
         );
+
     }
 }

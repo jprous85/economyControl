@@ -15,6 +15,7 @@ use Src\Economy\Domain\Economy\ValueObjects\EconomyEconomicManagementVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyActiveVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyCreatedAtVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyUpdatedAtVO;
+use Src\Shared\Infrastructure\CryptoAndDecrypt\CryptoAndDecrypt;
 
 
 final class EconomyResponse
@@ -73,7 +74,7 @@ final class EconomyResponse
 			"start_month" => $this->start_month,
 			"end_month" => $this->end_month,
 			"account_id" => $this->account_id,
-			"economic_management" => $this->economic_management,
+			"economic_management" => CryptoAndDecrypt::decrypt($this->economic_management),
 			"active" => $this->active,
 			"created_at" => $this->created_at,
 			"updated_at" => $this->updated_at,

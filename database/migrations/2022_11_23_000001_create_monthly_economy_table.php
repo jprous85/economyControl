@@ -18,7 +18,7 @@ return new class extends Migration
             $table->dateTime('start_month');
             $table->dateTime('end_month');
             $table->unsignedBigInteger('account_id');
-            $table->json('economic_management');
+            $table->text('economic_management');
             $table->boolean('active')->default(1);
             $table->timestamps();
 

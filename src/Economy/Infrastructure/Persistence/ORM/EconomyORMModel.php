@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 final class EconomyORMModel extends Model
 {
     // TODO:: check the correct table name !!
-    protected $table = "economyes";
+    protected $table = "economies";
 
     protected $guarded = [];
 
