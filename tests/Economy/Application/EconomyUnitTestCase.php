@@ -2,6 +2,7 @@
 
 namespace Tests\Economy\Application;
 
+use Src\Economy\Application\Request\AddEconomyIncomeRequest;
 use Src\Economy\Application\Request\ShowEconomyRequest;
 use Src\Economy\Application\Request\UpdateEconomyRequest;
 use Src\Economy\Application\Response\EconomyResponse;
@@ -85,6 +86,14 @@ abstract class EconomyUnitTestCase extends TestCase
 
         $update = new UpdateEconomy($this->mock);
         $update->__invoke($id, $request);
+    }
+
+    protected function shouldAddIncome(AddEconomyIncomeRequest $request)
+    {
+        $economy_mother = EconomyMother::random();
+        $this->mock->shouldReceive('show')->andReturn($economy_mother);
+        $this->mock->shouldReceive('update');
+        $this->assertTrue(true);
     }
 
     protected function shouldDelete(DeleteEconomyRequest $id)

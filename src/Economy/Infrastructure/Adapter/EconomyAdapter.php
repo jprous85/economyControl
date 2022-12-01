@@ -21,7 +21,7 @@ use Src\Economy\Infrastructure\Persistence\ORM\EconomyORMModel;
 final class EconomyAdapter implements EconomyAdapterRepository
 {
 
-    public function __construct(private EconomyORMModel $economy)
+    public function __construct(private ?EconomyORMModel $economy)
     {
     }
 
@@ -39,7 +39,7 @@ final class EconomyAdapter implements EconomyAdapterRepository
             new EconomyEconomicManagementVO($this->getEconomicManagement()),
             new EconomyActiveVO($this->getActive()),
             new EconomyCreatedAtVO($this->getCreatedAt()),
-            new EconomyUpdatedAtVO($this->getUpdatedAt() ?? ''),
+            new EconomyUpdatedAtVO($this->getUpdatedAt()),
         );
     }
 
@@ -72,6 +72,6 @@ final class EconomyAdapter implements EconomyAdapterRepository
     }
 
     private function getUpdatedAt(): ?string {
-        return $this->economy['updated_at'];
+        return $this->economy['updated_at']?->format('Y-m-d');
     }
 }

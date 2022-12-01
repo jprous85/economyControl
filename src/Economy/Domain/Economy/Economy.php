@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Economy\Domain\Economy;
 
 use Carbon\Carbon;
+use JsonException;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyIdVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyStartMonthVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEndMonthVO;
@@ -13,7 +14,6 @@ use Src\Economy\Domain\Economy\ValueObjects\EconomyEconomicManagementVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyActiveVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyCreatedAtVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyUpdatedAtVO;
-use Src\Shared\Domain\CriptAndDecript\CryptoAndDecrypt;
 
 
 final class Economy
@@ -65,7 +65,8 @@ final class Economy
         $this->account_id          = $account_id;
         $this->economic_management = $economic_management;
         $this->active              = $active;
-        $this->updated_at          = new EconomyUpdatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s'));
+
+        $this->updatedAt();
     }
 
     public function getPrimitives(): array
@@ -78,8 +79,7 @@ final class Economy
             'economic_management' => $this->getEconomicManagement()->value(),
             'active'              => $this->getActive()->value(),
             'created_at'          => $this->getCreatedAt()->value(),
-            'updated_at'          => $this->getUpdatedAt()->value(),
-
+            'updated_at'          => $this->getUpdatedAt()->value()
         ];
     }
 
@@ -140,6 +140,27 @@ final class Economy
         ];
 
         return json_encode($structure);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function addIncome($income)
+    {
+        $economicManagement = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+        $economicManagement['incomes'][] = $income;
+        $this->economic_management = new EconomyEconomicManagementVO(json_encode($economicManagement));
+        $this->updatedAt();
+    }
+
+    public function encryptedEconomyManagement($encrypted)
+    {
+        $this->economic_management = new EconomyEconomicManagementVO($encrypted);
+    }
+
+    private function updatedAt(): void
+    {
+        $this->updated_at = new EconomyUpdatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s'));
     }
 
 }

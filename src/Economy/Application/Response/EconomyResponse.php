@@ -25,7 +25,7 @@ final class EconomyResponse
 		private string $start_month,
 		private string $end_month,
 		private int $account_id,
-		private string $economic_management,
+		private array $economic_management,
 		private int $active,
 		private ?string $created_at,
 		private ?string $updated_at
@@ -49,7 +49,7 @@ final class EconomyResponse
 		return $this->account_id;
 	}
 
-	public function getEconomicManagement(): string {
+	public function getEconomicManagement(): array {
 		return $this->economic_management;
 	}
 
@@ -74,7 +74,7 @@ final class EconomyResponse
 			"start_month" => $this->start_month,
 			"end_month" => $this->end_month,
 			"account_id" => $this->account_id,
-			"economic_management" => CryptoAndDecrypt::decrypt($this->economic_management),
+			"economic_management" => $this->economic_management,
 			"active" => $this->active,
 			"created_at" => $this->created_at,
 			"updated_at" => $this->updated_at,
@@ -89,7 +89,7 @@ final class EconomyResponse
 			new EconomyStartMonthVO($response->getStartMonth()),
 			new EconomyEndMonthVO($response->getEndMonth()),
 			new EconomyAccountIdVO($response->getAccountId()),
-			new EconomyEconomicManagementVO($response->getEconomicManagement()),
+			new EconomyEconomicManagementVO(json_encode($response->getEconomicManagement())),
 			new EconomyActiveVO($response->getActive()),
 			new EconomyCreatedAtVO($response->getCreatedAt()),
 			new EconomyUpdatedAtVO($response->getUpdatedAt()),
@@ -104,7 +104,7 @@ final class EconomyResponse
 			$economy->getStartMonth()->value(),
 			$economy->getEndMonth()->value(),
 			$economy->getAccountId()->value(),
-			$economy->getEconomicManagement()->value(),
+            json_decode(CryptoAndDecrypt::decrypt($economy->getEconomicManagement()->value()), true),
 			$economy->getActive()->value(),
 			$economy->getCreatedAt()->value(),
 			$economy->getUpdatedAt()->value(),
