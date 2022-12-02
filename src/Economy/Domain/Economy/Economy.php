@@ -145,10 +145,41 @@ final class Economy
     /**
      * @throws JsonException
      */
-    public function addIncome($income)
+    public function addIncome(array $income)
     {
         $economicManagement = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
         $economicManagement['incomes'][] = $income;
+        $this->calculateTotals($economicManagement);
+        $this->economic_management = new EconomyEconomicManagementVO(json_encode($economicManagement));
+        $this->updatedAt();
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function addSpent(array $spent)
+    {
+        $economicManagement = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+        $economicManagement['expenses'][] = $spent;
+        $this->calculateTotals($economicManagement);
+        $this->economic_management = new EconomyEconomicManagementVO(json_encode($economicManagement));
+        $this->updatedAt();
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function deleteEconomyManagementRegister(string $belong, array $register)
+    {
+        $economicManagement = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+
+        foreach ($economicManagement[$belong] as $key => $item) {
+            if ($item['uuid'] === $register['uuid']) {
+                unset($economicManagement[$belong][$key]);
+            }
+        }
+
+        $this->calculateTotals($economicManagement);
         $this->economic_management = new EconomyEconomicManagementVO(json_encode($economicManagement));
         $this->updatedAt();
     }
@@ -161,6 +192,44 @@ final class Economy
     private function updatedAt(): void
     {
         $this->updated_at = new EconomyUpdatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s'));
+    }
+
+    private function calculateTotals(&$economicManagement): void
+    {
+        $economicManagement['totals']['totalIncomes'] = $this->calculateIncomes($economicManagement['incomes']);
+        $economicManagement['totals']['totalPaid'] = $this->calculateExpenses($economicManagement['expenses']);
+        $economicManagement['totals']['pendingToPay'] = $this->calculatePendingToPay($economicManagement['expenses']);
+    }
+
+    private function calculateIncomes($incomes): float
+    {
+        $total = 0;
+        foreach ($incomes as $income) {
+            $total += $income['amount'];
+        }
+        return $total;
+    }
+
+    private function calculateExpenses($expenses): float
+    {
+        $total = 0;
+        foreach ($expenses as $spent) {
+            if ($spent['paid']) {
+                $total += $spent['amount'];
+            }
+        }
+        return $total;
+    }
+
+    private function calculatePendingToPay($expenses): float
+    {
+        $total = 0;
+        foreach ($expenses as $spent) {
+            if (!$spent['paid']) {
+                $total += $spent['amount'];
+            }
+        }
+        return $total;
     }
 
 }
