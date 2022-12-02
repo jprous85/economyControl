@@ -184,6 +184,24 @@ final class Economy
         $this->updatedAt();
     }
 
+    /**
+     * @throws JsonException
+     */
+    public function changePaidStatus(array $register)
+    {
+        $economicManagement = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+
+        foreach ($economicManagement['expenses'] as $key => $item) {
+            if ($item['uuid'] === $register['uuid']) {
+                $economicManagement['expenses'][$key]['paid'] = $register['status'];
+            }
+        }
+
+        $this->calculateTotals($economicManagement);
+        $this->economic_management = new EconomyEconomicManagementVO(json_encode($economicManagement));
+        $this->updatedAt();
+    }
+
     public function encryptedEconomyManagement($encrypted)
     {
         $this->economic_management = new EconomyEconomicManagementVO($encrypted);

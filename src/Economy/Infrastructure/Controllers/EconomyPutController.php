@@ -7,12 +7,14 @@ namespace Src\Economy\Infrastructure\Controllers;
 use JsonException;
 use Src\Economy\Application\Request\AddEconomyExpensesRequest;
 use Src\Economy\Application\Request\AddEconomyIncomeRequest;
+use Src\Economy\Application\Request\EconomyPaidStatusRequest;
 use Src\Economy\Application\Request\EconomyUuidRequest;
 use Src\Economy\Application\Request\ShowEconomyRequest;
 use Src\Economy\Application\Request\UpdateEconomyRequest;
 use Src\Economy\Application\Response\EconomyResponse;
 use Src\Economy\Application\UseCases\AddExpenses;
 use Src\Economy\Application\UseCases\AddIncome;
+use Src\Economy\Application\UseCases\ChangePaidStatus;
 use Src\Economy\Application\UseCases\DeleteEconomyManagementRegister;
 use Src\Economy\Application\UseCases\ShowEconomy;
 use Src\Economy\Application\UseCases\UpdateEconomy;
@@ -31,7 +33,8 @@ final class EconomyPutController extends ReturnsMiddleware
         private ShowEconomy $showEconomy,
         private AddIncome $addIncome,
         private AddExpenses $addExpenses,
-        private DeleteEconomyManagementRegister $deleteEconomyManagementRegister
+        private DeleteEconomyManagementRegister $deleteEconomyManagementRegister,
+        private ChangePaidStatus $changePaidStatus
     )
     {}
 
@@ -87,6 +90,18 @@ final class EconomyPutController extends ReturnsMiddleware
         $economy = EconomyResponse::responseToEntity(($this->showEconomy)(new ShowEconomyRequest($id)));
         $addEconomyRequest = new EconomyUuidRequest($uuid);
         ($this->deleteEconomyManagementRegister)($economy, self::EXPENSES, $addEconomyRequest);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function changePaidStatus(int $id, Request $request)
+    {
+        $uuid = $request->get('uuid');
+        $status = $request->get('status');
+        $economy = EconomyResponse::responseToEntity(($this->showEconomy)(new ShowEconomyRequest($id)));
+        $paidStatusRequest = new EconomyPaidStatusRequest($uuid, $status);
+        ($this->changePaidStatus)($economy, $paidStatusRequest);
     }
 
     private function mapper(Request $request): UpdateEconomyRequest
