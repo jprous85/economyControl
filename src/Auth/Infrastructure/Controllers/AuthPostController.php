@@ -57,7 +57,7 @@ final class AuthPostController extends ReturnsMiddleware
             );
         }
 
-        return response()->json('not login, email or password are wrong', Response::HTTP_UNAUTHORIZED);
+        return response()->json('cannot login, email or password are wrong', Response::HTTP_UNAUTHORIZED);
     }
 
     /**
@@ -74,5 +74,11 @@ final class AuthPostController extends ReturnsMiddleware
         $success['token'] = $user->createToken('token')->accessToken;
 
         return $this->successResponse($success['token']);
+    }
+
+    public function logout(): JsonResponse
+    {
+        Auth::logout();
+        return $this->successResponse('logout successfully');
     }
 }
