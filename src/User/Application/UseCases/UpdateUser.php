@@ -52,11 +52,7 @@ final class UpdateUser
 			$email = $request->getEmail() ? new UserEmailVO($request->getEmail()) : $user->getEmail();
 			$age = $request->getAge() ? new UserAgeVO($request->getAge()) : $user->getAge();
 			$gender = $request->getGender() ? new UserGenderVO($request->getGender()) : $user->getGender();
-			$password = $request->getPassword() ? new UserPasswordVO($request->getPassword()) : $user->getPassword();
 			$lang = $request->getLang() ? new UserLangVO($request->getLang()) : $user->getLang();
-			$api_key = $request->getApiKey() ? new UserApiKeyVO($request->getApiKey()) : $user->getApiKey();
-			$email_verified_at = $request->getEmailVerifiedAt() ? new UserEmailVerifiedAtVO($request->getEmailVerifiedAt()) : $user->getEmailVerifiedAt();
-			$remember_token = $request->getRememberToken() ? new UserRememberTokenVO($request->getRememberToken()) : $user->getRememberToken();
 			$active = $request->getActive() ? new UserActiveVO($request->getActive()) : $user->getActive();
 			$verified = $request->getVerified() ? new UserVerifiedVO($request->getVerified()) : $user->getVerified();
 
@@ -68,11 +64,7 @@ final class UpdateUser
 				$email,
 				$age,
 				$gender,
-				$password,
 				$lang,
-				$api_key,
-				$email_verified_at,
-				$remember_token,
 				$active,
 				$verified
         );

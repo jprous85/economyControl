@@ -45,7 +45,6 @@ final class CreateUser
 			new UserEmailVO($request->getEmail()),
 			new UserAgeVO($request->getAge()),
 			new UserGenderVO($request->getGender()),
-			new UserPasswordVO($request->getPassword()),
 			new UserLangVO($request->getLang()),
         );
     }

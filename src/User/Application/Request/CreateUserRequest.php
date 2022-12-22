@@ -13,7 +13,6 @@ class CreateUserRequest
 		private string $email,
 		private ?int $age,
 		private ?string $gender,
-		private string $password,
 		private string $lang,
     )
     {
@@ -50,10 +49,6 @@ class CreateUserRequest
 
 	public function getGender(): ?string {
 		return $this->gender;
-	}
-
-	public function getPassword(): string {
-		return $this->password;
 	}
 
 	public function getLang(): string {

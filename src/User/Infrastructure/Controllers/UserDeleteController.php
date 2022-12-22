@@ -19,6 +19,6 @@ final class UserDeleteController extends ReturnsMiddleware
     {
         $request = new DeleteUserRequest($id);
         ($this->delete)($request);
-        return $this->successResponse('', $id);
+        return $this->successResponse('User deleted');
     }
 }

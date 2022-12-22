@@ -64,7 +64,6 @@ final class User
         UserEmailVO         $email,
         UserAgeVO           $age,
         UserGenderVO        $gender,
-        UserPasswordVO      $password,
         UserLangVO          $lang,
     ): User
     {
@@ -78,7 +77,7 @@ final class User
             $email,
             $age,
             $gender,
-            $password,
+            new UserPasswordVO(bcrypt('password')),
             $lang,
             new UserApiKeyVO(substr(str_shuffle("0123456789abcdefghijklmnopqrstvwxyz"), 0, 11)),
             null,
@@ -99,11 +98,7 @@ final class User
         UserEmailVO           $email,
         UserAgeVO             $age,
         UserGenderVO          $gender,
-        UserPasswordVO        $password,
         UserLangVO            $lang,
-        UserApiKeyVO          $api_key,
-        UserEmailVerifiedAtVO $email_verified_at,
-        UserRememberTokenVO   $remember_token,
         UserActiveVO          $active,
         UserVerifiedVO        $verified,
 
@@ -116,11 +111,7 @@ final class User
         $this->email             = $email;
         $this->age               = $age;
         $this->gender            = $gender;
-        $this->password          = $password;
         $this->lang              = $lang;
-        $this->api_key           = $api_key;
-        $this->email_verified_at = $email_verified_at;
-        $this->remember_token    = $remember_token;
         $this->active            = $active;
         $this->verified          = $verified;
         $this->updated_at        = new UserUpdatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s'));
@@ -141,13 +132,10 @@ final class User
             'password'          => $this->getPassword()->value(),
             'lang'              => $this->getLang()->value(),
             'api_key'           => $this->getApiKey()->value(),
-            'email_verified_at' => $this->getEmailVerifiedAt()->value(),
-            'remember_token'    => $this->getRememberToken()->value(),
-            'last_login'        => $this->getLastLogin()->value(),
             'active'            => $this->getActive()->value(),
             'verified'          => $this->getVerified()->value(),
             'created_at'        => $this->getCreatedAt()->value(),
-            'updated_at'        => $this->getUpdatedAt()->value(),
+            'updated_at'        => $this->getUpdatedAt()?->value() ?? null,
 
         ];
     }
