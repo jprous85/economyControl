@@ -9,6 +9,7 @@ use Src\Account\Domain\Account\Repositories\AccountRepository;
 
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
 use Src\Account\Infrastructure\Adapter\AccountAdapter;
+use Src\User\Domain\User\ValueObjects\UserIdVO;
 
 
 final class AccountMYSQLRepository implements AccountRepository
@@ -34,6 +35,18 @@ final class AccountMYSQLRepository implements AccountRepository
         }
         return $accounts;
 
+    }
+
+    public function getAccountByUserId(UserIdVO $id): array
+    {
+        $eloquent_accounts = $this->model->where('users', 'like', '%' . $id->value() . '%')->get();
+
+        $accounts               = [];
+
+        foreach ($eloquent_accounts as $eloquent_account) {
+            $accounts[] = (new AccountAdapter($eloquent_account))->accountModelAdapter();
+        }
+        return $accounts;
     }
 
     public function save(Account $account): void

@@ -7,6 +7,7 @@ use Src\Account\Infrastructure\Controllers\AccountPutController;
 
 Route::get('/read', [AccountGetController::class, 'read']);
 Route::get('/{id}/show', [AccountGetController::class, 'show']);
+Route::get('/by-user/{id}/show', [AccountGetController::class, 'getAccountByUser']);
 Route::post('/create', [AccountPostController::class, 'create']);
 Route::put('/{id}/update', [AccountPutController::class, 'update']);
 Route::put('/{id}/includeUser/{userId}', [AccountPutController::class, 'insertUserAccount']);

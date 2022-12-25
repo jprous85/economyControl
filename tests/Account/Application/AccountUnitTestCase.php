@@ -7,9 +7,12 @@ use Src\Account\Application\Request\ModifyOwnerAccountRequest;
 use Src\Account\Application\Request\ModifyUserAccountRequest;
 use Src\Account\Application\Request\ShowAccountRequest;
 use Src\Account\Application\Request\UpdateAccountRequest;
+use Src\Account\Application\Response\AccountResponse;
+use Src\Account\Application\Response\AccountResponses;
 use Src\Account\Application\UseCases\CreateAccount;
 use Src\Account\Application\UseCases\DeleteOwnerAccount;
 use Src\Account\Application\UseCases\DeleteUserAccount;
+use Src\Account\Application\UseCases\GetAccountByUserId;
 use Src\Account\Application\UseCases\InsertOwnerAccount;
 use Src\Account\Application\UseCases\InsertUserAccount;
 use Src\Account\Application\UseCases\ShowAccount;
@@ -21,6 +24,9 @@ use Src\Account\Domain\Account\Repositories\AccountRepository;
 use Src\Account\Application\Request\CreateAccountRequest;
 use Src\Account\Application\Request\DeleteAccountRequest;
 
+use Src\User\Application\Request\ShowUserRequest;
+use Src\User\Application\UseCases\GetAccountUsers;
+use Src\User\Domain\User\ValueObjects\UserIdVO;
 use Tests\Account\Domain\Account\ValueObjects\AccountIdVOMother;
 
 
@@ -65,6 +71,20 @@ abstract class AccountUnitTestCase extends TestCase
 
         $finder = new ShowAllAccount($this->mock);
         $finder->__invoke();
+    }
+
+    protected function getAccountByUserId(ShowUserRequest $request)
+    {
+        $account = AccountMother::random();
+        $accountResponse = AccountResponse::SelfAccountResponse($account);
+        $accountResponses = new AccountResponses($accountResponse);
+
+        $this->mock->shouldReceive('getAccountByUserId')->andReturns([$account]);
+
+        $finder = new GetAccountByUserId($this->mock);
+        $result = $finder->__invoke($request);
+
+        $this->assertEquals($result, $accountResponses);
     }
 
     protected function shouldUpdate(int $id, UpdateAccountRequest $request)

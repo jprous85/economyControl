@@ -20,16 +20,16 @@ Route::group([], __DIR__ . '/Auth/Auth.php');
 
 Route::middleware(['auth:api', 'role'])->group(function () {
 
-    Route::middleware(['scope:admin'])->prefix('/users')
+    Route::middleware(['scope:admin,guest'])->prefix('/users')
         ->group(__DIR__ . '/User/User.php');
 
-    Route::middleware(['scope:admin'])->prefix('/roles')
+    Route::middleware(['scope:admin,guest'])->prefix('/roles')
         ->group(__DIR__ . '/Role/Role.php');
 
-    Route::middleware(['scope:admin'])->prefix('/accounts')
+    Route::middleware(['scope:admin,guest'])->prefix('/accounts')
         ->group(__DIR__ . '/Account/Account.php');
 
-    Route::middleware(['scope:admin'])->prefix('/economies')
+    Route::middleware(['scope:admin,guest'])->prefix('/economies')
         ->group(__DIR__ . '/Economy/Economy.php');
 
     // --insert_new_instance_route
