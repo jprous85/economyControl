@@ -4,6 +4,7 @@ namespace Tests\Account\Domain\Account;
 
 use Src\Account\Domain\Account\Account;
 
+use Src\Account\Domain\Account\ValueObjects\AccountDescriptionVO;
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
 use Src\Account\Domain\Account\ValueObjects\AccountOwnersAccountVO;
@@ -12,6 +13,7 @@ use Src\Account\Domain\Account\ValueObjects\AccountActiveVO;
 use Src\Account\Domain\Account\ValueObjects\AccountCreatedAtVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUpdatedAtVO;
 
+use Tests\Account\Domain\Account\ValueObjects\AccountDescriptionVOMother;
 use Tests\Account\Domain\Account\ValueObjects\AccountIdVOMother;
 use Tests\Account\Domain\Account\ValueObjects\AccountNameVOMother;
 use Tests\Account\Domain\Account\ValueObjects\AccountOwnersAccountVOMother;
@@ -26,6 +28,7 @@ final class AccountMother
     public static function create(
         AccountIdVO            $id,
         AccountNameVO          $name,
+        AccountDescriptionVO   $description,
         AccountUsersVO         $users,
         AccountOwnersAccountVO $ownersAccount,
         AccountActiveVO        $active,
@@ -37,6 +40,7 @@ final class AccountMother
         return new Account(
             $id,
             $name,
+            $description,
             $users,
             $ownersAccount,
             $active,
@@ -50,6 +54,7 @@ final class AccountMother
         return self::create(
             AccountIdVOMother::random(),
             AccountNameVOMother::random(),
+            AccountDescriptionVOMother::random(),
             AccountUsersVOMother::random(),
             AccountOwnersAccountVOMother::random(),
             AccountActiveVOMother::random(),

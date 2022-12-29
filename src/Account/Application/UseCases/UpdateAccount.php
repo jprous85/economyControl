@@ -10,6 +10,7 @@ use Src\Account\Application\Response\AccountResponse;
 use Src\Account\Domain\Account\Repositories\AccountRepository;
 use Src\Account\Domain\Account\Account;
 
+use Src\Account\Domain\Account\ValueObjects\AccountDescriptionVO;
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
 use Src\Account\Domain\Account\ValueObjects\AccountOwnersAccountVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
@@ -36,13 +37,15 @@ final class UpdateAccount
 
     private function mapper(Account $account, $request): Account
     {
-        $name   = $request->getName() ? new AccountNameVO($request->getName()) : $account->getName();
-        $users  = $request->getUsers() ? new AccountUsersVO(json_encode($request->getUsers())) : $account->getUsers();
-        $ownersAccount  = $request->getOwnersAccount() ? new AccountOwnersAccountVO(json_encode($request->getOwnersAccount())) : $account->getOwnersAccount();
-        $active = $request->getActive() ? new AccountActiveVO($request->getActive()) : $account->getActive();
+        $name          = $request->getName() ? new AccountNameVO($request->getName()) : $account->getName();
+        $description   = $request->getDescription() ? new AccountDescriptionVO($request->getDescription()) : $account->getDescription();
+        $users         = $request->getUsers() ? new AccountUsersVO(json_encode($request->getUsers())) : $account->getUsers();
+        $ownersAccount = $request->getOwnersAccount() ? new AccountOwnersAccountVO(json_encode($request->getOwnersAccount())) : $account->getOwnersAccount();
+        $active        = $request->getActive() ? new AccountActiveVO($request->getActive()) : $account->getActive();
 
         $account->update(
             $name,
+            $description,
             $users,
             $ownersAccount,
             $active

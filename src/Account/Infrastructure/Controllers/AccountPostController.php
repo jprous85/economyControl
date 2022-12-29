@@ -27,6 +27,7 @@ final class AccountPostController extends ReturnsMiddleware
     {
         return new CreateAccountRequest(
 			$request->get('name'),
+			$request->get('description'),
             "[" . Auth::id() . "]",
 			"[" . Auth::id() . "]"
         );

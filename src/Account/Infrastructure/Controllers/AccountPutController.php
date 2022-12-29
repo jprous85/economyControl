@@ -34,7 +34,7 @@ final class AccountPutController extends ReturnsMiddleware
     {
         $request = $this->mapper($request);
         ($this->update)($id, $request);
-        return $this->successResponse('');
+        return $this->successResponse('Account updated');
     }
 
     /**
@@ -77,6 +77,7 @@ final class AccountPutController extends ReturnsMiddleware
     {
         return new UpdateAccountRequest(
             $request->get('name'),
+            $request->get('description'),
             $request->get('users'),
             $request->get('ownersAccount'),
             $request->get('active')

@@ -9,6 +9,7 @@ use Src\Account\Domain\Account\Account;
 use Src\Account\Domain\Account\Repositories\AccountRepository;
 
 
+use Src\Account\Domain\Account\ValueObjects\AccountDescriptionVO;
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
 use Src\Account\Domain\Account\ValueObjects\AccountOwnersAccountVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
@@ -31,6 +32,7 @@ final class CreateAccount
     {
         return Account::create(
 			new AccountNameVO($request->getName()),
+            new AccountDescriptionVO($request->getDescription()),
 			new AccountUsersVO($request->getUsers()),
             new AccountOwnersAccountVO($request->getOwnersAccount())
         );

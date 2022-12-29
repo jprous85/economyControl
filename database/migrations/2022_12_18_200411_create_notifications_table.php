@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->json('users');
-            $table->json('owners_account');
-            $table->boolean('active')->default(1);
+            $table->unsignedBigInteger('user');
+            $table->string('message');
+            $table->boolean('read');
             $table->timestamps();
+
+            $table->foreign('user')->on('users')->references('id')->cascadeOnDelete();
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('notifications');
     }
 };

@@ -10,6 +10,7 @@ use Src\Account\Domain\Account\Account;
 use Src\Account\Domain\Account\Repositories\AccountAdapterRepository;
 use Src\Account\Domain\Account\ValueObjects\AccountActiveVO;
 use Src\Account\Domain\Account\ValueObjects\AccountCreatedAtVO;
+use Src\Account\Domain\Account\ValueObjects\AccountDescriptionVO;
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
 use Src\Account\Domain\Account\ValueObjects\AccountOwnersAccountVO;
@@ -30,6 +31,10 @@ final class AccountAdapter implements AccountAdapterRepository
 
     private function getName(): string {
         return $this->account['name'];
+    }
+
+    private function getDescription(): ?string {
+        return $this->account['description'];
     }
 
     private function getUsers(): string {
@@ -61,6 +66,7 @@ final class AccountAdapter implements AccountAdapterRepository
         return new Account(
             new AccountIdVO($this->getId()),
             new AccountNameVO($this->getName()),
+            new AccountDescriptionVO($this->getDescription()),
             new AccountUsersVO($this->getUsers()),
             new AccountOwnersAccountVO($this->getOwnersAccount()),
             new AccountActiveVO($this->getActive()),

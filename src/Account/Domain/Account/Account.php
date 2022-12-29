@@ -7,6 +7,7 @@ namespace Src\Account\Domain\Account;
 use Carbon\Carbon;
 
 use JsonException;
+use Src\Account\Domain\Account\ValueObjects\AccountDescriptionVO;
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
 use Src\Account\Domain\Account\ValueObjects\AccountOwnersAccountVO;
@@ -21,6 +22,7 @@ final class Account
     public function __construct(
         private AccountIdVO            $id,
         private AccountNameVO          $name,
+        private AccountDescriptionVO   $description,
         private AccountUsersVO         $users,
         private AccountOwnersAccountVO $accountOwnersAccount,
         private AccountActiveVO        $active,
@@ -33,6 +35,7 @@ final class Account
 
     public static function create(
         AccountNameVO          $name,
+        AccountDescriptionVO   $description,
         AccountUsersVO         $users,
         AccountOwnersAccountVO $accountOwnersAccount
     ): Account
@@ -40,6 +43,7 @@ final class Account
         return new self(
             new AccountIdVO(null),
             $name,
+            $description,
             $users,
             $accountOwnersAccount,
             new AccountActiveVO(1),
@@ -50,12 +54,14 @@ final class Account
 
     public function update(
         AccountNameVO          $name,
+        AccountDescriptionVO   $description,
         AccountUsersVO         $users,
         AccountOwnersAccountVO $accountOwnersAccount,
         AccountActiveVO        $active
     ): void
     {
         $this->name                 = $name;
+        $this->description          = $description;
         $this->users                = $users;
         $this->accountOwnersAccount = $accountOwnersAccount;
         $this->active               = $active;
@@ -68,6 +74,7 @@ final class Account
         return [
             'id'             => $this->getId()->value(),
             'name'           => $this->getName()->value(),
+            'description'    => $this->getDescription()->value(),
             'users'          => $this->getUsers()->value(),
             'owners_account' => $this->getOwnersAccount()->value(),
             'active'         => $this->getActive()->value(),
@@ -87,6 +94,11 @@ final class Account
     public function getName(): AccountNameVO
     {
         return $this->name;
+    }
+
+    public function getDescription(): AccountDescriptionVO
+    {
+        return $this->description;
     }
 
     public function getUsers(): AccountUsersVO
