@@ -39,15 +39,11 @@ final class UpdateAccount
     {
         $name          = $request->getName() ? new AccountNameVO($request->getName()) : $account->getName();
         $description   = $request->getDescription() ? new AccountDescriptionVO($request->getDescription()) : $account->getDescription();
-        $users         = $request->getUsers() ? new AccountUsersVO(json_encode($request->getUsers())) : $account->getUsers();
-        $ownersAccount = $request->getOwnersAccount() ? new AccountOwnersAccountVO(json_encode($request->getOwnersAccount())) : $account->getOwnersAccount();
         $active        = $request->getActive() ? new AccountActiveVO($request->getActive()) : $account->getActive();
 
         $account->update(
             $name,
             $description,
-            $users,
-            $ownersAccount,
             $active
         );
 

@@ -40,37 +40,41 @@ final class AccountPutController extends ReturnsMiddleware
     /**
      * @throws JsonException
      */
-    public function insertUserAccount(int $id, int $userId)
+    public function insertUserAccount(int $id, int $userId): JsonResponse
     {
         $insertUserAccountRequest = new ModifyUserAccountRequest($id, $userId);
         ($this->insertUserAccount)($insertUserAccountRequest);
+        return $this->successResponse('Account updated');
     }
 
     /**
      * @throws JsonException
      */
-    public function deleteUserAccount(int $id, int $userId)
+    public function deleteUserAccount(int $id, int $userId): JsonResponse
     {
         $deleteUserAccountRequest = new ModifyUserAccountRequest($id, $userId);
         ($this->deleteUserAccount)($deleteUserAccountRequest);
+        return $this->successResponse('Account updated');
     }
 
     /**
      * @throws JsonException
      */
-    public function insertOwnerAccount(int $id, int $userId)
+    public function insertOwnerAccount(int $id, int $userId): JsonResponse
     {
         $insertUserAccountRequest = new ModifyOwnerAccountRequest($id, $userId);
         ($this->insertOwnerAccount)($insertUserAccountRequest);
+        return $this->successResponse('Account updated');
     }
 
     /**
      * @throws JsonException
      */
-    public function deleteOwnerAccount(int $id, int $userId)
+    public function deleteOwnerAccount(int $id, int $userId): JsonResponse
     {
         $deleteUserAccountRequest = new ModifyOwnerAccountRequest($id, $userId);
         ($this->deleteOwnerAccount)($deleteUserAccountRequest);
+        return $this->successResponse('Account updated');
     }
 
     private function mapper(Request $request): UpdateAccountRequest
@@ -78,9 +82,7 @@ final class AccountPutController extends ReturnsMiddleware
         return new UpdateAccountRequest(
             $request->get('name'),
             $request->get('description'),
-            $request->get('users'),
-            $request->get('ownersAccount'),
-            $request->get('active')
+            intval($request->get('active'))
         );
     }
 }

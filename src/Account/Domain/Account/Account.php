@@ -55,15 +55,11 @@ final class Account
     public function update(
         AccountNameVO          $name,
         AccountDescriptionVO   $description,
-        AccountUsersVO         $users,
-        AccountOwnersAccountVO $accountOwnersAccount,
         AccountActiveVO        $active
     ): void
     {
         $this->name                 = $name;
         $this->description          = $description;
-        $this->users                = $users;
-        $this->accountOwnersAccount = $accountOwnersAccount;
         $this->active               = $active;
 
         $this->updatedAt();
