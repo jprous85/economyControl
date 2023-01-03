@@ -11,6 +11,7 @@ final class AddEconomyIncomeRequest
     public function __construct(
         private string $uuid,
         private string $name,
+        private ?string $category,
         private float $amount,
         private bool $active,
     )
@@ -25,6 +26,11 @@ final class AddEconomyIncomeRequest
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
     }
 
     public function getAmount(): float

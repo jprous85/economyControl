@@ -54,6 +54,7 @@ final class EconomyPutController extends ReturnsMiddleware
         $addEconomyRequest = new AddEconomyIncomeRequest(
             $request->get('uuid'),
             $request->get('name'),
+            $request->get('category'),
             floatval($request->get('amount')),
             $request->get('active')
         );
@@ -69,6 +70,7 @@ final class EconomyPutController extends ReturnsMiddleware
         $addEconomyRequest = new AddEconomyExpensesRequest(
             $request->get('uuid'),
             $request->get('name'),
+            $request->get('category'),
             floatval($request->get('amount')),
             $request->get('paid'),
             $request->get('active')
@@ -106,7 +108,6 @@ final class EconomyPutController extends ReturnsMiddleware
 
     private function mapper(Request $request): UpdateEconomyRequest
     {
-
         return new UpdateEconomyRequest(
 			$request->get('start_month'),
 			$request->get('end_month'),

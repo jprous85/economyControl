@@ -24,10 +24,11 @@ final class AddIncome
     public function __invoke(Economy $economy, AddEconomyIncomeRequest $request)
     {
 
-        $income['uuid'] = $request->getUuid();
-        $income['name'] = $request->getName();
-        $income['amount'] = $request->getAmount();
-        $income['active'] = $request->getActive();
+        $income['uuid']     = $request->getUuid();
+        $income['name']     = $request->getName();
+        $income['category'] = $request->getCategory() ?? 'Other';
+        $income['amount']   = $request->getAmount();
+        $income['active']   = $request->getActive();
 
         $economy->addIncome($income);
         $economy->encryptedEconomyManagement(CryptoAndDecrypt::encrypt($economy->getEconomicManagement()->value()));

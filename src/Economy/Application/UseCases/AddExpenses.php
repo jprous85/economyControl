@@ -24,13 +24,14 @@ final class AddExpenses
     public function __invoke(Economy $economy, AddEconomyExpensesRequest $request)
     {
 
-        $income['uuid'] = $request->getUuid();
-        $income['name'] = $request->getName();
-        $income['amount'] = $request->getAmount();
-        $income['paid'] = $request->getPaid();
-        $income['active'] = $request->getActive();
+        $spent['uuid']     = $request->getUuid();
+        $spent['name']     = $request->getName();
+        $spent['category'] = $request->getCategory() ?? 'Other';
+        $spent['amount']   = $request->getAmount();
+        $spent['paid']     = $request->getPaid();
+        $spent['active']   = $request->getActive();
 
-        $economy->addSpent($income);
+        $economy->addSpent($spent);
         $economy->encryptedEconomyManagement(CryptoAndDecrypt::encrypt($economy->getEconomicManagement()->value()));
         $this->repository->update($economy);
     }
