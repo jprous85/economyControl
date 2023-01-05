@@ -14,7 +14,7 @@ interface AccountRepository
 
     public function getAccountByUserId(UserIdVO $id): array;
 
-    public function save(Account $account): void;
+    public function save(Account $account): ?Account;
 
     public function update(Account $account): void;
 

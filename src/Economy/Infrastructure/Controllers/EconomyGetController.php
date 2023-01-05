@@ -23,9 +23,13 @@ final class EconomyGetController extends ReturnsMiddleware
     {
         try {
             $request = new ShowEconomyRequest($id);
-            return $this->successArrayResponse(($this->show_economy)($request)->toArray());
+            $economy = ($this->show_economy)($request);
+            if ($economy) {
+                return $this->successArrayResponse($economy->toArray());
+            }
+
         } catch (\Exception $e) {
-            return $this->errorResponse($e->getMessage());
+            return $this->successArrayResponse(['message' => $e->getMessage(), 'status' => 404]);
         }
     }
 
@@ -34,7 +38,7 @@ final class EconomyGetController extends ReturnsMiddleware
         try {
             return $this->successArrayResponse(($this->show_all_economy)()->toArray());
         } catch (\Exception $e) {
-            return $this->errorResponse($e->getMessage());
+            return $this->error500Response($e->getMessage());
         }
     }
 }

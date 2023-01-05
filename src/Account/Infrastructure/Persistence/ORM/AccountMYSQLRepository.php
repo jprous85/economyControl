@@ -49,9 +49,10 @@ final class AccountMYSQLRepository implements AccountRepository
         return $accounts;
     }
 
-    public function save(Account $account): void
+    public function save(Account $account): ?Account
     {
-        $this->model->create($account->getPrimitives());
+        $eloquent_accounts = $this->model->create($account->getPrimitives());
+        return (new AccountAdapter($eloquent_accounts))->accountModelAdapter();
     }
 
     public function update(Account $account): void

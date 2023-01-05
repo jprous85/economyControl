@@ -26,8 +26,13 @@ class ReturnsMiddleware
         return response()->json($response, Response::HTTP_CREATED);
     }
 
-    public function errorResponse(string $response): JsonResponse
+    public function error500Response(string $response): JsonResponse
     {
         return response()->json($response, Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    public function error404Response(string $response): JsonResponse
+    {
+        return response()->json($response, Response::HTTP_NOT_FOUND);
     }
 }

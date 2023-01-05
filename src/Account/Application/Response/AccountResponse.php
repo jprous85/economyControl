@@ -15,12 +15,14 @@ use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
 use Src\Account\Domain\Account\ValueObjects\AccountActiveVO;
 use Src\Account\Domain\Account\ValueObjects\AccountCreatedAtVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUpdatedAtVO;
+use Src\Account\Domain\Account\ValueObjects\AccountUuidVO;
 
 
 final class AccountResponse
 {
     public function __construct(
         private int     $id,
+        private string  $uuid,
         private string  $name,
         private ?string $description,
         private string  $users,
@@ -35,6 +37,11 @@ final class AccountResponse
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
     }
 
     public function getName(): string
@@ -92,6 +99,7 @@ final class AccountResponse
     {
         return new Account(
             new AccountIdVO($response->getId()),
+            new AccountUuidVO($response->getUuid()),
             new AccountNameVO($response->getName()),
             new AccountDescriptionVO($response->getDescription()),
             new AccountUsersVO($response->getUsers()),
@@ -107,6 +115,7 @@ final class AccountResponse
     {
         return new self(
             $account->getId()->value(),
+            $account->getUuid()->value(),
             $account->getName()->value(),
             $account->getDescription()->value(),
             $account->getUsers()->value(),

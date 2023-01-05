@@ -17,15 +17,14 @@ return new class extends Migration
             $table->id();
             $table->dateTime('start_month');
             $table->dateTime('end_month');
-            $table->unsignedBigInteger('account_id');
+            $table->string('account_uuid');
             $table->text('economic_management');
             $table->boolean('active')->default(1);
             $table->timestamps();
 
-            $table->foreign('account_id')
-                ->on('accounts')
-                ->references('id')
-                ->cascadeOnDelete();
+            $table->foreign('account_uuid')
+                ->references('uuid')
+                ->on('accounts');
         });
     }
 

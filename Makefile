@@ -13,6 +13,7 @@ create-migration:
 
 migrate:
 	@php artisan migrate
+	@php artisan db:seed
 	@echo "Migrate has been executed successfully"
 
 cache-clear:

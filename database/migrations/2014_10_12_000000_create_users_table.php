@@ -33,7 +33,7 @@ return new class extends Migration
             $table->boolean('verified')->default(0);
             $table->timestamps();
 
-            $table->foreign('role_id')->references('id')->on('role');
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 

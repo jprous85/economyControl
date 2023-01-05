@@ -7,6 +7,7 @@ namespace Src\Account\Domain\Account;
 use Carbon\Carbon;
 
 use JsonException;
+use Ramsey\Uuid\Uuid;
 use Src\Account\Domain\Account\ValueObjects\AccountDescriptionVO;
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
@@ -15,12 +16,14 @@ use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
 use Src\Account\Domain\Account\ValueObjects\AccountActiveVO;
 use Src\Account\Domain\Account\ValueObjects\AccountCreatedAtVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUpdatedAtVO;
+use Src\Account\Domain\Account\ValueObjects\AccountUuidVO;
 
 
 final class Account
 {
     public function __construct(
         private AccountIdVO            $id,
+        private AccountUuidVO          $uuid,
         private AccountNameVO          $name,
         private AccountDescriptionVO   $description,
         private AccountUsersVO         $users,
@@ -42,6 +45,7 @@ final class Account
     {
         return new self(
             new AccountIdVO(null),
+            new AccountUuidVO(Uuid::uuid4()->toString()),
             $name,
             $description,
             $users,
@@ -85,6 +89,11 @@ final class Account
     public function getId(): AccountIdVO
     {
         return $this->id;
+    }
+
+    public function getUuid(): AccountUuidVO
+    {
+        return $this->uuid;
     }
 
     public function getName(): AccountNameVO

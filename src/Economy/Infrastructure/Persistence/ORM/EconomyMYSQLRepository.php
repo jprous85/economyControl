@@ -10,6 +10,7 @@ use Src\Account\Infrastructure\Persistence\ORM\AccountORMModel;
 use Src\Economy\Domain\Economy\Economy;
 use Src\Economy\Domain\Economy\Repositories\EconomyRepository;
 
+use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountIdVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyIdVO;
 use Src\Economy\Infrastructure\Adapter\EconomyAdapter;
 
@@ -27,12 +28,15 @@ final class EconomyMYSQLRepository implements EconomyRepository
     /**
      * @throws Exception
      */
-    public function show(EconomyIdVO $id): ?Economy
+    public function show(EconomyAccountIdVO $accountId): ?Economy
     {
-        $eloquent_economy = $this->model->find($id->value());
+        $eloquent_economy = $this->model->where('account_id', $accountId->value())->first();
 
-        if (!$this->isAdmin() && $eloquent_economy) {
+        if (!$this->isAdmin()) {
             $account = $this->getAccountByEconomyId($eloquent_economy->account_id);
+            if ($account && !$eloquent_economy) {
+                return null;
+            }
             if (!$account) {
                 throw new Exception('You are not owner');
             };

@@ -7,7 +7,7 @@ namespace Src\Economy\Domain\Economy\ValueObjects;
 
 use Src\Shared\Domain\ValueObjects\IntegerOrNullVO;
 
-final class EconomyIdVO extends IntegerOrNullVO
+class EconomyIdVO extends IntegerOrNullVO
 {
 
 }

@@ -24,6 +24,7 @@ use Src\Account\Domain\Account\Repositories\AccountRepository;
 use Src\Account\Application\Request\CreateAccountRequest;
 use Src\Account\Application\Request\DeleteAccountRequest;
 
+use Src\Economy\Domain\Economy\Repositories\EconomyRepository;
 use Src\User\Application\Request\ShowUserRequest;
 use Src\User\Application\UseCases\GetAccountUsers;
 use Src\User\Domain\User\ValueObjects\UserIdVO;
@@ -33,25 +34,32 @@ use Tests\Account\Domain\Account\ValueObjects\AccountIdVOMother;
 use Mockery;
 use Mockery\MockInterface;
 use Tests\Account\Domain\Account\AccountMother;
+use Tests\Economy\Domain\Economy\EconomyMother;
 use Tests\TestCase;
 
 abstract class AccountUnitTestCase extends TestCase
 {
     private MockInterface $mock;
+    private MockInterface $economyMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->mock   = $this->repository();
+        $this->mock  = $this->repository();
+        $this->economyMock = $this->economyRepository();
     }
 
     protected function shouldCreate(CreateAccountRequest $request)
     {
         $account_id = AccountIdVOMother::random();
-        $this->mock->shouldReceive('save')->andReturn($account_id);
+        $account = AccountMother::random();
 
-        $creator = new CreateAccount($this->mock);
+        $this->mock->shouldReceive('save')->andReturn($account);
+
+        $this->economyMock->shouldReceive('save');
+
+        $creator = new CreateAccount($this->mock, $this->economyMock);
         $creator->__invoke($request);
     }
 
@@ -169,6 +177,11 @@ abstract class AccountUnitTestCase extends TestCase
     private function repository(): MockInterface | AccountRepository
     {
         return Mockery::mock(AccountRepository::class);
+    }
+
+    private function economyRepository(): MockInterface | EconomyRepository
+    {
+        return Mockery::mock(EconomyRepository::class);
     }
 
 }
