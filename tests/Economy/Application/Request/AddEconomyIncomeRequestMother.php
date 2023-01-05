@@ -12,6 +12,7 @@ final class AddEconomyIncomeRequestMother
     public static function create(
         string $uuid,
         string $name,
+        string $category,
         float  $amount,
         bool   $active
     ): AddEconomyIncomeRequest
@@ -19,6 +20,7 @@ final class AddEconomyIncomeRequestMother
         return new AddEconomyIncomeRequest(
             $uuid,
             $name,
+            $category,
             $amount,
             $active
         );
@@ -28,14 +30,16 @@ final class AddEconomyIncomeRequestMother
     {
         $faker = Factory::create();
 
-        $uuid   = $faker->uuid;
-        $name   = $faker->name;
-        $amount = $faker->randomFloat();
-        $active = $faker->boolean;
+        $uuid     = $faker->uuid;
+        $name     = $faker->name;
+        $category = $faker->text;
+        $amount   = $faker->randomFloat();
+        $active   = $faker->boolean;
 
         return self::create(
             $uuid,
             $name,
+            $category,
             $amount,
             $active
         );
