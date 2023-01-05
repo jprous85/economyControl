@@ -39,7 +39,7 @@ final class UpdateAccount
     {
         $name          = $request->getName() ? new AccountNameVO($request->getName()) : $account->getName();
         $description   = $request->getDescription() ? new AccountDescriptionVO($request->getDescription()) : $account->getDescription();
-        $active        = $request->getActive() ? new AccountActiveVO($request->getActive()) : $account->getActive();
+        $active        = new AccountActiveVO($request->getActive());
 
         $account->update(
             $name,
