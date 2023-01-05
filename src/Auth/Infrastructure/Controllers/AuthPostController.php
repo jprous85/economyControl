@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Src\Auth\Infrastructure\Controllers;
 
 
-
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,6 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class AuthPostController extends ReturnsMiddleware
 {
+
+    private string $scope;
 
     public function __construct(
         private UpdateLastLogin $updateLastLogin
@@ -71,9 +72,15 @@ final class AuthPostController extends ReturnsMiddleware
 
         $user = UserORMModel::create($input);
 
-        $success['token'] = $user->createToken('token')->accessToken;
+        $this->scope = $user->role->name;
 
-        return $this->successResponse($success['token']);
+        $token = $user->createToken('token',  [$this->scope]);
+
+        return $this->successArrayResponse(
+            [
+                'token' => $token
+            ]
+        );
     }
 
     public function logout(): JsonResponse

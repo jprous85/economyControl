@@ -21,12 +21,20 @@ final class EconomyGetController extends ReturnsMiddleware
 
     public function show(int $id): JsonResponse
     {
-        $request = new ShowEconomyRequest($id);
-        return $this->successArrayResponse(($this->show_economy)($request)->toArray());
+        try {
+            $request = new ShowEconomyRequest($id);
+            return $this->successArrayResponse(($this->show_economy)($request)->toArray());
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 
     public function read(): JsonResponse
     {
-        return $this->successArrayResponse(($this->show_all_economy)()->toArray());
+        try {
+            return $this->successArrayResponse(($this->show_all_economy)()->toArray());
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
     }
 }

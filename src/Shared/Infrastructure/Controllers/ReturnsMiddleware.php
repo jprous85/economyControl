@@ -25,4 +25,9 @@ class ReturnsMiddleware
     {
         return response()->json($response, Response::HTTP_CREATED);
     }
+
+    public function errorResponse(string $response): JsonResponse
+    {
+        return response()->json($response, Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
 }

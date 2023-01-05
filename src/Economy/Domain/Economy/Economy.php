@@ -133,9 +133,10 @@ final class Economy
             "incomes"  => [],
             "expenses" => [],
             "totals"   => [
-                "totalIncomes" => 0,
-                "totalPaid"    => 0,
-                "pendingToPay" => 0
+                "totalIncomes"  => 0,
+                "totalExpenses" => 0,
+                "totalPaid"     => 0,
+                "pendingToPay"  => 0
             ]
         ];
 
@@ -147,7 +148,7 @@ final class Economy
      */
     public function addIncome(array $income)
     {
-        $economicManagement = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+        $economicManagement              = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
         $economicManagement['incomes'][] = $income;
         $this->calculateTotals($economicManagement);
         $this->economic_management = new EconomyEconomicManagementVO(json_encode($economicManagement));
@@ -159,7 +160,7 @@ final class Economy
      */
     public function addSpent(array $spent)
     {
-        $economicManagement = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+        $economicManagement               = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
         $economicManagement['expenses'][] = $spent;
         $this->calculateTotals($economicManagement);
         $this->economic_management = new EconomyEconomicManagementVO(json_encode($economicManagement));
@@ -214,9 +215,10 @@ final class Economy
 
     private function calculateTotals(&$economicManagement): void
     {
-        $economicManagement['totals']['totalIncomes'] = $this->calculateIncomes($economicManagement['incomes']);
-        $economicManagement['totals']['totalPaid'] = $this->calculateExpenses($economicManagement['expenses']);
-        $economicManagement['totals']['pendingToPay'] = $this->calculatePendingToPay($economicManagement['expenses']);
+        $economicManagement['totals']['totalIncomes']  = $this->calculateIncomes($economicManagement['incomes']);
+        $economicManagement['totals']['totalExpenses'] = $this->calculateTotalExpenses($economicManagement['expenses']);
+        $economicManagement['totals']['totalPaid']     = $this->calculateExpenses($economicManagement['expenses']);
+        $economicManagement['totals']['pendingToPay']  = $this->calculatePendingToPay($economicManagement['expenses']);
     }
 
     private function calculateIncomes($incomes): float
@@ -235,6 +237,15 @@ final class Economy
             if ($spent['paid']) {
                 $total += $spent['amount'];
             }
+        }
+        return $total;
+    }
+
+    private function calculateTotalExpenses($expenses): float
+    {
+        $total = 0;
+        foreach ($expenses as $spent) {
+            $total += $spent['amount'];
         }
         return $total;
     }
