@@ -7,16 +7,15 @@ namespace Src\Economy\Infrastructure\Controllers;
 use JsonException;
 use Src\Economy\Application\Request\AddEconomyExpensesRequest;
 use Src\Economy\Application\Request\AddEconomyIncomeRequest;
+use Src\Economy\Application\Request\EconomyIdRequest;
 use Src\Economy\Application\Request\EconomyPaidStatusRequest;
 use Src\Economy\Application\Request\EconomyUuidRequest;
-use Src\Economy\Application\Request\ShowEconomyRequest;
 use Src\Economy\Application\Request\UpdateEconomyRequest;
 use Src\Economy\Application\Response\EconomyResponse;
 use Src\Economy\Application\UseCases\AddExpenses;
 use Src\Economy\Application\UseCases\AddIncome;
 use Src\Economy\Application\UseCases\ChangePaidStatus;
 use Src\Economy\Application\UseCases\DeleteEconomyManagementRegister;
-use Src\Economy\Application\UseCases\ShowEconomy;
 use Src\Economy\Application\UseCases\ShowEconomyById;
 use Src\Economy\Application\UseCases\UpdateEconomy;
 use Src\Shared\Infrastructure\Controllers\ReturnsMiddleware;
@@ -31,7 +30,6 @@ final class EconomyPutController extends ReturnsMiddleware
 
     public function __construct(
         private UpdateEconomy $update,
-        private ShowEconomy $showEconomy,
         private ShowEconomyById $showEconomyById,
         private AddIncome $addIncome,
         private AddExpenses $addExpenses,
@@ -44,7 +42,7 @@ final class EconomyPutController extends ReturnsMiddleware
     {
         $request = $this->mapper($request);
         ($this->update)($id, $request);
-        return $this->successResponse('');
+        return $this->successResponse('Economy updated');
     }
 
     /**
@@ -52,7 +50,7 @@ final class EconomyPutController extends ReturnsMiddleware
      */
     public function addIncome(int $id, Request $request)
     {
-        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new ShowEconomyRequest($id)));
+        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $addEconomyRequest = new AddEconomyIncomeRequest(
             $request->get('uuid'),
             $request->get('name'),
@@ -68,7 +66,7 @@ final class EconomyPutController extends ReturnsMiddleware
      */
     public function addSpent(int $id, Request $request)
     {
-        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new ShowEconomyRequest($id)));
+        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $addEconomyRequest = new AddEconomyExpensesRequest(
             $request->get('uuid'),
             $request->get('name'),
@@ -83,7 +81,7 @@ final class EconomyPutController extends ReturnsMiddleware
     public function deleteIncomeRegisterManagement(int $id, Request $request)
     {
         $uuid = $request->get('uuid');
-        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new ShowEconomyRequest($id)));
+        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $addEconomyRequest = new EconomyUuidRequest($uuid);
         ($this->deleteEconomyManagementRegister)($economy, self::INCOMES, $addEconomyRequest);
     }
@@ -91,7 +89,7 @@ final class EconomyPutController extends ReturnsMiddleware
     public function deleteSpentRegisterManagement(int $id, Request $request)
     {
         $uuid = $request->get('uuid');
-        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new ShowEconomyRequest($id)));
+        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $addEconomyRequest = new EconomyUuidRequest($uuid);
         ($this->deleteEconomyManagementRegister)($economy, self::EXPENSES, $addEconomyRequest);
     }
@@ -103,7 +101,7 @@ final class EconomyPutController extends ReturnsMiddleware
     {
         $uuid = $request->get('uuid');
         $status = $request->get('status');
-        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new ShowEconomyRequest($id)));
+        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $paidStatusRequest = new EconomyPaidStatusRequest($uuid, $status);
         ($this->changePaidStatus)($economy, $paidStatusRequest);
     }
