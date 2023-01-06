@@ -10,7 +10,7 @@ use Src\Economy\Domain\Economy\Repositories\EconomyRepository;
 
 use Src\Economy\Domain\Economy\ValueObjects\EconomyStartMonthVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEndMonthVO;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountIdVO;
+use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountUuidVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEconomicManagementVO;
 use Src\Shared\Infrastructure\CryptoAndDecrypt\CryptoAndDecrypt;
 
@@ -34,7 +34,7 @@ final class CreateEconomy
         return Economy::create(
 			new EconomyStartMonthVO($request->getStartMonth()),
 			new EconomyEndMonthVO($request->getEndMonth()),
-			new EconomyAccountIdVO($request->getAccountId()),
+			new EconomyAccountUuidVO($request->getAccountUuid()),
 			new EconomyEconomicManagementVO(CryptoAndDecrypt::encrypt(Economy::economyManagementStructure()))
         );
     }

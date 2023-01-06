@@ -9,7 +9,7 @@ use JsonException;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyIdVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyStartMonthVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEndMonthVO;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountIdVO;
+use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountUuidVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEconomicManagementVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyActiveVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyCreatedAtVO;
@@ -22,7 +22,7 @@ final class Economy
         private EconomyIdVO                 $id,
         private EconomyStartMonthVO         $start_month,
         private EconomyEndMonthVO           $end_month,
-        private EconomyAccountIdVO          $account_id,
+        private EconomyAccountUuidVO        $account_uuid,
         private EconomyEconomicManagementVO $economic_management,
         private EconomyActiveVO             $active,
         private ?EconomyCreatedAtVO         $created_at,
@@ -34,7 +34,7 @@ final class Economy
     public static function create(
         EconomyStartMonthVO         $start_month,
         EconomyEndMonthVO           $end_month,
-        EconomyAccountIdVO          $account_id,
+        EconomyAccountUuidVO        $account_id,
         EconomyEconomicManagementVO $economic_management,
 
     ): Economy
@@ -55,14 +55,14 @@ final class Economy
     public function update(
         EconomyStartMonthVO         $start_month,
         EconomyEndMonthVO           $end_month,
-        EconomyAccountIdVO          $account_id,
+        EconomyAccountUuidVO        $account_id,
         EconomyEconomicManagementVO $economic_management,
         EconomyActiveVO             $active
     ): void
     {
         $this->start_month         = $start_month;
         $this->end_month           = $end_month;
-        $this->account_id          = $account_id;
+        $this->account_uuid          = $account_id;
         $this->economic_management = $economic_management;
         $this->active              = $active;
 
@@ -75,7 +75,7 @@ final class Economy
             'id'                  => $this->getId()->value(),
             'start_month'         => $this->getStartMonth()->value(),
             'end_month'           => $this->getEndMonth()->value(),
-            'account_id'          => $this->getAccountId()->value(),
+            'account_uuid'        => $this->getAccountUuid()->value(),
             'economic_management' => $this->getEconomicManagement()->value(),
             'active'              => $this->getActive()->value(),
             'created_at'          => $this->getCreatedAt()->value(),
@@ -101,9 +101,9 @@ final class Economy
         return $this->end_month;
     }
 
-    public function getAccountId(): EconomyAccountIdVO
+    public function getAccountUuid(): EconomyAccountUuidVO
     {
-        return $this->account_id;
+        return $this->account_uuid;
     }
 
     public function getEconomicManagement(): EconomyEconomicManagementVO

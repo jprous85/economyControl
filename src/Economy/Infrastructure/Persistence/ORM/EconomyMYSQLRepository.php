@@ -10,7 +10,7 @@ use Src\Account\Infrastructure\Persistence\ORM\AccountORMModel;
 use Src\Economy\Domain\Economy\Economy;
 use Src\Economy\Domain\Economy\Repositories\EconomyRepository;
 
-use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountIdVO;
+use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountUuidVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyIdVO;
 use Src\Economy\Infrastructure\Adapter\EconomyAdapter;
 
@@ -28,12 +28,12 @@ final class EconomyMYSQLRepository implements EconomyRepository
     /**
      * @throws Exception
      */
-    public function show(EconomyAccountIdVO $accountId): ?Economy
+    public function show(EconomyAccountUuidVO $accountId): ?Economy
     {
-        $eloquent_economy = $this->model->where('account_id', $accountId->value())->first();
+        $eloquent_economy = $this->model->where('account_uuid', $accountId->value())->first();
 
         if (!$this->isAdmin()) {
-            $account = $this->getAccountByEconomyId($eloquent_economy->account_id);
+            $account = $this->getAccountByEconomyId($eloquent_economy->account_uuid);
             if ($account && !$eloquent_economy) {
                 return null;
             }
@@ -55,7 +55,7 @@ final class EconomyMYSQLRepository implements EconomyRepository
         foreach ($eloquent_economies as $eloquent_economy)
         {
             if (!$this->isAdmin() && $eloquent_economy) {
-                $account = $this->getAccountByEconomyId($eloquent_economy->account_id);
+                $account = $this->getAccountByEconomyId($eloquent_economy->account_uuid);
                 if (!$account) {
                     throw new Exception('You are not owner');
                 };
@@ -84,13 +84,19 @@ final class EconomyMYSQLRepository implements EconomyRepository
         $economy->delete();
     }
 
-    private function getAccountByEconomyId(int $accountId)
+    private function getAccountByEconomyId(string $uuid)
     {
-        return $this->accountModel->where('id', $accountId)->where('users', 'like', '%' . Auth::id() . '%')->first();
+        return $this->accountModel->where('uuid', $uuid)->where('users', 'like', '%' . Auth::id() . '%')->first();
     }
 
     private function isAdmin(): bool
     {
         return (Auth::user()->role->name === 'admin');
+    }
+
+    public function economyById(EconomyIdVO $id): ?Economy
+    {
+        $eloquent_economy = $this->model->find($id->value());
+        return (new EconomyAdapter($eloquent_economy))->economyModelAdapter();
     }
 }

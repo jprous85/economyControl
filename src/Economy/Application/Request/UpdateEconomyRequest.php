@@ -7,7 +7,7 @@ class UpdateEconomyRequest
     public function __construct(
 		private string $start_month,
 		private string $end_month,
-		private int $account_id,
+		private string $account_uuid,
 		private string $economic_management,
 		private int $active
     )
@@ -22,8 +22,8 @@ class UpdateEconomyRequest
 		return $this->end_month;
 	}
 
-	public function getAccountId(): int {
-		return $this->account_id;
+	public function getAccountUuid(): string {
+		return $this->account_uuid;
 	}
 
 	public function getEconomicManagement(): string {

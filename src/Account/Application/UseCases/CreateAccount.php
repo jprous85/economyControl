@@ -16,7 +16,7 @@ use Src\Account\Domain\Account\ValueObjects\AccountOwnersAccountVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
 use Src\Economy\Domain\Economy\Economy;
 use Src\Economy\Domain\Economy\Repositories\EconomyRepository;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountIdVO;
+use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountUuidVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEconomicManagementVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEndMonthVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyStartMonthVO;
@@ -57,7 +57,7 @@ final class CreateAccount
         return Economy::create(
             new EconomyStartMonthVO(Carbon::now()->startOfMonth()->format('Y-m-d h:i:s')),
             new EconomyEndMonthVO(Carbon::now()->endOfMonth()->format('Y-m-d h:i:s')),
-            new EconomyAccountIdVO($account->getId()->value()),
+            new EconomyAccountUuidVO($account->getUuid()->value()),
             new EconomyEconomicManagementVO(CryptoAndDecrypt::encrypt(Economy::economyManagementStructure()))        );
     }
 }

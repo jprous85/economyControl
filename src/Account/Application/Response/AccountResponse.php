@@ -84,6 +84,7 @@ final class AccountResponse
     {
         return [
             "id"            => $this->id,
+            "uuid"          => $this->uuid,
             "name"          => $this->name,
             "description"   => $this->description,
             "users"         => $this->users,

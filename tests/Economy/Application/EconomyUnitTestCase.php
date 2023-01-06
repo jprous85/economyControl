@@ -3,6 +3,8 @@
 namespace Tests\Economy\Application;
 
 use Src\Economy\Application\Request\AddEconomyIncomeRequest;
+use Src\Economy\Application\Request\EconomyAccountUuidRequest;
+use Src\Economy\Application\Request\EconomyUuidRequest;
 use Src\Economy\Application\Request\ShowEconomyRequest;
 use Src\Economy\Application\Request\UpdateEconomyRequest;
 use Src\Economy\Application\Response\EconomyResponse;
@@ -33,7 +35,7 @@ abstract class EconomyUnitTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->mock   = $this->repository();
+        $this->mock = $this->repository();
     }
 
     protected function shouldCreate(CreateEconomyRequest $request)
@@ -45,7 +47,7 @@ abstract class EconomyUnitTestCase extends TestCase
         $creator->__invoke($request);
     }
 
-    protected function shouldFind(ShowEconomyRequest $request)
+    protected function shouldFind(EconomyAccountUuidRequest $request)
     {
         $economy = EconomyMother::random();
 
@@ -80,7 +82,7 @@ abstract class EconomyUnitTestCase extends TestCase
     protected function shouldUpdate(int $id, UpdateEconomyRequest $request)
     {
         $economy_mother = EconomyMother::random();
-        $this->mock->shouldReceive('show')->andReturn($economy_mother);
+        $this->mock->shouldReceive('economyById')->andReturn($economy_mother);
 
         $this->mock->shouldReceive('update');
 
@@ -91,23 +93,20 @@ abstract class EconomyUnitTestCase extends TestCase
     protected function shouldAddIncome(AddEconomyIncomeRequest $request)
     {
         $economy_mother = EconomyMother::random();
-        $this->mock->shouldReceive('show')->andReturn($economy_mother);
+        $this->mock->shouldReceive('economyById')->andReturn($economy_mother);
         $this->mock->shouldReceive('update');
         $this->assertTrue(true);
     }
 
     protected function shouldDelete(DeleteEconomyRequest $id)
     {
-        $economy = EconomyMother::random();
-
-        $this->mock->shouldReceive('show')->andReturns($economy);
         $this->mock->shouldReceive('delete');
 
         $delete = new DeleteEconomy($this->mock);
         $delete->__invoke($id);
     }
 
-    private function repository(): MockInterface | EconomyRepository
+    private function repository(): MockInterface|EconomyRepository
     {
         return Mockery::mock(EconomyRepository::class);
     }

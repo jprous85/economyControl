@@ -10,7 +10,7 @@ use Src\Economy\Domain\Economy\Economy;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyIdVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyStartMonthVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEndMonthVO;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountIdVO;
+use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountUuidVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEconomicManagementVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyActiveVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyCreatedAtVO;
@@ -24,7 +24,7 @@ final class EconomyResponse
 		private int $id,
 		private string $start_month,
 		private string $end_month,
-		private int $account_id,
+		private string $account_uuid,
 		private array $economic_management,
 		private int $active,
 		private ?string $created_at,
@@ -45,8 +45,8 @@ final class EconomyResponse
 		return $this->end_month;
 	}
 
-	public function getAccountId(): int {
-		return $this->account_id;
+	public function getAccountUuid(): string {
+		return $this->account_uuid;
 	}
 
 	public function getEconomicManagement(): array {
@@ -73,7 +73,7 @@ final class EconomyResponse
 			"id" => $this->id,
 			"start_month" => $this->start_month,
 			"end_month" => $this->end_month,
-			"account_id" => $this->account_id,
+			"account_id" => $this->account_uuid,
 			"economic_management" => $this->economic_management,
 			"active" => $this->active,
 			"created_at" => $this->created_at,
@@ -88,7 +88,7 @@ final class EconomyResponse
 			new EconomyIdVO($response->getId()),
 			new EconomyStartMonthVO($response->getStartMonth()),
 			new EconomyEndMonthVO($response->getEndMonth()),
-			new EconomyAccountIdVO($response->getAccountId()),
+			new EconomyAccountUuidVO($response->getAccountUuid()),
 			new EconomyEconomicManagementVO(json_encode($response->getEconomicManagement())),
 			new EconomyActiveVO($response->getActive()),
 			new EconomyCreatedAtVO($response->getCreatedAt()),
@@ -103,7 +103,7 @@ final class EconomyResponse
 			$economy->getId()->value(),
 			$economy->getStartMonth()->value(),
 			$economy->getEndMonth()->value(),
-			$economy->getAccountId()->value(),
+			$economy->getAccountUuid()->value(),
             json_decode(CryptoAndDecrypt::decrypt($economy->getEconomicManagement()->value()), true),
 			$economy->getActive()->value(),
 			$economy->getCreatedAt()->value(),

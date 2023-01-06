@@ -8,7 +8,7 @@ namespace Src\Economy\Infrastructure\Adapter;
 
 use Src\Economy\Domain\Economy\Economy;
 use Src\Economy\Domain\Economy\Repositories\EconomyAdapterRepository;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountIdVO;
+use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountUuidVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyActiveVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyCreatedAtVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyEconomicManagementVO;
@@ -35,7 +35,7 @@ final class EconomyAdapter implements EconomyAdapterRepository
             new EconomyIdVO($this->getId()),
             new EconomyStartMonthVO($this->getStartMonth()),
             new EconomyEndMonthVO($this->getEndMonth()),
-            new EconomyAccountIdVO($this->getAccountId()),
+            new EconomyAccountUuidVO($this->getAccountUuid()),
             new EconomyEconomicManagementVO($this->getEconomicManagement()),
             new EconomyActiveVO($this->getActive()),
             new EconomyCreatedAtVO($this->getCreatedAt()),
@@ -55,8 +55,8 @@ final class EconomyAdapter implements EconomyAdapterRepository
         return $this->economy['end_month'];
     }
 
-    private function getAccountId(): int {
-        return $this->economy['account_id'];
+    private function getAccountUuid(): string {
+        return $this->economy['account_uuid'];
     }
 
     private function getEconomicManagement(): string {

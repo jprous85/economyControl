@@ -2,24 +2,25 @@
 
 namespace Tests\Economy\Application\Request;
 
-use Src\Economy\Application\Request\ShowEconomyRequest;
+use Src\Economy\Application\Request\EconomyAccountUuidRequest;
+use Tests\Economy\Domain\Economy\ValueObjects\EconomyAccountUuidVOMother;
 use Tests\Economy\Domain\Economy\ValueObjects\EconomyIdVOMother;
 
 
 class ShowEconomyRequestMother
 {
-    public static function create(int $value): ShowEconomyRequest
+    public static function create(string $value): EconomyAccountUuidRequest
     {
-        return new ShowEconomyRequest($value);
+        return new EconomyAccountUuidRequest($value);
     }
 
-    public static function random(): ShowEconomyRequest
+    public static function random(): EconomyAccountUuidRequest
     {
-        $id = EconomyIdVOMother::random()->value();
+        $id = EconomyAccountUuidVOMother::random()->value();
         return self::create($id);
     }
 
-    private static function wrong(): ShowEconomyRequest
+    private static function wrong(): EconomyAccountUuidRequest
     {
         $id = EconomyIdVOMother::badValue()->value();
         return self::create($id);

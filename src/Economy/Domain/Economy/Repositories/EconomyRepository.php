@@ -3,12 +3,14 @@
 namespace Src\Economy\Domain\Economy\Repositories;
 
 use Src\Economy\Domain\Economy\Economy;
-use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountIdVO;
+use Src\Economy\Domain\Economy\ValueObjects\EconomyAccountUuidVO;
 use Src\Economy\Domain\Economy\ValueObjects\EconomyIdVO;
 
 interface EconomyRepository
 {
-    public function show(EconomyAccountIdVO $accountId): ?Economy;
+    public function economyById(EconomyIdVO $id): ?Economy;
+
+    public function show(EconomyAccountUuidVO $accountId): ?Economy;
 
     public function showAll(): array;
 
@@ -17,4 +19,5 @@ interface EconomyRepository
     public function update(Economy $economy): void;
 
     public function delete(EconomyIdVO $id): void;
+
 }

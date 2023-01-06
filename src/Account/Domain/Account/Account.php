@@ -73,6 +73,7 @@ final class Account
     {
         return [
             'id'             => $this->getId()->value(),
+            'uuid'           => $this->getUuid()->value(),
             'name'           => $this->getName()->value(),
             'description'    => $this->getDescription()->value(),
             'users'          => $this->getUsers()->value(),

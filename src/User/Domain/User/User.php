@@ -135,8 +135,7 @@ final class User
             'active'            => $this->getActive()->value(),
             'verified'          => $this->getVerified()->value(),
             'created_at'        => $this->getCreatedAt()->value(),
-            'updated_at'        => $this->getUpdatedAt()?->value() ?? null,
-
+            'updated_at'        => ($this->getUpdatedAt()->value()) ? $this->getUpdatedAt()?->value() : null,
         ];
     }
 
@@ -241,7 +240,7 @@ final class User
 
     public function updateLastLogin()
     {
-        $currentDate      = Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s');
+        $currentDate      = Carbon::now()->format('Y-m-d h:i:s');
         $this->last_login = new UserLastLoginVO($currentDate);
     }
 

@@ -16,6 +16,7 @@ use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
 use Src\Account\Domain\Account\ValueObjects\AccountOwnersAccountVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUpdatedAtVO;
 use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
+use Src\Account\Domain\Account\ValueObjects\AccountUuidVO;
 use Src\Account\Infrastructure\Persistence\ORM\AccountORMModel;
 
 final class AccountAdapter implements AccountAdapterRepository
@@ -27,6 +28,11 @@ final class AccountAdapter implements AccountAdapterRepository
 
     private function getId(): int {
         return $this->account['id'];
+    }
+
+    private function getUUid(): string
+    {
+        return $this->account['uuid'];
     }
 
     private function getName(): string {
@@ -65,6 +71,7 @@ final class AccountAdapter implements AccountAdapterRepository
 
         return new Account(
             new AccountIdVO($this->getId()),
+            new AccountUuidVO($this->getUUid()),
             new AccountNameVO($this->getName()),
             new AccountDescriptionVO($this->getDescription()),
             new AccountUsersVO($this->getUsers()),
