@@ -4,8 +4,6 @@ namespace Tests\Economy\Application;
 
 use Src\Economy\Application\Request\AddEconomyIncomeRequest;
 use Src\Economy\Application\Request\EconomyAccountUuidRequest;
-use Src\Economy\Application\Request\EconomyUuidRequest;
-use Src\Economy\Application\Request\ShowEconomyRequest;
 use Src\Economy\Application\Request\UpdateEconomyRequest;
 use Src\Economy\Application\Response\EconomyResponse;
 use Src\Economy\Application\Response\EconomyResponses;
