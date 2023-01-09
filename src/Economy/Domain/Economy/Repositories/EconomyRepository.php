@@ -10,7 +10,7 @@ interface EconomyRepository
 {
     public function economyById(EconomyIdVO $id): ?Economy;
 
-    public function show(EconomyAccountUuidVO $accountId): ?Economy;
+    public function show(EconomyAccountUuidVO $accountUuid): ?Economy;
 
     public function showAll(): array;
 

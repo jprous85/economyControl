@@ -29,6 +29,8 @@ final class EconomyGetController extends ReturnsMiddleware
                 return $this->successArrayResponse($economy->toArray());
             }
 
+            return $this->successResponse('there not economy exist');
+
         } catch (\Exception $e) {
             return $this->successArrayResponse(['message' => $e->getMessage(), 'status' => 404]);
         }

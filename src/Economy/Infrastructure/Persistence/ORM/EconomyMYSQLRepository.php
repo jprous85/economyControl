@@ -28,17 +28,17 @@ final class EconomyMYSQLRepository implements EconomyRepository
     /**
      * @throws Exception
      */
-    public function show(EconomyAccountUuidVO $accountId): ?Economy
+    public function show(EconomyAccountUuidVO $accountUuid): ?Economy
     {
-        $eloquent_economy = $this->model->where('account_uuid', $accountId->value())->first();
+        $eloquent_economy = $this->model->where('account_uuid', $accountUuid->value())->first();
 
         if (!$this->isAdmin()) {
-            $account = $this->getAccountByEconomyId($eloquent_economy->account_uuid);
+            $account = $this->getAccountByUuid($accountUuid->value());
             if ($account && !$eloquent_economy) {
                 return null;
             }
             if (!$account) {
-                throw new Exception('You are not owner');
+                throw new Exception('You are not an owner');
             };
         }
         return (new EconomyAdapter($eloquent_economy))->economyModelAdapter();
@@ -55,7 +55,7 @@ final class EconomyMYSQLRepository implements EconomyRepository
         foreach ($eloquent_economies as $eloquent_economy)
         {
             if (!$this->isAdmin() && $eloquent_economy) {
-                $account = $this->getAccountByEconomyId($eloquent_economy->account_uuid);
+                $account = $this->getAccountByUuid($eloquent_economy->account_uuid);
                 if (!$account) {
                     throw new Exception('You are not owner');
                 };
@@ -84,7 +84,7 @@ final class EconomyMYSQLRepository implements EconomyRepository
         $economy->delete();
     }
 
-    private function getAccountByEconomyId(string $uuid)
+    private function getAccountByUuid(string $uuid)
     {
         return $this->accountModel->where('uuid', $uuid)->where('users', 'like', '%' . Auth::id() . '%')->first();
     }
