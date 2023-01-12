@@ -11,7 +11,7 @@ class UpdateAccountUnitTest extends AccountUnitTestCase
     /** @test */
     public function should_update_Account(): void
     {
-        $this->shouldUpdate(ShowAccountRequestMother::random()->getId(), UpdateAccountRequestMother::random());
+        $this->shouldUpdate(ShowAccountRequestMother::random()->getUuid(), UpdateAccountRequestMother::random());
         self::assertTrue(true);
     }
 }

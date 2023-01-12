@@ -9,18 +9,18 @@ namespace Src\Account\Application\Request;
 final class ModifyOwnerAccountRequest
 {
     public function __construct(
-        private int $accountId,
-        private int $userId
+        private string $accountUuid,
+        private int    $userId
     )
     {
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function accountId(): int
+    public function accountUuid(): string
     {
-        return $this->accountId;
+        return $this->accountUuid;
     }
 
     /**

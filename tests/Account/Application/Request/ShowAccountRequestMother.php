@@ -2,24 +2,25 @@
 
 namespace Tests\Account\Application\Request;
 
-use Src\Account\Application\Request\ShowAccountRequest;
+use Src\Account\Application\Request\ShowAccountUuidRequest;
 use Tests\Account\Domain\Account\ValueObjects\AccountIdVOMother;
+use Tests\Account\Domain\Account\ValueObjects\AccountUuidVOMother;
 
 
 class ShowAccountRequestMother
 {
-    public static function create(int $value): ShowAccountRequest
+    public static function create(string $value): ShowAccountUuidRequest
     {
-        return new ShowAccountRequest($value);
+        return new ShowAccountUuidRequest($value);
     }
 
-    public static function random(): ShowAccountRequest
+    public static function random(): ShowAccountUuidRequest
     {
-        $id = AccountIdVOMother::random()->value();
-        return self::create($id);
+        $uuid = AccountUuidVOMother::random()->value();
+        return self::create($uuid);
     }
 
-    private static function wrong(): ShowAccountRequest
+    private static function wrong(): ShowAccountUuidRequest
     {
         $id = AccountIdVOMother::badValue()->value();
         return self::create($id);

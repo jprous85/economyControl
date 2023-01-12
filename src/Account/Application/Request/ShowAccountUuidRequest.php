@@ -3,7 +3,7 @@
 
 namespace Src\Account\Application\Request;
 
-class DeleteAccountRequest
+class ShowAccountUuidRequest
 {
     public function __construct(private string $uuid)
     {

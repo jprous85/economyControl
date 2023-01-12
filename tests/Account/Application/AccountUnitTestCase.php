@@ -5,7 +5,7 @@ namespace Tests\Account\Application;
 use JsonException;
 use Src\Account\Application\Request\ModifyOwnerAccountRequest;
 use Src\Account\Application\Request\ModifyUserAccountRequest;
-use Src\Account\Application\Request\ShowAccountRequest;
+use Src\Account\Application\Request\ShowAccountUuidRequest;
 use Src\Account\Application\Request\UpdateAccountRequest;
 use Src\Account\Application\Response\AccountResponse;
 use Src\Account\Application\Response\AccountResponses;
@@ -63,7 +63,7 @@ abstract class AccountUnitTestCase extends TestCase
         $creator->__invoke($request);
     }
 
-    protected function shouldFind(ShowAccountRequest $request)
+    protected function shouldFind(ShowAccountUuidRequest $request)
     {
         $account = AccountMother::random();
 
@@ -95,7 +95,7 @@ abstract class AccountUnitTestCase extends TestCase
         $this->assertEquals($result, $accountResponses);
     }
 
-    protected function shouldUpdate(int $id, UpdateAccountRequest $request)
+    protected function shouldUpdate(string $uuid, UpdateAccountRequest $request)
     {
         $account_mother = AccountMother::random();
         $this->mock->shouldReceive('show')->andReturn($account_mother);
@@ -103,7 +103,7 @@ abstract class AccountUnitTestCase extends TestCase
         $this->mock->shouldReceive('update');
 
         $update = new UpdateAccount($this->mock);
-        $update->__invoke($id, $request);
+        $update->__invoke($uuid, $request);
     }
 
     /**

@@ -11,6 +11,7 @@ use Src\Account\Application\Request\ModifyUserAccountRequest;
 use Src\Account\Domain\Account\AccountNotExist;
 use Src\Account\Domain\Account\Repositories\AccountRepository;
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
+use Src\Account\Domain\Account\ValueObjects\AccountUuidVO;
 
 final class DeleteUserAccount
 {
@@ -23,13 +24,13 @@ final class DeleteUserAccount
      */
     public function __invoke(ModifyUserAccountRequest $request)
     {
-        $id = new AccountIdVO($request->accountId());
+        $uuid = new AccountUuidVO($request->accountUuid());
 
-        $account = $this->repository->show($id);
+        $account = $this->repository->show($uuid);
 
         if (!$account)
         {
-            throw new AccountNotExist($id->value());
+            throw new AccountNotExist($uuid->value());
         }
 
         $account->deleteUser($request->userId());

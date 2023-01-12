@@ -8,7 +8,7 @@ use Src\Shared\Domain\DomainError;
 
 final class AccountNotExist extends DomainError
 {
-    public function __construct(private int $id)
+    public function __construct(private string $uuid)
     {
         parent::__construct();
     }
@@ -20,6 +20,6 @@ final class AccountNotExist extends DomainError
 
     protected function errorMessage(): string
     {
-        return sprintf('The account <%s> does not exist', $this->id);
+        return sprintf('The account <%s> does not exist', $this->uuid);
     }
 }

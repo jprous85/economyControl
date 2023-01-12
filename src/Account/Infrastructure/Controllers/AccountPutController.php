@@ -30,19 +30,19 @@ final class AccountPutController extends ReturnsMiddleware
     {
     }
 
-    public function update(int $id, Request $request): JsonResponse
+    public function update(string $uuid, Request $request): JsonResponse
     {
         $request = $this->mapper($request);
-        ($this->update)($id, $request);
+        ($this->update)($uuid, $request);
         return $this->successResponse('Account updated');
     }
 
     /**
      * @throws JsonException
      */
-    public function insertUserAccount(int $id, int $userId): JsonResponse
+    public function insertUserAccount(string $uuid, int $userId): JsonResponse
     {
-        $insertUserAccountRequest = new ModifyUserAccountRequest($id, $userId);
+        $insertUserAccountRequest = new ModifyUserAccountRequest($uuid, $userId);
         ($this->insertUserAccount)($insertUserAccountRequest);
         return $this->successResponse('Account updated');
     }
@@ -50,9 +50,9 @@ final class AccountPutController extends ReturnsMiddleware
     /**
      * @throws JsonException
      */
-    public function deleteUserAccount(int $id, int $userId): JsonResponse
+    public function deleteUserAccount(string $uuid, int $userId): JsonResponse
     {
-        $deleteUserAccountRequest = new ModifyUserAccountRequest($id, $userId);
+        $deleteUserAccountRequest = new ModifyUserAccountRequest($uuid, $userId);
         ($this->deleteUserAccount)($deleteUserAccountRequest);
         return $this->successResponse('Account updated');
     }
@@ -60,9 +60,9 @@ final class AccountPutController extends ReturnsMiddleware
     /**
      * @throws JsonException
      */
-    public function insertOwnerAccount(int $id, int $userId): JsonResponse
+    public function insertOwnerAccount(string $uuid, int $userId): JsonResponse
     {
-        $insertUserAccountRequest = new ModifyOwnerAccountRequest($id, $userId);
+        $insertUserAccountRequest = new ModifyOwnerAccountRequest($uuid, $userId);
         ($this->insertOwnerAccount)($insertUserAccountRequest);
         return $this->successResponse('Account updated');
     }
@@ -70,9 +70,9 @@ final class AccountPutController extends ReturnsMiddleware
     /**
      * @throws JsonException
      */
-    public function deleteOwnerAccount(int $id, int $userId): JsonResponse
+    public function deleteOwnerAccount(string $uuid, int $userId): JsonResponse
     {
-        $deleteUserAccountRequest = new ModifyOwnerAccountRequest($id, $userId);
+        $deleteUserAccountRequest = new ModifyOwnerAccountRequest($uuid, $userId);
         ($this->deleteOwnerAccount)($deleteUserAccountRequest);
         return $this->successResponse('Account updated');
     }

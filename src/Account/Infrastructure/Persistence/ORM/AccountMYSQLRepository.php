@@ -8,6 +8,7 @@ use Src\Account\Domain\Account\Account;
 use Src\Account\Domain\Account\Repositories\AccountRepository;
 
 use Src\Account\Domain\Account\ValueObjects\AccountIdVO;
+use Src\Account\Domain\Account\ValueObjects\AccountUuidVO;
 use Src\Account\Infrastructure\Adapter\AccountAdapter;
 use Src\User\Domain\User\ValueObjects\UserIdVO;
 
@@ -19,9 +20,9 @@ final class AccountMYSQLRepository implements AccountRepository
     {
     }
 
-    public function show(AccountIdVO $id): ?Account
+    public function show(AccountUuidVO $uuid): ?Account
     {
-        $eloquent_accounts = $this->model->find($id->value());
+        $eloquent_accounts = $this->model->where(['uuid' => $uuid->value()])->first();
         return (new AccountAdapter($eloquent_accounts))->accountModelAdapter();
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Src\Account\Application\UseCases;
 
-use Src\Account\Application\Request\ShowAccountRequest;
+use Src\Account\Application\Request\ShowAccountUuidRequest;
 use Src\Account\Application\Request\UpdateAccountRequest;
 use Src\Account\Application\Response\AccountResponse;
 use Src\Account\Domain\Account\Repositories\AccountRepository;
@@ -12,8 +12,6 @@ use Src\Account\Domain\Account\Account;
 
 use Src\Account\Domain\Account\ValueObjects\AccountDescriptionVO;
 use Src\Account\Domain\Account\ValueObjects\AccountNameVO;
-use Src\Account\Domain\Account\ValueObjects\AccountOwnersAccountVO;
-use Src\Account\Domain\Account\ValueObjects\AccountUsersVO;
 use Src\Account\Domain\Account\ValueObjects\AccountActiveVO;
 
 
@@ -26,9 +24,9 @@ final class UpdateAccount
         $this->show__account = new ShowAccount($this->repository);
     }
 
-    public function __invoke(int $id, UpdateAccountRequest $request)
+    public function __invoke(string $uuid, UpdateAccountRequest $request)
     {
-        $response = ($this->show__account)(new ShowAccountRequest($id));
+        $response = ($this->show__account)(new ShowAccountUuidRequest($uuid));
         $account  = AccountResponse::responseToEntity($response);
 
         $account = $this->mapper($account, $request);

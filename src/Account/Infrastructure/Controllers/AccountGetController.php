@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Account\Infrastructure\Controllers;
 
 use Src\Account\Application\Request\ShowAccountRequest;
+use Src\Account\Application\Request\ShowAccountUuidRequest;
 use Src\Account\Application\UseCases\GetAccountByUserId;
 use Src\Account\Application\UseCases\ShowAllAccount;
 use Src\Account\Application\UseCases\ShowAccount;
@@ -22,9 +23,9 @@ final class AccountGetController extends ReturnsMiddleware
     ) {
     }
 
-    public function show(int $id): JsonResponse
+    public function show(string $uuid): JsonResponse
     {
-        $request = new ShowAccountRequest($id);
+        $request = new ShowAccountUuidRequest($uuid);
         return $this->successArrayResponse(($this->show_account)($request)->toArray());
     }
 
