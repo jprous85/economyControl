@@ -158,10 +158,42 @@ final class Economy
     /**
      * @throws JsonException
      */
+    public function updateIncome(array $income)
+    {
+        $economicManagement = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+        foreach ($economicManagement['incomes'] as $key => $incomeCore) {
+            if ($incomeCore['uuid'] === $income['uuid']) {
+                $economicManagement['incomes'][$key] = $income;
+            }
+        }
+        $this->calculateTotals($economicManagement);
+        $this->economic_management = new EconomyEconomicManagementVO(json_encode($economicManagement));
+        $this->updatedAt();
+    }
+
+    /**
+     * @throws JsonException
+     */
     public function addSpent(array $spent)
     {
         $economicManagement               = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
         $economicManagement['expenses'][] = $spent;
+        $this->calculateTotals($economicManagement);
+        $this->economic_management = new EconomyEconomicManagementVO(json_encode($economicManagement));
+        $this->updatedAt();
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function updateSpent(array $spent)
+    {
+        $economicManagement = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+        foreach ($economicManagement['expenses'] as $key => $SpentCore) {
+            if ($SpentCore['uuid'] === $spent['uuid']) {
+                $economicManagement['expenses'][$key] = $spent;
+            }
+        }
         $this->calculateTotals($economicManagement);
         $this->economic_management = new EconomyEconomicManagementVO(json_encode($economicManagement));
         $this->updatedAt();

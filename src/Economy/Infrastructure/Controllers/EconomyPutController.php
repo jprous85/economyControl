@@ -10,6 +10,7 @@ use Src\Economy\Application\Request\AddEconomyIncomeRequest;
 use Src\Economy\Application\Request\EconomyIdRequest;
 use Src\Economy\Application\Request\EconomyPaidStatusRequest;
 use Src\Economy\Application\Request\EconomyUuidRequest;
+use Src\Economy\Application\Request\UpdateEconomyManagementRequest;
 use Src\Economy\Application\Request\UpdateEconomyRequest;
 use Src\Economy\Application\Response\EconomyResponse;
 use Src\Economy\Application\UseCases\AddExpenses;
@@ -18,6 +19,8 @@ use Src\Economy\Application\UseCases\ChangePaidStatus;
 use Src\Economy\Application\UseCases\DeleteEconomyManagementRegister;
 use Src\Economy\Application\UseCases\ShowEconomyById;
 use Src\Economy\Application\UseCases\UpdateEconomy;
+use Src\Economy\Application\UseCases\UpdateIncome;
+use Src\Economy\Application\UseCases\UpdateSpent;
 use Src\Shared\Infrastructure\Controllers\ReturnsMiddleware;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,6 +35,8 @@ final class EconomyPutController extends ReturnsMiddleware
         private UpdateEconomy $update,
         private ShowEconomyById $showEconomyById,
         private AddIncome $addIncome,
+        private UpdateIncome $updateIncome,
+        private UpdateSpent $updateSpent,
         private AddExpenses $addExpenses,
         private DeleteEconomyManagementRegister $deleteEconomyManagementRegister,
         private ChangePaidStatus $changePaidStatus
@@ -48,7 +53,7 @@ final class EconomyPutController extends ReturnsMiddleware
     /**
      * @throws JsonException
      */
-    public function addIncome(int $id, Request $request)
+    public function addIncome(int $id, Request $request): JsonResponse
     {
         $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $addEconomyRequest = new AddEconomyIncomeRequest(
@@ -56,15 +61,33 @@ final class EconomyPutController extends ReturnsMiddleware
             $request->get('name'),
             $request->get('category'),
             floatval($request->get('amount')),
-            $request->get('active')
+            (bool) $request->get('active')
         );
         ($this->addIncome)($economy, $addEconomyRequest);
+        return $this->createdResponse('Income created');
     }
 
     /**
      * @throws JsonException
      */
-    public function addSpent(int $id, Request $request)
+    public function updateIncome(int $id, Request $request): JsonResponse
+    {
+        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
+        $updateEconomyRequest = new UpdateEconomyManagementRequest(
+            $request->get('uuid'),
+            $request->get('name'),
+            $request->get('category'),
+            floatval($request->get('amount')),
+            (bool) $request->get('active')
+        );
+        ($this->updateIncome)($economy, $updateEconomyRequest);
+        return $this->successResponse('Income updated');
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function addSpent(int $id, Request $request): JsonResponse
     {
         $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $addEconomyRequest = new AddEconomyExpensesRequest(
@@ -73,37 +96,58 @@ final class EconomyPutController extends ReturnsMiddleware
             $request->get('category'),
             floatval($request->get('amount')),
             $request->get('paid'),
-            $request->get('active')
+            (bool) $request->get('active')
         );
         ($this->addExpenses)($economy, $addEconomyRequest);
-    }
-
-    public function deleteIncomeRegisterManagement(int $id, Request $request)
-    {
-        $uuid = $request->get('uuid');
-        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
-        $addEconomyRequest = new EconomyUuidRequest($uuid);
-        ($this->deleteEconomyManagementRegister)($economy, self::INCOMES, $addEconomyRequest);
-    }
-
-    public function deleteSpentRegisterManagement(int $id, Request $request)
-    {
-        $uuid = $request->get('uuid');
-        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
-        $addEconomyRequest = new EconomyUuidRequest($uuid);
-        ($this->deleteEconomyManagementRegister)($economy, self::EXPENSES, $addEconomyRequest);
+        return $this->createdResponse('Spend included');
     }
 
     /**
      * @throws JsonException
      */
-    public function changePaidStatus(int $id, Request $request)
+    public function updateSpent(int $id, Request $request): JsonResponse
+    {
+        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
+        $updateEconomyRequest = new UpdateEconomyManagementRequest(
+            $request->get('uuid'),
+            $request->get('name'),
+            $request->get('category'),
+            floatval($request->get('amount')),
+            (bool) $request->get('active')
+        );
+        ($this->updateSpent)($economy, $updateEconomyRequest);
+        return $this->successResponse('Spent updated');
+    }
+
+    public function deleteIncomeRegisterManagement(int $id, Request $request): JsonResponse
+    {
+        $uuid = $request->get('uuid');
+        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
+        $addEconomyRequest = new EconomyUuidRequest($uuid);
+        ($this->deleteEconomyManagementRegister)($economy, self::INCOMES, $addEconomyRequest);
+        return $this->successResponse('Income deleted');
+    }
+
+    public function deleteSpentRegisterManagement(int $id, Request $request): JsonResponse
+    {
+        $uuid = $request->get('uuid');
+        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
+        $addEconomyRequest = new EconomyUuidRequest($uuid);
+        ($this->deleteEconomyManagementRegister)($economy, self::EXPENSES, $addEconomyRequest);
+        return $this->successResponse('spent deleted');
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function changePaidStatus(int $id, Request $request): JsonResponse
     {
         $uuid = $request->get('uuid');
         $status = $request->get('status');
         $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $paidStatusRequest = new EconomyPaidStatusRequest($uuid, $status);
         ($this->changePaidStatus)($economy, $paidStatusRequest);
+        return $this->successResponse('paid updated');
     }
 
     private function mapper(Request $request): UpdateEconomyRequest

@@ -9,6 +9,8 @@ Route::get('/read', [EconomyGetController::class, 'read']);
 Route::get('/{id}/show', [EconomyGetController::class, 'show']);
 Route::post('/create', [EconomyPostController::class, 'create']);
 Route::put('/income/{id}/add', [EconomyPutController::class, 'addIncome']);
+Route::put('/income/{id}/update', [EconomyPutController::class, 'updateIncome']);
+Route::put('/spent/{id}/update', [EconomyPutController::class, 'updateSpent']);
 Route::put('/spent/{id}/add', [EconomyPutController::class, 'addSpent']);
 Route::put('/income/{id}/delete', [EconomyPutController::class, 'deleteIncomeRegisterManagement']);
 Route::put('/spent/{id}/delete', [EconomyPutController::class, 'deleteSpentRegisterManagement']);

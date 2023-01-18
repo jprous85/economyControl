@@ -27,9 +27,9 @@ final class EconomyPostController extends ReturnsMiddleware
     private function mapper(Request $request): CreateEconomyRequest
     {
         return new CreateEconomyRequest(
+			$request->get('uuid'),
 			$request->get('start_month'),
 			$request->get('end_month'),
-			intval($request->get('account_id')),
         );
     }
 }
