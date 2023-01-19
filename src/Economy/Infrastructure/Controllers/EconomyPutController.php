@@ -10,8 +10,9 @@ use Src\Economy\Application\Request\AddEconomyIncomeRequest;
 use Src\Economy\Application\Request\EconomyIdRequest;
 use Src\Economy\Application\Request\EconomyPaidStatusRequest;
 use Src\Economy\Application\Request\EconomyUuidRequest;
-use Src\Economy\Application\Request\UpdateEconomyManagementRequest;
+use Src\Economy\Application\Request\UpdateEconomyIncomeManagementRequest;
 use Src\Economy\Application\Request\UpdateEconomyRequest;
+use Src\Economy\Application\Request\UpdateEconomySpentManagementRequest;
 use Src\Economy\Application\Response\EconomyResponse;
 use Src\Economy\Application\UseCases\AddExpenses;
 use Src\Economy\Application\UseCases\AddIncome;
@@ -73,7 +74,7 @@ final class EconomyPutController extends ReturnsMiddleware
     public function updateIncome(int $id, Request $request): JsonResponse
     {
         $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
-        $updateEconomyRequest = new UpdateEconomyManagementRequest(
+        $updateEconomyRequest = new UpdateEconomyIncomeManagementRequest(
             $request->get('uuid'),
             $request->get('name'),
             $request->get('category'),
@@ -95,7 +96,7 @@ final class EconomyPutController extends ReturnsMiddleware
             $request->get('name'),
             $request->get('category'),
             floatval($request->get('amount')),
-            $request->get('paid'),
+            (bool) $request->get('paid'),
             (bool) $request->get('active')
         );
         ($this->addExpenses)($economy, $addEconomyRequest);
@@ -108,11 +109,12 @@ final class EconomyPutController extends ReturnsMiddleware
     public function updateSpent(int $id, Request $request): JsonResponse
     {
         $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
-        $updateEconomyRequest = new UpdateEconomyManagementRequest(
+        $updateEconomyRequest = new UpdateEconomySpentManagementRequest(
             $request->get('uuid'),
             $request->get('name'),
             $request->get('category'),
             floatval($request->get('amount')),
+            (bool) $request->get('paid'),
             (bool) $request->get('active')
         );
         ($this->updateSpent)($economy, $updateEconomyRequest);
@@ -143,7 +145,7 @@ final class EconomyPutController extends ReturnsMiddleware
     public function changePaidStatus(int $id, Request $request): JsonResponse
     {
         $uuid = $request->get('uuid');
-        $status = $request->get('status');
+        $status = (bool) $request->get('status');
         $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $paidStatusRequest = new EconomyPaidStatusRequest($uuid, $status);
         ($this->changePaidStatus)($economy, $paidStatusRequest);

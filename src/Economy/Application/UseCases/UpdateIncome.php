@@ -7,7 +7,7 @@ namespace Src\Economy\Application\UseCases;
 
 
 use JsonException;
-use Src\Economy\Application\Request\UpdateEconomyManagementRequest;
+use Src\Economy\Application\Request\UpdateEconomyIncomeManagementRequest;
 use Src\Economy\Domain\Economy\Economy;
 use Src\Economy\Domain\Economy\Repositories\EconomyRepository;
 use Src\Shared\Infrastructure\CryptoAndDecrypt\CryptoAndDecrypt;
@@ -21,7 +21,7 @@ final class UpdateIncome
     /**
      * @throws JsonException
      */
-    public function __invoke(Economy $economy, UpdateEconomyManagementRequest $request)
+    public function __invoke(Economy $economy, UpdateEconomyIncomeManagementRequest $request)
     {
         $income['uuid']     = $request->getUuid();
         $income['name']     = $request->getName();

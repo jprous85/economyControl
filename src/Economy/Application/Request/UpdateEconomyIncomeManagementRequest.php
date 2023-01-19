@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Src\Economy\Application\Request;
 
 
-final class UpdateEconomyManagementRequest
+final class UpdateEconomyIncomeManagementRequest
 {
     public function __construct(
         private string $uuid,

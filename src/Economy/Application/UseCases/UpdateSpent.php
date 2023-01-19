@@ -7,7 +7,8 @@ namespace Src\Economy\Application\UseCases;
 
 
 use JsonException;
-use Src\Economy\Application\Request\UpdateEconomyManagementRequest;
+use Src\Economy\Application\Request\UpdateEconomyIncomeManagementRequest;
+use Src\Economy\Application\Request\UpdateEconomySpentManagementRequest;
 use Src\Economy\Domain\Economy\Economy;
 use Src\Economy\Domain\Economy\Repositories\EconomyRepository;
 use Src\Shared\Infrastructure\CryptoAndDecrypt\CryptoAndDecrypt;
@@ -21,12 +22,13 @@ final class UpdateSpent
     /**
      * @throws JsonException
      */
-    public function __invoke(Economy $economy, UpdateEconomyManagementRequest $request)
+    public function __invoke(Economy $economy, UpdateEconomySpentManagementRequest $request)
     {
         $spent['uuid']     = $request->getUuid();
         $spent['name']     = $request->getName();
         $spent['category'] = $request->getCategory() ?? 'Other';
         $spent['amount']   = $request->getAmount();
+        $spent['paid']     = $request->getPaid();
         $spent['active']   = $request->getActive();
 
         $economy->updateSpent($spent);
