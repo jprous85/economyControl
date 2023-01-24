@@ -13,6 +13,7 @@ final class AddEconomyIncomeRequest
         private string $name,
         private ?string $category,
         private float $amount,
+        private bool $fixed,
         private bool $active,
     )
     {
@@ -38,6 +39,10 @@ final class AddEconomyIncomeRequest
         return $this->amount;
     }
 
+    public function getFixed(): bool
+    {
+        return $this->fixed;
+    }
 
     public function getActive(): bool
     {

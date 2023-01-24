@@ -235,6 +235,23 @@ final class Economy
         $this->updatedAt();
     }
 
+    /**
+     * @throws JsonException
+     */
+    public function changeFixedStatus(array $register)
+    {
+        $economicManagement = json_decode($this->getEconomicManagement()->value(), true, FILTER_FLAG_STRIP_BACKTICK, JSON_THROW_ON_ERROR);
+
+        foreach ($economicManagement[$register['field']] as $key => $item) {
+            if ($item['uuid'] === $register['uuid']) {
+                $economicManagement[$register['field']][$key]['fixed'] = $register['fixed'];
+            }
+        }
+
+        $this->economic_management = new EconomyEconomicManagementVO(json_encode($economicManagement));
+        $this->updatedAt();
+    }
+
     public function encryptedEconomyManagement($encrypted)
     {
         $this->economic_management = new EconomyEconomicManagementVO($encrypted);

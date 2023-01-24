@@ -28,6 +28,7 @@ final class AddIncome
         $income['name']     = $request->getName();
         $income['category'] = $request->getCategory() ?? 'Other';
         $income['amount']   = $request->getAmount();
+        $income['fixed']   = $request->getFixed();
         $income['active']   = $request->getActive();
 
         $economy->addIncome($income);

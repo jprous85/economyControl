@@ -7,12 +7,13 @@ namespace Src\Economy\Application\UseCases;
 
 
 use JsonException;
-use Src\Economy\Application\Request\UpdateEconomyIncomeManagementRequest;
+use Src\Economy\Application\Request\EconomyFixedStatusRequest;
+use Src\Economy\Application\Request\EconomyPaidStatusRequest;
 use Src\Economy\Domain\Economy\Economy;
 use Src\Economy\Domain\Economy\Repositories\EconomyRepository;
 use Src\Shared\Infrastructure\CryptoAndDecrypt\CryptoAndDecrypt;
 
-final class UpdateIncome
+final class ChangeFixedStatus
 {
     public function __construct(private EconomyRepository $repository)
     {
@@ -21,16 +22,12 @@ final class UpdateIncome
     /**
      * @throws JsonException
      */
-    public function __invoke(Economy $economy, UpdateEconomyIncomeManagementRequest $request)
+    public function __invoke(Economy $economy, EconomyFixedStatusRequest $request)
     {
-        $income['uuid']     = $request->getUuid();
-        $income['name']     = $request->getName();
-        $income['category'] = $request->getCategory() ?? 'Other';
-        $income['amount']   = $request->getAmount();
-        $income['fixed']   = $request->getFixed();
-        $income['active']   = $request->getActive();
-
-        $economy->updateIncome($income);
+        $register['uuid'] = $request->getUuid();
+        $register['field'] = $request->getField();
+        $register['fixed'] = $request->getFixed();
+        $economy->changeFixedStatus($register);
         $economy->encryptedEconomyManagement(CryptoAndDecrypt::encrypt($economy->getEconomicManagement()->value()));
         $this->repository->update($economy);
     }

@@ -14,6 +14,7 @@ final class UpdateEconomySpentManagementRequest
         private ?string $category,
         private float $amount,
         private bool $paid,
+        private bool $fixed,
         private bool $active,
     )
     {
@@ -42,6 +43,11 @@ final class UpdateEconomySpentManagementRequest
     public function getPaid(): bool
     {
         return $this->paid;
+    }
+
+    public function getFixed(): bool
+    {
+        return $this->fixed;
     }
 
     public function getActive(): bool

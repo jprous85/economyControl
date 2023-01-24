@@ -66,7 +66,6 @@ final class EconomyResponse
 	}
 
 
-
     public function toArray(): array
     {
         return [
@@ -93,7 +92,6 @@ final class EconomyResponse
 			new EconomyActiveVO($response->getActive()),
 			new EconomyCreatedAtVO($response->getCreatedAt()),
 			new EconomyUpdatedAtVO($response->getUpdatedAt()),
-
         );
     }
 

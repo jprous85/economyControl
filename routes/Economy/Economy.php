@@ -15,5 +15,6 @@ Route::put('/spent/{id}/add', [EconomyPutController::class, 'addSpent']);
 Route::put('/income/{id}/delete', [EconomyPutController::class, 'deleteIncomeRegisterManagement']);
 Route::put('/spent/{id}/delete', [EconomyPutController::class, 'deleteSpentRegisterManagement']);
 Route::put('/spent/{id}/paid', [EconomyPutController::class, 'changePaidStatus']);
+Route::put('/fixed/{id}/update', [EconomyPutController::class, 'changeFixedStatus']);
 Route::put('/{id}/update', [EconomyPutController::class, 'update']);
 Route::delete('/{id}/delete', [EconomyDeleteController::class, 'delete']);

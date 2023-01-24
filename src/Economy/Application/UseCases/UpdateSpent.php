@@ -29,6 +29,7 @@ final class UpdateSpent
         $spent['category'] = $request->getCategory() ?? 'Other';
         $spent['amount']   = $request->getAmount();
         $spent['paid']     = $request->getPaid();
+        $spent['fixed']   = $request->getFixed();
         $spent['active']   = $request->getActive();
 
         $economy->updateSpent($spent);

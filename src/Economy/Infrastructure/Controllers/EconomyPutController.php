@@ -7,6 +7,7 @@ namespace Src\Economy\Infrastructure\Controllers;
 use JsonException;
 use Src\Economy\Application\Request\AddEconomyExpensesRequest;
 use Src\Economy\Application\Request\AddEconomyIncomeRequest;
+use Src\Economy\Application\Request\EconomyFixedStatusRequest;
 use Src\Economy\Application\Request\EconomyIdRequest;
 use Src\Economy\Application\Request\EconomyPaidStatusRequest;
 use Src\Economy\Application\Request\EconomyUuidRequest;
@@ -16,6 +17,7 @@ use Src\Economy\Application\Request\UpdateEconomySpentManagementRequest;
 use Src\Economy\Application\Response\EconomyResponse;
 use Src\Economy\Application\UseCases\AddExpenses;
 use Src\Economy\Application\UseCases\AddIncome;
+use Src\Economy\Application\UseCases\ChangeFixedStatus;
 use Src\Economy\Application\UseCases\ChangePaidStatus;
 use Src\Economy\Application\UseCases\DeleteEconomyManagementRegister;
 use Src\Economy\Application\UseCases\ShowEconomyById;
@@ -40,7 +42,8 @@ final class EconomyPutController extends ReturnsMiddleware
         private UpdateSpent $updateSpent,
         private AddExpenses $addExpenses,
         private DeleteEconomyManagementRegister $deleteEconomyManagementRegister,
-        private ChangePaidStatus $changePaidStatus
+        private ChangePaidStatus $changePaidStatus,
+        private ChangeFixedStatus $changeFixedStatus
     )
     {}
 
@@ -62,6 +65,7 @@ final class EconomyPutController extends ReturnsMiddleware
             $request->get('name'),
             $request->get('category'),
             floatval($request->get('amount')),
+            (bool) $request->get('fixed'),
             (bool) $request->get('active')
         );
         ($this->addIncome)($economy, $addEconomyRequest);
@@ -79,6 +83,7 @@ final class EconomyPutController extends ReturnsMiddleware
             $request->get('name'),
             $request->get('category'),
             floatval($request->get('amount')),
+            (bool) $request->get('fixed'),
             (bool) $request->get('active')
         );
         ($this->updateIncome)($economy, $updateEconomyRequest);
@@ -97,6 +102,7 @@ final class EconomyPutController extends ReturnsMiddleware
             $request->get('category'),
             floatval($request->get('amount')),
             (bool) $request->get('paid'),
+            (bool) $request->get('fixed'),
             (bool) $request->get('active')
         );
         ($this->addExpenses)($economy, $addEconomyRequest);
@@ -115,6 +121,7 @@ final class EconomyPutController extends ReturnsMiddleware
             $request->get('category'),
             floatval($request->get('amount')),
             (bool) $request->get('paid'),
+            (bool) $request->get('fixed'),
             (bool) $request->get('active')
         );
         ($this->updateSpent)($economy, $updateEconomyRequest);
@@ -150,6 +157,20 @@ final class EconomyPutController extends ReturnsMiddleware
         $paidStatusRequest = new EconomyPaidStatusRequest($uuid, $status);
         ($this->changePaidStatus)($economy, $paidStatusRequest);
         return $this->successResponse('paid updated');
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function changeFixedStatus(int $id, Request $request): JsonResponse
+    {
+        $uuid = $request->get('uuid');
+        $field = $request->get('field');
+        $fixed = (bool) $request->get('fixed');
+        $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
+        $fixedStatusRequest = new EconomyFixedStatusRequest($uuid, $field, $fixed);
+        ($this->changeFixedStatus)($economy, $fixedStatusRequest);
+        return $this->successResponse('fixed updated');
     }
 
     private function mapper(Request $request): UpdateEconomyRequest
