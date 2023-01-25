@@ -11,12 +11,12 @@ create-migration:
 	@php artisan make:migration $(name)
 	@echo "Migration $(name) has been created successfully"
 
-migrate:
+migrate: ## -Generate_migrations_and_run_seeders
 	@php artisan migrate
 	@php artisan db:seed
 	@echo "Migrate has been executed successfully"
 
-cache-clear:
+cache-clear: ## -Clean_cache
 	@php artisan cache:clear
 	@echo "Cache has been cleared"
 

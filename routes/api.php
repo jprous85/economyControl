@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
-use Src\Auth\Infrastructure\Controllers\AuthPostController;
+use Symfony\Component\HttpFoundation\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,10 @@ use Src\Auth\Infrastructure\Controllers\AuthPostController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/health-check', function() {
+    return new JsonResponse(['data' => 'OK', 'code' => Response::HTTP_OK]);
+});
 
 Route::group([], __DIR__ . '/Auth/Auth.php');
 
