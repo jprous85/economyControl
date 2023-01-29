@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Dirape\Token\Token;
 use Src\Auth\Application\Request\LoginRequest;
+use Src\Shared\Application\SendEmail\SendEmailDTO;
+use Src\Shared\Domain\Repositories\SendEmailRepository;
 use Src\Shared\Infrastructure\Controllers\ReturnsMiddleware;
 use Src\User\Application\Request\ShowUserRequest;
 use Src\User\Application\UseCases\UpdateLastLogin;
@@ -24,7 +26,8 @@ final class AuthPostController extends ReturnsMiddleware
     private string $scope;
 
     public function __construct(
-        private UpdateLastLogin $updateLastLogin
+        private UpdateLastLogin $updateLastLogin,
+        private SendEmailRepository $sendEmailRepository
     )
     {
     }
@@ -51,6 +54,17 @@ final class AuthPostController extends ReturnsMiddleware
 
             ($this->updateLastLogin)(new ShowUserRequest($user->id));
 
+            $this->sendEmailRepository->send(
+                new SendEmailDTO(
+                    '',
+                    $user['email'],
+                    null,
+                    null,
+                    '[Economy Control] - Welcome!',
+                    'email.welcome'
+                )
+            );
+
             return $this->successArrayResponse(
                 [
                     'token' => $token
@@ -75,6 +89,8 @@ final class AuthPostController extends ReturnsMiddleware
         $this->scope = $user->role->name;
 
         $token = $user->createToken('token',  [$this->scope]);
+
+        // Send email
 
         return $this->successArrayResponse(
             [

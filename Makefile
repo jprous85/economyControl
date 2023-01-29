@@ -20,6 +20,10 @@ cache-clear: ## -Clean_cache
 	@php artisan cache:clear
 	@echo "Cache has been cleared"
 
+queue: ## -work-queue
+	@php artisan queue:work
+	@echo "Queues are working"
+
 help:
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 	| sed -n 's/^\(.*\): \(.*\)##\(.*\)/\1\3/p' \
