@@ -46,4 +46,6 @@ final class UserORMModel extends Authenticatable
     {
         return $this->belongsTo(RoleORMModel::class, 'role_id', 'id');
     }
+
+    // TODO:: make function for getting information about his configuration
 }

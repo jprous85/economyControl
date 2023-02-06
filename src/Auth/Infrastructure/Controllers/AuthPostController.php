@@ -67,7 +67,8 @@ final class AuthPostController extends ReturnsMiddleware
 
             return $this->successArrayResponse(
                 [
-                    'token' => $token
+                    'token' => $token,
+                    'theme' => 'black'//$user->config->theme
                 ]
             );
         }
