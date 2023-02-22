@@ -20,6 +20,12 @@ cache-clear: ## -Clean_cache
 	@php artisan cache:clear
 	@echo "Cache has been cleared"
 
+crypt-env: ## -Crypt_env_file
+	@php vendor/programandoconcabeza/env-management/crypt.php
+
+decrypt-env: ## -Decrypt_env_file
+	@php vendor/programandoconcabeza/env-management/decrypt.php
+
 queue: ## -work-queue
 	@php artisan queue:work
 	@echo "Queues are working"

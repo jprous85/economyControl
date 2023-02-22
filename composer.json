@@ -10,6 +10,8 @@
     "require": {
         "php": "^8.0.2",
         "ext-openssl": "*",
+        "ext-readline": "*",
+        "ext-zip": "*",
         "defuse/php-encryption": "^2.3",
         "dirape/token": "^2.3",
         "guzzlehttp/guzzle": "^7.2",
@@ -19,6 +21,7 @@
         "laravel/tinker": "^2.7",
         "mailgun/mailgun-php": "^3.5",
         "nyholm/psr7": "^1.5",
+        "programandoconcabeza/env-management": "^1.0",
         "symfony/http-client": "^6.2"
     },
     "require-dev": {
