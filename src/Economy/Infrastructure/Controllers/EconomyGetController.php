@@ -7,6 +7,7 @@ namespace Src\Economy\Infrastructure\Controllers;
 use Src\Economy\Application\Request\EconomyAccountUuidRequest;
 use Src\Economy\Application\Request\ShowEconomyRequest;
 use Src\Economy\Application\UseCases\ShowAllEconomy;
+use Src\Economy\Application\UseCases\ShowAllGroupsByCategoriesEconomy;
 use Src\Economy\Application\UseCases\ShowEconomy;
 
 use Src\Shared\Infrastructure\Controllers\ReturnsMiddleware;
@@ -16,7 +17,8 @@ final class EconomyGetController extends ReturnsMiddleware
 {
     public function __construct(
         private ShowEconomy $show_economy,
-        private ShowAllEconomy $show_all_economy
+        private ShowAllEconomy $show_all_economy,
+        private ShowAllGroupsByCategoriesEconomy $showAllGroupsByCategoriesEconomy
     ) {
     }
 
@@ -40,6 +42,16 @@ final class EconomyGetController extends ReturnsMiddleware
     {
         try {
             return $this->successArrayResponse(($this->show_all_economy)()->toArray());
+        } catch (\Exception $e) {
+            return $this->error500Response($e->getMessage());
+        }
+    }
+
+    public function showGroupsByCategories(string $accountUuid): JsonResponse
+    {
+        try {
+            $request = new EconomyAccountUuidRequest($accountUuid);
+            return $this->successArrayResponse(($this->showAllGroupsByCategoriesEconomy)($request)->toArray());
         } catch (\Exception $e) {
             return $this->error500Response($e->getMessage());
         }

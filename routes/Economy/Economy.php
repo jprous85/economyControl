@@ -6,6 +6,7 @@ use Src\Economy\Infrastructure\Controllers\EconomyPostController;
 use Src\Economy\Infrastructure\Controllers\EconomyPutController;
 
 Route::get('/read', [EconomyGetController::class, 'read']);
+Route::get('/{id}/groupCategories', [EconomyGetController::class, 'showGroupsByCategories']);
 Route::get('/{id}/show', [EconomyGetController::class, 'show']);
 Route::post('/create', [EconomyPostController::class, 'create']);
 Route::put('/income/{id}/add', [EconomyPutController::class, 'addIncome']);

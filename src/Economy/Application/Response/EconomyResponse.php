@@ -66,6 +66,11 @@ final class EconomyResponse
 	}
 
 
+
+    public function setEconomicManagement($economic_management): void {
+        $this->economic_management = $economic_management;
+    }
+
     public function toArray(): array
     {
         return [
