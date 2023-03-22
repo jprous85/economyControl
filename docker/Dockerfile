@@ -4,15 +4,10 @@ RUN apt-get update
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-RUN yes | pecl install xdebug \
-    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.mode = debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.start_with_request = yes"  >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_enna = 1"  >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.client_port = 9003"  >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.client_discovery_header = yes" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.idekey = PHPSTORM" >> /usr/local/etc/php/conf.d/xdebug.ini
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
+RUN install-php-extensions xdebug
+
+COPY docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/
 
 RUN apt-get install -y curl
 RUN apt-get install -y git

@@ -7,9 +7,17 @@ shell-back: ## -Enter_inside_of_back_shell
 shell-db: ## -Enter_inside_of_database_shell
 	docker exec -it economycontrol_db_1 bash
 
-create-migration:
+NAME_MIGRATION=$(name)
+.PHONY: create-migration
+create-migration: ## -Create_new_migration
 	@php artisan make:migration $(name)
 	@echo "Migration $(name) has been created successfully"
+
+NAME_SEEDER=$(name)
+.PHONY: create-seeder
+create-seeder: ## -Create_new_seeder
+	@php artisan make:seeder $(name)
+	@echo "Seeder $(name) has been created successfully"
 
 migrate: ## -Generate_migrations_and_run_seeders
 	@php artisan migrate
