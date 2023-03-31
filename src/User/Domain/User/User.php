@@ -135,7 +135,7 @@ final class User
             'active'            => $this->getActive()->value(),
             'verified'          => $this->getVerified()->value(),
             'created_at'        => $this->getCreatedAt()->value(),
-            'updated_at'        => ($this->getUpdatedAt()->value()) ? $this->getUpdatedAt()?->value() : null,
+            'updated_at'        => $this->getUpdatedAt()->value(),
         ];
     }
 
