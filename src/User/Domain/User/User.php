@@ -86,7 +86,7 @@ final class User
             new UserActiveVO(1),
             new UserVerifiedVO(0),
             new UserCreatedAtVO(Carbon::now('Europe/Madrid')->format('Y-m-d H:i:s')),
-            null,
+            new UserUpdatedAtVO(null),
         );
     }
 
@@ -135,7 +135,7 @@ final class User
             'active'            => $this->getActive()->value(),
             'verified'          => $this->getVerified()->value(),
             'created_at'        => $this->getCreatedAt()->value(),
-            'updated_at'        => $this->getUpdatedAt()->value(),
+            'updated_at'        => $this->getUpdatedAt()->value()
         ];
     }
 
