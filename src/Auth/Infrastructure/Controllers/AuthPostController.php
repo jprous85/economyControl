@@ -52,7 +52,7 @@ final class AuthPostController extends ReturnsMiddleware
 
             $token = $user->createToken('token',  [$this->scope]);
 
-            ($this->updateLastLogin)(new ShowUserRequest($user->id));
+            //($this->updateLastLogin)(new ShowUserRequest($user->id));
 
             $this->sendEmailRepository->send(
                 new SendEmailDTO(
