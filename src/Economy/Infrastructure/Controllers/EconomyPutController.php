@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Src\Economy\Infrastructure\Controllers;
 
 use JsonException;
+use Ramsey\Uuid\Uuid;
 use Src\Economy\Application\Request\AddEconomyExpensesRequest;
 use Src\Economy\Application\Request\AddEconomyIncomeRequest;
 use Src\Economy\Application\Request\EconomyFixedStatusRequest;
@@ -61,7 +62,7 @@ final class EconomyPutController extends ReturnsMiddleware
     {
         $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $addEconomyRequest = new AddEconomyIncomeRequest(
-            $request->get('uuid'),
+            (string) Uuid::uuid4(),
             $request->get('name'),
             $request->get('category'),
             floatval($request->get('amount')),
@@ -97,7 +98,7 @@ final class EconomyPutController extends ReturnsMiddleware
     {
         $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $addEconomyRequest = new AddEconomyExpensesRequest(
-            $request->get('uuid'),
+            (string) Uuid::uuid4(),
             $request->get('name'),
             $request->get('category'),
             floatval($request->get('amount')),

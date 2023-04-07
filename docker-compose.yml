@@ -11,10 +11,10 @@ services:
             - host.docker.internal:host-gateway
     db:
         image: mysql:5.7
+        container_name: '${APP_NAME}_db'
         restart: always
         environment:
             MYSQL_DATABASE: '${APP_MYSQL_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
             MYSQL_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ROOT_PASSWORD: 'root'
         command:

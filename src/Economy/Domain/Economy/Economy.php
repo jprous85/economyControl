@@ -164,6 +164,7 @@ final class Economy
         foreach ($economicManagement['incomes'] as $key => $incomeCore) {
             if ($incomeCore['uuid'] === $income['uuid']) {
                 $economicManagement['incomes'][$key] = $income;
+                break;
             }
         }
         $this->calculateTotals($economicManagement);
@@ -192,6 +193,7 @@ final class Economy
         foreach ($economicManagement['expenses'] as $key => $SpentCore) {
             if ($SpentCore['uuid'] === $spent['uuid']) {
                 $economicManagement['expenses'][$key] = $spent;
+                break;
             }
         }
         $this->calculateTotals($economicManagement);
@@ -227,6 +229,7 @@ final class Economy
         foreach ($economicManagement['expenses'] as $key => $item) {
             if ($item['uuid'] === $register['uuid']) {
                 $economicManagement['expenses'][$key]['paid'] = $register['status'];
+                break;
             }
         }
 
@@ -245,6 +248,7 @@ final class Economy
         foreach ($economicManagement[$register['field']] as $key => $item) {
             if ($item['uuid'] === $register['uuid']) {
                 $economicManagement[$register['field']][$key]['fixed'] = $register['fixed'];
+                break;
             }
         }
 
