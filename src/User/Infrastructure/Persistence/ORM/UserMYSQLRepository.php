@@ -11,6 +11,7 @@ use Src\User\Domain\User\User;
 use Src\User\Domain\User\Repositories\UserRepository;
 
 use Src\User\Domain\User\ValueObjects\UserIdVO;
+use Src\User\Domain\User\ValueObjects\UserUuidVO;
 use Src\User\Infrastructure\Adapter\UserAdapter;
 
 
@@ -29,6 +30,15 @@ final class UserMYSQLRepository implements UserRepository
         $eloquent_user = $this->model->find($id->value());
         if (!$eloquent_user) {
             throw new UserNotFoundException($id->value());
+        }
+        return (new UserAdapter($eloquent_user))->userModelAdapter();
+    }
+
+    public function byUuid(UserUuidVO $uuidVo): ?User
+    {
+        $eloquent_user = $this->model->where('uuid', $uuidVo->value())->first();
+        if (!$eloquent_user) {
+            throw new UserNotFoundException(1234);
         }
         return (new UserAdapter($eloquent_user))->userModelAdapter();
     }
@@ -81,4 +91,5 @@ final class UserMYSQLRepository implements UserRepository
         $user = $this->model->find($id->value());
         $user->delete();
     }
+
 }

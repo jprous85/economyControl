@@ -56,7 +56,7 @@ final class AuthPostController extends ReturnsMiddleware
 
             $this->sendEmailRepository->send(
                 new SendEmailDTO(
-                    '',
+                    'programandoconcabeza@gmail.com',
                     $user['email'],
                     null,
                     null,

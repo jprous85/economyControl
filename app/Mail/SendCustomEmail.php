@@ -32,6 +32,7 @@ class SendCustomEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: $this->sendEmailDTO->getFrom(),
             to: $this->sendEmailDTO->getTo(),
             subject: $this->sendEmailDTO->getSubject(),
         );

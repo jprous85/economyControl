@@ -3,6 +3,7 @@
 namespace Tests\User\Application;
 
 use Src\User\Application\Request\ShowUserRequest;
+use Src\User\Application\Request\ShowUserUuidRequest;
 use Src\User\Application\Request\UpdateUserRequest;
 use Src\User\Application\Response\UserResponse;
 use Src\User\Application\Response\UserResponses;
@@ -10,6 +11,7 @@ use Src\User\Application\UseCases\CreateUser;
 use Src\User\Application\UseCases\GetAccountUsers;
 use Src\User\Application\UseCases\ShowUser;
 use Src\User\Application\UseCases\ShowAllUser;
+use Src\User\Application\UseCases\ShowUserByUuid;
 use Src\User\Application\UseCases\UpdateUser;
 use Src\User\Application\UseCases\DeleteUser;
 use Src\User\Domain\User\Repositories\UserRepository;
@@ -65,14 +67,14 @@ abstract class UserUnitTestCase extends TestCase
         $creator->__invoke($request);
     }
 
-    protected function shouldFind(ShowUserRequest $request)
+    protected function shouldFind(ShowUserUuidRequest $request)
     {
         $user = UserMother::random();
         $userResponse = UserResponse::SelfUserResponse($user);
 
-        $this->mock->shouldReceive('show')->andReturn($user);
+        $this->mock->shouldReceive('byUuid')->andReturn($user);
 
-        $finder = new ShowUser($this->mock);
+        $finder = new ShowUserByUuid($this->mock);
         $result = $finder->__invoke($request);
 
         $this->assertEquals($result, $userResponse);

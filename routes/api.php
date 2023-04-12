@@ -2,6 +2,7 @@
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
+use Src\Shared\Infrastructure\Controllers\EmailTemplateGetController;
 use Symfony\Component\HttpFoundation\Response;
 
 /*
@@ -18,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 Route::get('/health-check', function() {
     return new JsonResponse(['data' => 'OK', 'code' => Response::HTTP_OK]);
 });
+
+Route::get('/email/{template}/{uuid}', [EmailTemplateGetController::class, 'showEmailTemplate']);
 
 Route::group([], __DIR__ . '/Auth/Auth.php');
 
