@@ -1,5 +1,10 @@
+
 kind: pipeline
-name: default
+name: remote ssh command
+on:
+  push:
+    branches:
+      - main
 steps:
   - name: ssh
     image: appleboy/drone-ssh
