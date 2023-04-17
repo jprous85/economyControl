@@ -14,6 +14,7 @@ use Dirape\Token\Token;
 use Src\Auth\Application\Request\LoginRequest;
 use Src\Shared\Application\SendEmail\SendEmailDTO;
 use Src\Shared\Domain\Repositories\SendEmailRepository;
+use Src\Shared\Infrastructure\CommonFunctions\CommonFunctions;
 use Src\Shared\Infrastructure\Controllers\ReturnsMiddleware;
 use Src\User\Application\Request\ShowUserRequest;
 use Src\User\Application\UseCases\UpdateLastLogin;
@@ -26,7 +27,7 @@ final class AuthPostController extends ReturnsMiddleware
     private string $scope;
 
     public function __construct(
-        private UpdateLastLogin $updateLastLogin,
+        private UpdateLastLogin     $updateLastLogin,
         private SendEmailRepository $sendEmailRepository
     )
     {
@@ -50,20 +51,9 @@ final class AuthPostController extends ReturnsMiddleware
                 $this->scope = $userRole->name;
             }
 
-            $token = $user->createToken('token',  [$this->scope]);
+            $token = $user->createToken('token', [$this->scope]);
 
             //($this->updateLastLogin)(new ShowUserRequest($user->id));
-
-            $this->sendEmailRepository->send(
-                new SendEmailDTO(
-                    'programandoconcabeza@gmail.com',
-                    $user['email'],
-                    null,
-                    null,
-                    '[Economy Control] - Welcome!',
-                    'email.welcome'
-                )
-            );
 
             return $this->successArrayResponse(
                 [
@@ -79,24 +69,43 @@ final class AuthPostController extends ReturnsMiddleware
     /**
      * @throws Exception
      */
-    public function register(Request $request): JsonResponse
+    public function register(Request $request): void
     {
         $input             = $request->all();
-        $input['password'] = bcrypt($input['password']);
+        $password          = CommonFunctions::generateRandomString();
+        $input['password'] = bcrypt($password);
         $input['api_key']  = (new Token())->Unique('users', 'api_key', 60);
 
         $user = UserORMModel::create($input);
 
-        $this->scope = $user->role->name;
+        $urlOtpBase64 = env('APP_FRONT_URL')
+            . DIRECTORY_SEPARATOR
+            . 'opt-register'
+            . DIRECTORY_SEPARATOR
+            . base64_encode(
+                json_encode(
+                    [
+                        'email'     => $user['email'],
+                        'password'  => $password,
+                        'timestamp' => time()
+                    ],
+                    512,
+                    JSON_THROW_ON_ERROR
+                )
+            );
 
-        $token = $user->createToken('token',  [$this->scope]);
-
-        // Send email
-
-        return $this->successArrayResponse(
-            [
-                'token' => $token
-            ]
+        $this->sendEmailRepository->send(
+            new SendEmailDTO(
+                to: $user['email'],
+                subject: 'email/welcome.subject',
+                template: 'email.welcome',
+                language: 'es',
+                params: [
+                    'email'    => $user['email'],
+                    'password' => $password,
+                    'url'      => $urlOtpBase64
+                ]
+            )
         );
     }
 

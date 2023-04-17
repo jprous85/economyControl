@@ -9,22 +9,16 @@ namespace Src\Shared\Application\SendEmail;
 final class SendEmailDTO
 {
     public function __construct(
-        private string $from,
         private string $to,
-        private ?string $cc,
-        private ?string $bcc,
+        private ?string $cc = null,
+        private ?string $bcc = null,
         private string $subject,
-        private string $template
+        private string $template,
+        private string $language = 'en',
+        private ?array $params = null
     )
     {
-    }
 
-    /**
-     * @return string
-     */
-    public function getFrom(): string
-    {
-        return $this->from;
     }
 
     /**
@@ -62,8 +56,25 @@ final class SendEmailDTO
     /**
      * @return string
      */
+    public function getLanguage(): string
+    {
+        return $this->language;
+    }
+
+
+    /**
+     * @return string
+     */
     public function getTemplate(): string
     {
         return $this->template;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getParams(): ?array
+    {
+        return $this->params;
     }
 }
