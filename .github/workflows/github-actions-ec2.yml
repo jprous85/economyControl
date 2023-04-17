@@ -1,18 +1,17 @@
-name: remote ssh command
-on:
-  push:
-    branches:
-      - main
-jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
-          TARGET: ${{ secrets.TARGET_DIR }}
-          script: whoami
+kind: pipeline
+name: default
+steps:
+  - name: ssh
+    image: appleboy/drone-ssh
+    settings:
+      host:
+        from_secret: REMOTE_HOST
+      username:
+        from_secret: USERNAME
+      key:
+        from_secret: SSH_PRIVATE_KEY
+      target:
+        from_secret: TARGET_DIR
+      script:
+        - echo "hello"
+        - echo "deploy"
