@@ -21,10 +21,6 @@ jobs:
           role-to-assume: arn:aws:iam::932592296700:role/githubRoleActions
           aws-region: eu-west-1
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
       - name: Run Scripts
         run: |
           echo "Your CLI code should be placed here"
