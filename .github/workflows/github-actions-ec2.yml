@@ -23,4 +23,5 @@ jobs:
 
       - name: Run Scripts
         run: |
-          echo "Your CLI code should be placed here"
+          cd /var/www/html/economyControl
+          git pull
