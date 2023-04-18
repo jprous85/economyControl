@@ -21,7 +21,7 @@ jobs:
           role-to-assume: arn:aws:iam::932592296700:role/githubAwsRoleActions
           aws-region: eu-west-1
 
-      - name: Run Scripts
+      - name: download project
+        working-directory: /var/www/html/economyControl
         run: |
-          cd /var/www/html/economyControl
           git pull
