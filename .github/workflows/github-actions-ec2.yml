@@ -31,4 +31,3 @@ jobs:
       - name: Run Scripts
         run: |
           echo "Your CLI code should be placed here"
-
