@@ -36,16 +36,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
-        with:
-          key: ${{ secrets.AWS_PRIVATE_KEY }}
-          host: ${{ secrets.HOSTNAME }}
-          username: ${{ secrets.USER_NAME }}
-          script: |
-            cd /var/www/html/economyControl
-            git checkout master
-            git fetch --all
-            git reset --hard origin/master
-            git pull origin master
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
+          cat >>~/.ssh/config <<END
+          Host staging
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/staging.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.HOSTNAME }}
+          SSH_USER: ${{ secrets.USER_NAME }}
 
+      - name: enter to instance and deploy
+        run: |
+          ssh staging '
+            #Now we have got the access of EC2 and we will start the deploy .
+            cd /var/www/html/economyControl &&
+            git checkout master &&
+            git fetch --all &&
+            git reset --hard origin/master &&
+            git pull origin master
+          '
