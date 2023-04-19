@@ -54,7 +54,8 @@ jobs:
           SSH_HOST: ${{ secrets.USER_NAME }}
 
       - name: enter to instance and deploy
-        run: ssh staging '
+        run: |
+          ssh staging '
             #Now we have got the access of EC2 and we will start the deploy .
             cd /var/www/html/economyControl &&
             git checkout master &&
