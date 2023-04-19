@@ -49,9 +49,9 @@ jobs:
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ${{ secrets.AWS_PRIVATE_KEY }}
-          SSH_KEY: ${{ secrets.HOSTNAME }}
-          SSH_HOST: ${{ secrets.USER_NAME }}
+          SSH_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.HOSTNAME }}
+          SSH_USER: ${{ secrets.USER_NAME }}
 
       - name: enter to instance and deploy
         run: |
