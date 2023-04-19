@@ -62,7 +62,7 @@ jobs:
         run: |
           echo $UNO
           echo $DOS
-          echo: $TRES
+          echo $TRES
 
       - name: enter to instance and deploy
         run: |
