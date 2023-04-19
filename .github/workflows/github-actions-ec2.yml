@@ -54,20 +54,9 @@ jobs:
           SSH_HOST: ${{ secrets.HOSTNAME }}
           SSH_USER: ${{ secrets.USER_NAME }}
 
-      - name: show envs
-        env:
-          UNO: ${{ secrets.AWS_PRIVATE_KEY }}
-          DOS: ${{ secrets.HOSTNAME }}
-          TRES: ${{ secrets.USER_NAME }}
-
-        run: |
-          echo $UNO
-          echo $DOS
-          echo $TRES
-
       - name: enter to instance and deploy
         run: |
-          ssh staging '
+          ssh -T -p 443 staging '
             #Now we have got the access of EC2 and we will start the deploy .
             cd /var/www/html/economyControl &&
             git checkout master &&
