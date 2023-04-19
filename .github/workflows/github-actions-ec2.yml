@@ -37,15 +37,15 @@ jobs:
 
     steps:
       - name: executing remote ssh commands using password
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.HOSTNAME }}
-            username: ${{ secrets.USER_NAME }}
-            key: ${{ secrets.AWS_PRIVATE_KEY }}
-            script: |
-              cd /var/www/html/economyControl
-              git checkout master
-              git fetch --all
-              git reset --hard origin/master
-              git pull origin master
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOSTNAME }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          script: |
+            cd /var/www/html/economyControl
+            git checkout master
+            git fetch --all
+            git reset --hard origin/master
+            git pull origin master
 
