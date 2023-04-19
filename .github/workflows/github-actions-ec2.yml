@@ -52,7 +52,7 @@ jobs:
         echo "$SSH_KEY" > ~/.ssh/github-actions-key
         chmod 600 ~/.ssh/github-actions-key
         cat >>~/.ssh/config <<END
-        Match ec2
+        Host ec2
           HostName $SSH_HOST
           User $SSH_USER
           IdentityFile ~/.ssh/github-actions-key
