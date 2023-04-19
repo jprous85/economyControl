@@ -55,9 +55,9 @@ jobs:
 
       - name: show envs
         env:
-          UNO: ${{ secrets.AWS_PRIVATE_KEY }}
-          DOS: ${{ secrets.HOSTNAME }}
-          TRES: ${{ secrets.USER_NAME }}
+          UNO: ${{ secrets.production.AWS_PRIVATE_KEY }}
+          DOS: ${{ secrets.production.HOSTNAME }}
+          TRES: ${{ secrets.production.USER_NAME }}
 
         run: |
           echo $UNO
