@@ -50,8 +50,8 @@ jobs:
           END
         env:
           SSH_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.HOSTNAME }}
-          SSH_USER: ${{ secrets.USER_NAME }}
+          SSH_HOST: ec2-34-253-171-235.eu-west-1.compute.amazonaws.com
+          SSH_USER: ubuntu
 
       - name: enter to instance and deploy
         run: |
