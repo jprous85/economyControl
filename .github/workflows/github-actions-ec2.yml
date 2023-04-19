@@ -43,11 +43,9 @@ jobs:
             username: ${{ secrets.USER_NAME }}
             key: ${{ secrets.AWS_PRIVATE_KEY }}
             script: |
-              ssh staging '
-                #Now we have got the access of EC2 and we will start the deploy .
-                cd /var/www/html/economyControl &&
-                git checkout master &&
-                git fetch --all &&
-                git reset --hard origin/master &&
-                git pull origin master
-              '
+              cd /var/www/html/economyControl
+              git checkout master
+              git fetch --all
+              git reset --hard origin/master
+              git pull origin master
+
