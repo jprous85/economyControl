@@ -56,7 +56,7 @@ jobs:
 
       - name: enter to instance and deploy
         run: |
-          ssh -T -p 443 staging '
+          ssh staging '
             #Now we have got the access of EC2 and we will start the deploy .
             cd /var/www/html/economyControl &&
             git checkout master &&
