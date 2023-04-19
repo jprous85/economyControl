@@ -60,9 +60,9 @@ jobs:
           TRES: ${{ secrets.USER_NAME }}
 
         run: |
-          echo ${#UNO}
-          echo ${#DOS}
-          echo: ${#TRES}
+          echo $UNO
+          echo $DOS
+          echo: $TRES
 
       - name: enter to instance and deploy
         run: |
