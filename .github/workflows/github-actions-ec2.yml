@@ -54,10 +54,15 @@ jobs:
           SSH_USER: ${{ secrets.USER_NAME }}
 
       - name: show envs
+        env:
+          UNO: ${{ secrets.AWS_PRIVATE_KEY }}
+          DOS: ${{ secrets.HOSTNAME }}
+          TRES: ${{ secrets.USER_NAME }}
+
         run: |
-          echo ${{ secrets.AWS_PRIVATE_KEY }}
-          echo ${{ secrets.HOSTNAME }}
-          echo ${{ secrets.USER_NAME }}
+          echo ${#UNO}
+          echo ${#DOS}
+          echo: ${#TRES}
 
       - name: enter to instance and deploy
         run: |
