@@ -44,8 +44,8 @@ jobs:
           ssh staging '
             #Now we have got the access of EC2 and we will start the deploy .
             cd /var/www/html/economyControl &&
-            rm -r vendor &&
-            rm composer.lock &&
+            if [ -d vendor ]; then rm -Rf vendor; fi
+            if [ -f vendor ]; then rm composer.lock; fi
             composer install &&
             make migrate &&
             git checkout main &&
