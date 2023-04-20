@@ -12,6 +12,7 @@ env:
 jobs:
   Authorize-SG-AWS:
     environment: production
+    runs-on: ubuntu-latest
 
     steps:
       - name: Get Github action IP
@@ -54,6 +55,7 @@ jobs:
   Destroy-SG-AWS:
     needs: [Deploy]
     environment: production
+    runs-on: ubuntu-latest
     steps:
       - name: Get Github action IP
         id: ip
