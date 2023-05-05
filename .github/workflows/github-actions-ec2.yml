@@ -1,63 +1,63 @@
-name: Deploy in prod
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  Deploy:
-    environment: production
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Get Github action IP
-        id: ip
-        uses: haythem/public-ip@v1.2
-
-      - name: Add Github Actions IP to Security group
-        run: |
-          aws ec2 authorize-security-group-ingress --group-name ${{ vars.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
-
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/staging.key
-          chmod 600 ~/.ssh/staging.key
-          cat >>~/.ssh/config <<END
-          Host staging
-            HostName $SSH_HOST
-            User $SSH_USER
-            IdentityFile ~/.ssh/staging.key
-            StrictHostKeyChecking no
-          END
-        env:
-          SSH_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.HOSTNAME }}
-          SSH_USER: ${{ secrets.USER_NAME }}
-
-      - name: enter to instance and deploy
-        run: |
-          ssh staging '
-            #Now we have got the access of EC2 and we will start the deploy .
-            cd /var/www/html/economyControl &&
-            if [ -d vendor ]; then rm -Rf vendor; fi
-            if [ -f composer.lock ]; then rm composer.lock; fi
-            composer install &&
-            make migrate &&
-            git checkout main &&
-            git fetch --all &&
-            git reset --hard origin/main &&
-            git pull origin main
-          '
-      - name: Remove Github Actions IP from security group
-        run: |
-          aws ec2 revoke-security-group-ingress --group-name ${{ vars.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
-        if: always()
+#name: Deploy in prod
+#
+#on:
+#  push:
+#    branches: [ main ]
+#
+#jobs:
+#  Deploy:
+#    environment: production
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Get Github action IP
+#        id: ip
+#        uses: haythem/public-ip@v1.2
+#
+#      - name: Add Github Actions IP to Security group
+#        run: |
+#          aws ec2 authorize-security-group-ingress --group-name ${{ vars.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+#        env:
+#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+#
+#      - name: Configure SSH
+#        run: |
+#          mkdir -p ~/.ssh/
+#          echo "$SSH_KEY" > ~/.ssh/staging.key
+#          chmod 600 ~/.ssh/staging.key
+#          cat >>~/.ssh/config <<END
+#          Host staging
+#            HostName $SSH_HOST
+#            User $SSH_USER
+#            IdentityFile ~/.ssh/staging.key
+#            StrictHostKeyChecking no
+#          END
+#        env:
+#          SSH_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+#          SSH_HOST: ${{ secrets.HOSTNAME }}
+#          SSH_USER: ${{ secrets.USER_NAME }}
+#
+#      - name: enter to instance and deploy
+#        run: |
+#          ssh staging '
+#            #Now we have got the access of EC2 and we will start the deploy .
+#            cd /var/www/html/economyControl &&
+#            if [ -d vendor ]; then rm -Rf vendor; fi
+#            if [ -f composer.lock ]; then rm composer.lock; fi
+#            composer install &&
+#            make migrate &&
+#            git checkout main &&
+#            git fetch --all &&
+#            git reset --hard origin/main &&
+#            git pull origin main
+#          '
+#      - name: Remove Github Actions IP from security group
+#        run: |
+#          aws ec2 revoke-security-group-ingress --group-name ${{ vars.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+#        env:
+#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+#        if: always()
