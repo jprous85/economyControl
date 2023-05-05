@@ -62,7 +62,7 @@ final class EconomyPutController extends ReturnsMiddleware
     {
         $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $addEconomyRequest = new AddEconomyIncomeRequest(
-            (string) Uuid::uuid4(),
+            $request->get('uuid'),
             $request->get('name'),
             $request->get('category'),
             floatval($request->get('amount')),
@@ -98,7 +98,7 @@ final class EconomyPutController extends ReturnsMiddleware
     {
         $economy = EconomyResponse::responseToEntity(($this->showEconomyById)(new EconomyIdRequest($id)));
         $addEconomyRequest = new AddEconomyExpensesRequest(
-            (string) Uuid::uuid4(),
+            $request->get('uuid'),
             $request->get('name'),
             $request->get('category'),
             floatval($request->get('amount')),
