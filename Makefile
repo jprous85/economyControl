@@ -38,8 +38,8 @@ queue: ## -work-queue
 	@php artisan queue:work
 	@echo "Queues are working"
 
-utest: ## -Run_Unit_tests
-	@php artisan test
+test: ## -Run_Unit_tests optional_variable: file=path/test/file.php
+	@php vendor/bin/phpunit $(file)
 
 help:
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
