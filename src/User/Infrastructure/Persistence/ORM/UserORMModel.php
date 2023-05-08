@@ -19,6 +19,8 @@ final class UserORMModel extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const UPDATED_AT = null;
+
     protected $table = 'users';
 
     protected $guarded = [];

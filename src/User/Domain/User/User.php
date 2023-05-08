@@ -6,7 +6,6 @@ namespace Src\User\Domain\User;
 
 use Carbon\Carbon;
 
-use Src\Shared\Domain\ValueObjects\CreatedAtVO;
 use Src\User\Domain\User\ValueObjects\UserIdVO;
 use Src\User\Domain\User\ValueObjects\UserRoleIdVO;
 use Src\User\Domain\User\ValueObjects\UserUuidVO;
@@ -131,6 +130,7 @@ final class User
             'gender'            => $this->getGender()->value(),
             'password'          => $this->getPassword()->value(),
             'lang'              => $this->getLang()->value(),
+            'last_login'        => $this->getLastLogin()->value(),
             'api_key'           => $this->getApiKey()->value(),
             'active'            => $this->getActive()->value(),
             'verified'          => $this->getVerified()->value(),
@@ -242,6 +242,11 @@ final class User
     {
         $currentDate      = Carbon::now()->format('Y-m-d h:i:s');
         $this->last_login = new UserLastLoginVO($currentDate);
+        $this->updated_at = new UserUpdatedAtVO(
+            ($this->updated_at->value() !== '') ?
+                Carbon::createFromFormat('Y-m-d H:i:s', $this->updated_at->value()) :
+                null
+        );
     }
 
 
