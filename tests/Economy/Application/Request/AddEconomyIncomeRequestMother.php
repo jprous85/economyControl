@@ -14,6 +14,7 @@ final class AddEconomyIncomeRequestMother
         string $name,
         string $category,
         float  $amount,
+        bool   $fixed,
         bool   $active
     ): AddEconomyIncomeRequest
     {
@@ -22,6 +23,7 @@ final class AddEconomyIncomeRequestMother
             $name,
             $category,
             $amount,
+            $fixed,
             $active
         );
     }
@@ -34,6 +36,7 @@ final class AddEconomyIncomeRequestMother
         $name     = $faker->name;
         $category = $faker->text;
         $amount   = $faker->randomFloat();
+        $fixed    = $faker->boolean;
         $active   = $faker->boolean;
 
         return self::create(
@@ -41,6 +44,7 @@ final class AddEconomyIncomeRequestMother
             $name,
             $category,
             $amount,
+            $fixed,
             $active
         );
     }

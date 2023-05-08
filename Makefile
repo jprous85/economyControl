@@ -38,6 +38,9 @@ queue: ## -work-queue
 	@php artisan queue:work
 	@echo "Queues are working"
 
+utest: ## -Run_Unit_tests
+	@php artisan test
+
 help:
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 	| sed -n 's/^\(.*\): \(.*\)##\(.*\)/\1\3/p' \

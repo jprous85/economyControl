@@ -10,6 +10,6 @@ class ShowUserByUuidUnitTest extends UserUnitTestCase
     /** @test */
     public function should_show_User(): void
     {
-        $this->shouldFind(ShowUserByUuidRequestMother::random());
+        $this->shouldFindByUUid(ShowUserByUuidRequestMother::random());
     }
 }

@@ -67,18 +67,32 @@ abstract class AccountUnitTestCase extends TestCase
     {
         $account = AccountMother::random();
 
+        $accountResponse = AccountResponse::SelfAccountResponse($account);
+
         $this->mock->shouldReceive('show')->andReturn($account);
 
         $finder = new ShowAccount($this->mock);
-        $finder->__invoke($request);
+        $result = $finder->__invoke($request);
+
+        $this->assertEquals($accountResponse, $result);
     }
 
     protected function shouldFindAll()
     {
-        $this->mock->shouldReceive('showAll')->andReturns(array());
+        $account1 = AccountMother::random();
+        $account2 = AccountMother::random();
+
+        $accountResponse1 = AccountResponse::SelfAccountResponse($account1);
+        $accountResponse2 = AccountResponse::SelfAccountResponse($account2);
+
+        $accountResponses = new AccountResponses($accountResponse1, $accountResponse2);
+
+        $this->mock->shouldReceive('showAll')->andReturns([$account1, $account2]);
 
         $finder = new ShowAllAccount($this->mock);
-        $finder->__invoke();
+        $result = $finder->__invoke();
+
+        $this->assertEquals($accountResponses, $result);
     }
 
     protected function getAccountByUserId(ShowUserRequest $request)

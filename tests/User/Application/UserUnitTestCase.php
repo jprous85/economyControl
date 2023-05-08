@@ -67,7 +67,20 @@ abstract class UserUnitTestCase extends TestCase
         $creator->__invoke($request);
     }
 
-    protected function shouldFind(ShowUserUuidRequest $request)
+    protected function shouldFind(ShowUserRequest $request)
+    {
+        $user = UserMother::random();
+        $userResponse = UserResponse::SelfUserResponse($user);
+
+        $this->mock->shouldReceive('show')->andReturn($user);
+
+        $finder = new ShowUser($this->mock);
+        $result = $finder->__invoke($request);
+
+        $this->assertEquals($result, $userResponse);
+    }
+
+    protected function shouldFindByUUid(ShowUserUuidRequest $request)
     {
         $user = UserMother::random();
         $userResponse = UserResponse::SelfUserResponse($user);
