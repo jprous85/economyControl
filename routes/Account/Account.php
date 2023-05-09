@@ -7,6 +7,7 @@ use Src\Account\Infrastructure\Controllers\AccountPutController;
 
 Route::get('/read', [AccountGetController::class, 'read']);
 Route::get('/{uuid}/show', [AccountGetController::class, 'show']);
+Route::get('/{uuid}/duplicate', [AccountGetController::class, 'duplicate']);
 Route::get('/by-user/{id}/show', [AccountGetController::class, 'getAccountByUser']);
 Route::post('/create', [AccountPostController::class, 'create']);
 Route::put('/{uuid}/update', [AccountPutController::class, 'update']);
