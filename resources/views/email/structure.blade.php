@@ -82,7 +82,7 @@
     <div class="top-box-section">
         <div class="box-section">
             <div class="box-content">
-                <img src="{{ asset('img/piggy-bank-blank.png') }}"
+                <img src="{{ url($headerImage) }}"
                      alt="piggy-bank-blank"
                      width="100%"
                      class="border-14"

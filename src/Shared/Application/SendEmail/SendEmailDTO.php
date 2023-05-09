@@ -10,8 +10,8 @@ final class SendEmailDTO
 {
     public function __construct(
         private string $to,
-        private ?string $cc = null,
-        private ?string $bcc = null,
+        private ?string $cc,
+        private ?string $bcc,
         private string $subject,
         private string $template,
         private string $language = 'en',

@@ -97,6 +97,8 @@ final class AuthPostController extends ReturnsMiddleware
         $this->sendEmailRepository->send(
             new SendEmailDTO(
                 to: $user['email'],
+                cc: null,
+                bcc: null,
                 subject: 'email/welcome.subject',
                 template: 'email.welcome',
                 language: 'es',

@@ -33,12 +33,13 @@ class SendJobEmail implements ShouldQueue
      */
     public function handle()
     {
-
         App::setLocale($this->sendEmailDTO->getLanguage());
+
+        $params = $this->generalParams();
 
         Mail::send(
             $this->sendEmailDTO->getTemplate(),
-            $this->sendEmailDTO->getParams(),
+            $params,
             function ($message) {
                 $message->to($this->sendEmailDTO->getTo());
                 $message->from(self::FROM);
@@ -55,5 +56,15 @@ class SendJobEmail implements ShouldQueue
                 $message->subject(trans($this->sendEmailDTO->getSubject()));
             }
         );
+    }
+
+    private function generalParams(): array
+    {
+        $generalParams = [
+            'headerImage' => env('APP_URL').'/img/piggy-bank-blank.png',
+            'logoImage' => env('APP_URL').'/img/brain_with_text_below.png'
+        ];
+
+        return array_merge($this->sendEmailDTO->getParams(), $generalParams);
     }
 }
