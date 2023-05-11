@@ -78,6 +78,7 @@ final class DuplicateAccount
     {
         foreach ($charges as $charge) {
             if ($charge['fixed']) {
+                $charge['paid'] = false;
                 $economy->$method($charge);
             }
         }
