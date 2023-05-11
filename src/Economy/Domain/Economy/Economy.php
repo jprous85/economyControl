@@ -136,7 +136,8 @@ final class Economy
                 "totalIncomes"  => 0,
                 "totalExpenses" => 0,
                 "totalPaid"     => 0,
-                "pendingToPay"  => 0
+                "pendingToPay"  => 0,
+                "balance"       => 0
             ]
         ];
 
@@ -272,6 +273,7 @@ final class Economy
         $economicManagement['totals']['totalExpenses'] = $this->calculateTotalExpenses($economicManagement['expenses']);
         $economicManagement['totals']['totalPaid']     = $this->calculateExpenses($economicManagement['expenses']);
         $economicManagement['totals']['pendingToPay']  = $this->calculatePendingToPay($economicManagement['expenses']);
+        $economicManagement['totals']['balance']       = $this->calculateBalance($economicManagement);
     }
 
     private function calculateIncomes($incomes): float
@@ -312,6 +314,11 @@ final class Economy
             }
         }
         return $total;
+    }
+
+    private function calculateBalance(array $economicManagement): float
+    {
+        return $economicManagement['totals']['totalIncomes'] - $economicManagement['totals']['totalExpenses'];
     }
 
 }
