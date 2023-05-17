@@ -1,0 +1,2 @@
+DOCKER_DATABASE_CONTAINER=economyControl_db
+DATABASE_NAME=economycontrol_bbdd
